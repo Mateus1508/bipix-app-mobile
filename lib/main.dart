@@ -1,4 +1,6 @@
 import 'package:bipixapp/pages/loading.dart';
+import 'package:bipixapp/pages/login.dart';
+import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +13,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Loading(),
+      home: SignUp(),
     );
   }
 }

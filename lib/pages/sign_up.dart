@@ -1,13 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+
+Future<void> cadastrarNovoUsuario(
+    String username, String password, String email) async {
+  final url = Uri.parse('https://bipixapi.cyclic.app/users/');
+  final response = await http.post(
+    url,
+    body: {'username': username, 'password': password, 'email': email},
+  );
+  if (response.statusCode == 201) {
+    print('Usuário cadastrado com sucesso.');
+  } else {
+    print('Erro ao cadastrar usuário.');
+  }
+}
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,12 +48,13 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 200,
-                  height: 200,
+                  width: 100,
+                  height: 100,
                   child: Image.asset('assets/images/bipixLogo.png'),
                 ),
                 const SizedBox(height: 10),
                 const TextField(
+                  controller: _usernameController,
                   style: TextStyle(color: Colors.white),
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
@@ -114,7 +143,9 @@ class _SignUpState extends State<SignUp> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          cadastrarNovoUsuario('username', 'password', 'email');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           padding: const EdgeInsets.all(14),
