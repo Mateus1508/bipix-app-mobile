@@ -8,12 +8,18 @@ void main() {
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  const MainApp({Key? key});
+
+  static final Map<String, WidgetBuilder> routes = {
+    '/signup': (context) => SignUp(),
+    '/login': (context) => Login(),
+  };
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SignUp(),
+    return MaterialApp(
+      home: const Login(),
+      routes: routes,
     );
   }
 }

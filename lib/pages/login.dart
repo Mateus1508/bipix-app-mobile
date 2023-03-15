@@ -1,13 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = FlutterSecureStorage();
+
+Future<void> login(BuildContext context, String email, String password) async {
+  if (email.isEmpty || password.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Email e senha são obrigatórios')),
+    );
+    return;
+  }
+
+  if (!_isValidEmail(email)) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Email inválido')),
+    );
+    return;
+  }
+
+  final url = Uri.parse('https://bipixapi.cyclic.app/auth');
+  final response = await http.post(url, body: {
+    'email': email,
+    'password': _encryptPassword(password),
+  });
+
+  if (response.statusCode == 200) {
+    final token = response.headers['authorization'];
+    await storage.write(key: 'token', value: token);
+    Navigator.pushNamed(context, '/signup');
+  } else {
+    final message = _getErrorMessage(response.body);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+}
+
+bool _isValidEmail(String email) {
+  final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  return regex.hasMatch(email);
+}
+
+String _encryptPassword(String password) {
+  // TODO: implementar criptografia
+  return password;
+}
+
+String _getErrorMessage(String body) {
+  // TODO: analisar a resposta da API e retornar uma mensagem de erro apropriada
+  return 'Falha na autenticação';
+}
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,8 +80,9 @@ class _LoginState extends State<Login> {
                   child: Image.asset('assets/images/bipixLogo.png'),
                 ),
                 const SizedBox(height: 10),
-                const TextField(
+                TextField(
                   style: TextStyle(color: Colors.white),
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -43,7 +99,8 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const TextField(
+                TextField(
+                  controller: passwordController,
                   style: TextStyle(color: Colors.white),
                   obscureText: true,
                   decoration: InputDecoration(
@@ -66,7 +123,9 @@ class _LoginState extends State<Login> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/signup');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey.shade800,
                           padding: const EdgeInsets.all(14),
@@ -78,7 +137,10 @@ class _LoginState extends State<Login> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          login(context, emailController.text,
+                              passwordController.text);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           padding: const EdgeInsets.all(14),
