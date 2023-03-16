@@ -11,8 +11,8 @@ class MainApp extends StatelessWidget {
   const MainApp({Key? key});
 
   static final Map<String, WidgetBuilder> routes = {
-    '/signup': (context) => SignUp(),
-    '/login': (context) => Login(),
+    '/signup': (context) => const SignUp(),
+    '/login': (context) => const Login(),
   };
 
   @override
