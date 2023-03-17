@@ -31,7 +31,7 @@ Future<void> login(BuildContext context, String email, String password) async {
   if (response.statusCode == 200) {
     final token = response.headers['authorization'];
     await storage.write(key: 'token', value: token);
-    Navigator.pushNamed(context, '/signup');
+    Navigator.pushNamed(context, '/editprofile');
   } else {
     final message = _getErrorMessage(response.body);
     ScaffoldMessenger.of(context).showSnackBar(
