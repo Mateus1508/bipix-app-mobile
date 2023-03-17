@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:auth_buttons/auth_buttons.dart';
+import 'package:auth_buttons/auth_buttons.dart'
+    show GoogleAuthButton, AuthButtonStyle, AuthButtonType, AuthIconType;
 
 const storage = FlutterSecureStorage();
 
@@ -61,6 +63,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  AuthButtonStyle? authButtonStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -150,17 +154,38 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
-                  SignInButton(
-                    Buttons.Google,
-                    onPressed: () {},
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Ou entrar com",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
-                  SignInButton(
-                    Buttons.Facebook,
-                    onPressed: () {},
-                  ),
-                  SignInButton(
-                    Buttons.Apple,
-                    onPressed: () {},
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GoogleAuthButton(
+                        onPressed: () {},
+                        style: const AuthButtonStyle(
+                          buttonType: AuthButtonType.icon,
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                      FacebookAuthButton(
+                        onPressed: () {},
+                        style: const AuthButtonStyle(
+                          buttonType: AuthButtonType.icon,
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                      AppleAuthButton(
+                        onPressed: () {},
+                        style: const AuthButtonStyle(
+                          buttonType: AuthButtonType.icon,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
