@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-Future<void> cadastrarNovoUsuario(
-    String username, String password, String email) async {
-  final url = Uri.parse('https://bipixapi.cyclic.app/users/');
-  final response = await http.post(
-    url,
-    body: {'username': username, 'password': password, 'email': email},
-  );
-  if (response.statusCode == 201) {
-    print('Usuário cadastrado com sucesso.');
-  } else {
-    print('Erro ao cadastrar usuário.');
-  }
-}
+import 'package:bcrypt/bcrypt.dart';
+import 'package:postgres/postgres.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -21,6 +9,12 @@ class SignUp extends StatefulWidget {
   @override
   State<SignUp> createState() => _SignUpState();
 }
+
+TextEditingController nameController = TextEditingController();
+TextEditingController usernameController = TextEditingController();
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
+TextEditingController repeatPasswordController = TextEditingController();
 
 class _SignUpState extends State<SignUp> {
   @override
@@ -41,7 +35,8 @@ class _SignUpState extends State<SignUp> {
                     child: Image.asset('assets/images/bipixLogo.png'),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                  TextField(
+                    controller: nameController,
                     style: TextStyle(color: Colors.white),
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
@@ -58,8 +53,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const TextField(
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: usernameController,
                     style: TextStyle(color: Colors.white),
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
@@ -77,7 +73,8 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                  TextField(
+                    controller: emailController,
                     style: TextStyle(color: Colors.white),
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
@@ -95,7 +92,8 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                  TextField(
+                    controller: passwordController,
                     style: TextStyle(color: Colors.white),
                     obscureText: true,
                     decoration: InputDecoration(
@@ -113,7 +111,8 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const TextField(
+                  TextField(
+                    controller: repeatPasswordController,
                     style: TextStyle(color: Colors.white),
                     obscureText: true,
                     decoration: InputDecoration(
@@ -150,9 +149,33 @@ class _SignUpState extends State<SignUp> {
                       Expanded(
                         flex: 1,
                         child: ElevatedButton(
-                          onPressed: () {
-                            cadastrarNovoUsuario(
-                                'username', 'password', 'email');
+                          onPressed: () async {
+                            var url = 'https://bipixapi.cyclic.app/users';
+                            var data = {
+                              'username': usernameController.text,
+                              'password': passwordController.text,
+                              'email': emailController.text,
+                              'nickname': nameController.text
+                            };
+                            var response =
+                                await http.post(Uri.parse(url), body: data);
+
+                            if (response.statusCode == 201) {
+                              Navigator.pushNamed(context, '/login');
+
+                              // sucesso
+                              print(response.body);
+
+                              usernameController.clear();
+                              passwordController.clear();
+                              emailController.clear();
+                              nameController.clear();
+                            } else {
+                              print('Erro: ${response.statusCode}');
+
+                              // erro
+                              print(response.body);
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,

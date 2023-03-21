@@ -1,6 +1,11 @@
+import 'package:bipixapp/pages/edit_profile.dart';
+import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
 import 'package:auth_buttons/auth_buttons.dart';
 import 'package:auth_buttons/auth_buttons.dart'
     show GoogleAuthButton, AuthButtonStyle, AuthButtonType, AuthIconType;
@@ -63,6 +68,47 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  late GoogleSignIn _googleSignIn;
+
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser != null) {
+        // Navigate to the next screen if the user was successfully authenticated
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SignUp()),
+        );
+      }
+    } catch (error) {
+      // An error occurred during authentication
+    }
+  }
+
+  Future<void> _handleFacebookSignIn() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.success) {
+        // The user was successfully authenticated
+        Navigator.pushNamed(context, '/editprofile');
+      } else {
+        // An error occurred during authentication
+      }
+    } catch (error) {
+      // An error occurred during authentication
+    }
+  }
+
+  void handleGoogleSignIn() {
+    _handleGoogleSignIn();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn =
+        GoogleSignIn(); // Inicialize a variável _googleSignIn dentro do método initState()
+  }
 
   AuthButtonStyle? authButtonStyle;
 
@@ -166,14 +212,14 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GoogleAuthButton(
-                        onPressed: () {},
+                        onPressed: handleGoogleSignIn,
                         style: const AuthButtonStyle(
                           buttonType: AuthButtonType.icon,
                         ),
                       ),
                       const SizedBox(width: 30),
                       FacebookAuthButton(
-                        onPressed: () {},
+                        onPressed: _handleFacebookSignIn,
                         style: const AuthButtonStyle(
                           buttonType: AuthButtonType.icon,
                         ),

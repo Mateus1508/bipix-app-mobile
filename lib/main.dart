@@ -3,6 +3,7 @@ import 'package:bipixapp/pages/loading.dart';
 import 'package:bipixapp/pages/login.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:bipixapp/damas.dart';
 
 void main() {
   runApp(const MainApp());
@@ -20,7 +21,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const EditProfile(),
+      home: Damas(),
       routes: routes,
     );
   }
