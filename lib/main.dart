@@ -1,6 +1,7 @@
 import 'package:bipixapp/pages/edit_profile.dart';
 import 'package:bipixapp/pages/loading.dart';
 import 'package:bipixapp/pages/login.dart';
+import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,14 @@ class MainApp extends StatelessWidget {
   static final Map<String, WidgetBuilder> routes = {
     '/signup': (context) => const SignUp(),
     '/login': (context) => const Login(),
+    '/home': (context) => const Home(),
     '/editprofile': (context) => const EditProfile(),
   };
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const EditProfile(),
+      home: const Home(),
       routes: routes,
     );
   }

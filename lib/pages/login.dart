@@ -144,6 +144,7 @@ class _LoginState extends State<Login> {
                           onPressed: () {
                             login(context, emailController.text,
                                 passwordController.text);
+                            Navigator.pushNamed(context, '/home');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
