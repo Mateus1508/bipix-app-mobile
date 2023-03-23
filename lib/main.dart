@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Home(),
+      home: Loading(),
       routes: routes,
     );
   }
