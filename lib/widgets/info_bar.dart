@@ -10,6 +10,8 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    String cash = "400,00";
+
     return AppBar(
       title: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
@@ -60,18 +62,18 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     Icons.wallet,
                     color: Colors.black,
                     size: 18,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
-                    "******",
-                    style: TextStyle(
+                    "\$ $cash",
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
                     ),

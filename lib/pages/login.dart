@@ -1,5 +1,5 @@
-import 'package:bipixapp/pages/edit_profile.dart';
 import 'package:bipixapp/pages/sign_up.dart';
+import 'package:bipixapp/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -89,7 +89,8 @@ class _LoginState extends State<Login> {
     try {
       final LoginResult result = await FacebookAuth.instance.login();
       if (result.status == LoginStatus.success) {
-        Navigator.pushNamed(context, '/editprofile');
+        // The user was successfully authenticated
+        Navigator.pushNamed(context, '/home');
       } else {
         // An error occurred during authentication
       }
