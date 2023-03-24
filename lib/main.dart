@@ -4,7 +4,6 @@ import 'package:bipixapp/pages/login.dart';
 import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
-import 'package:bipixapp/damas.dart';
 
 void main() {
   runApp(const MainApp());

@@ -77,7 +77,7 @@ class _LoginState extends State<Login> {
         // Navigate to the next screen if the user was successfully authenticated
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SignUp()),
+          MaterialPageRoute(builder: (context) => const SignUp()),
         );
       }
     } catch (error) {
@@ -89,7 +89,6 @@ class _LoginState extends State<Login> {
     try {
       final LoginResult result = await FacebookAuth.instance.login();
       if (result.status == LoginStatus.success) {
-        // The user was successfully authenticated
         Navigator.pushNamed(context, '/editprofile');
       } else {
         // An error occurred during authentication
@@ -106,8 +105,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _googleSignIn =
-        GoogleSignIn(); // Inicialize a variável _googleSignIn dentro do método initState()
+    _googleSignIn = GoogleSignIn();
   }
 
   AuthButtonStyle? authButtonStyle;
