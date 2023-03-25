@@ -1,6 +1,7 @@
-import 'package:bipixapp/widgets/game_selection.dart';
 import 'package:bipixapp/widgets/info_bar.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/game_selection.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -85,7 +86,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            const GameSelection()
+            const GameSelection(),
           ],
         ),
       ),

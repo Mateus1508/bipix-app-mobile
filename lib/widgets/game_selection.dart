@@ -81,9 +81,22 @@ class _GameSelectionState extends State<GameSelection> {
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
-              height: 200,
-              child: Image.asset('assets/images/dama.png'),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  SizedBox(
+                    child: Image.asset('assets/images/baralho.png'),
+                  ),
+                  SizedBox(
+                    height: 200,
+                    child: Image.asset('assets/images/dama.png'),
+                  ),
+                  SizedBox(
+                    child: Image.asset('assets/images/truco.png'),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 30,
@@ -108,7 +121,7 @@ class _GameSelectionState extends State<GameSelection> {
                   ),
                   SizedBox(
                     child: Image.asset('assets/images/vector.png'),
-                  )
+                  ),
                 ],
               ),
             ),
