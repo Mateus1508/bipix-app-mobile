@@ -14,7 +14,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
     super.initState();
 
     // Aguarda 2 segundos antes de abrir a tela de login
-    Timer(Duration(seconds: 2), () {
+    Timer(Duration(seconds: 10), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),

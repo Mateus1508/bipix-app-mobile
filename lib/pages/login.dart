@@ -77,7 +77,7 @@ class _LoginState extends State<Login> {
         // Navigate to the next screen if the user was successfully authenticated
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SignUp()),
+          MaterialPageRoute(builder: (context) => const SignUp()),
         );
       }
     } catch (error) {
@@ -106,8 +106,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _googleSignIn =
-        GoogleSignIn(); // Inicialize a variável _googleSignIn dentro do método initState()
+    _googleSignIn = GoogleSignIn();
   }
 
   AuthButtonStyle? authButtonStyle;
