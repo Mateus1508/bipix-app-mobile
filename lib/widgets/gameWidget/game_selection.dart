@@ -52,7 +52,9 @@ class _GameSelectionState extends State<GameSelection> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/damas');
+                    },
                     child: const Text(
                       "Jogar",
                       style: TextStyle(
