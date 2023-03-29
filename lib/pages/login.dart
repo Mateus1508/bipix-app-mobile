@@ -10,54 +10,6 @@ import 'package:auth_buttons/auth_buttons.dart';
 import 'package:auth_buttons/auth_buttons.dart'
     show GoogleAuthButton, AuthButtonStyle, AuthButtonType, AuthIconType;
 
-const storage = FlutterSecureStorage();
-
-Future<void> login(BuildContext context, String email, String password) async {
-  if (email.isEmpty || password.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Email e senha são obrigatórios')),
-    );
-    return;
-  }
-
-  if (!_isValidEmail(email)) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Email inválido')),
-    );
-    return;
-  }
-
-  final url = Uri.parse('https://bipixapi.cyclic.app/auth');
-  final response = await http.post(url, body: {
-    'email': email,
-    'password': _encryptPassword(password),
-  });
-
-  if (response.statusCode == 200) {
-    final token = response.headers['authorization'];
-    await storage.write(key: 'token', value: token);
-    Navigator.pushNamed(context, '/editprofile');
-  } else {
-    final message = _getErrorMessage(response.body);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-}
-
-bool _isValidEmail(String email) {
-  final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-  return regex.hasMatch(email);
-}
-
-String _encryptPassword(String password) {
-  return password;
-}
-
-String _getErrorMessage(String body) {
-  return 'Falha na autenticação';
-}
-
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -187,8 +139,6 @@ class _LoginState extends State<Login> {
                         flex: 1,
                         child: ElevatedButton(
                           onPressed: () {
-                            login(context, emailController.text,
-                                passwordController.text);
                             Navigator.pushNamed(context, '/home');
                           },
                           style: ElevatedButton.styleFrom(

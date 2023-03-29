@@ -18,12 +18,13 @@ class MainApp extends StatelessWidget {
     '/login': (context) => const Login(),
     '/home': (context) => const Home(),
     '/editprofile': (context) => const EditProfile(),
+    '/damas': (context) => MyApp(),
   };
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: Loading(),
       routes: routes,
     );
   }
