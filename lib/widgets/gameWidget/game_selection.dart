@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:bipixapp/widgets/gameWidget/game_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'dart:math' as math;
+import '../../models/games_list.dart';
 
 class GameSelection extends StatefulWidget {
   const GameSelection({super.key});
@@ -9,73 +14,59 @@ class GameSelection extends StatefulWidget {
 }
 
 class _GameSelectionState extends State<GameSelection> {
+  late PageController _pageController;
+  int currentGame = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      viewportFraction: 0.6,
+      initialPage: currentGame,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 0.8,
-      child: PageView.builder(
-        itemBuilder: (context, index) => Column(
-          children: [
-            const Text(
-              "Dama",
-              style: TextStyle(fontSize: 32, letterSpacing: 7),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            /* SingleChildScrollView(
+    return SingleChildScrollView(
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: SizedBox(
+          height: 200,
+          child: PageView.builder(
+              onPageChanged: (value) {
+                setState(() {
+                  currentGame = value;
+                });
+              },
+              controller: _pageController,
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  SizedBox(
-                    child: Image.asset('assets/images/baralho.png'),
-                  ),
-                  SizedBox(
-                    height: 200,
-                    child: Image.asset('assets/images/dama.png'),
-                  ),
-                  SizedBox(
-                    child: Image.asset('assets/images/truco.png'),
-                  ),
-                ],
-              ),
-            ), */
-            const SizedBox(
-              height: 30,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: const BoxDecoration(
-                  color: Colors.amber,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "Jogar",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36),
-                    ),
-                  ),
-                  SizedBox(
-                    child: Image.asset('assets/images/vector.png'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text("Toque para jogar")
-                .animate(onPlay: (controller) => controller.repeat())
-                .fadeIn(begin: 1.1, duration: 1000.ms, curve: Curves.easeIn)
-                .then()
-                .fadeOut(duration: 700.ms, curve: Curves.easeOut),
-          ],
+              itemCount: gameImages.length,
+              itemBuilder: (context, index) => buildGameItemsSlider(index)),
         ),
       ),
     );
   }
+
+  Widget buildGameItemsSlider(int index) => AnimatedBuilder(
+      animation: _pageController,
+      builder: (context, child) {
+        double value = 0;
+        if (_pageController.position.haveDimensions) {
+          double? page = _pageController.page;
+          value = index - page!;
+          value = (value * 0.038).clamp(-1, 1);
+        }
+
+        return Transform.rotate(
+          angle: math.pi * value,
+          child: GameItems(gameItem: gameImages[index]),
+        );
+      });
 }
