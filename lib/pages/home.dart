@@ -1,8 +1,12 @@
 import 'package:bipixapp/widgets/info_bar.dart';
 import 'package:bipixapp/widgets/my_wallet.dart';
+import 'package:bipixapp/widgets/rechargePoint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:page_transition/page_transition.dart';
 import '../widgets/gameWidget/games_bipix.dart';
-//import '../widgets/game_widget/games_bipix.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,10 +20,21 @@ class _HomeState extends State<Home> {
 
   navigationItemSelected() {
     if (selectedItem == 0) {
-      return GamesBipix();
+      return const GamesBipix()
+          .animate(
+            onPlay: (controller) => controller.reverse(),
+          )
+          .fade(duration: 500.ms)
+          .moveX(begin: -100, end: 0, duration: 500.ms);
     }
     if (selectedItem == 1) {
-      return MyWallet();
+      return const MyWallet()
+          .animate()
+          .fade(duration: 500.ms)
+          .moveX(begin: -100, end: 0, duration: 500.ms);
+    }
+    if (selectedItem == 2) {
+      return const rechargePoint();
     }
   }
 

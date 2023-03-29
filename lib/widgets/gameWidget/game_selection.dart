@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:bipixapp/widgets/gameWidget/game_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'dart:math' as math;
@@ -21,7 +19,7 @@ class _GameSelectionState extends State<GameSelection> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      viewportFraction: 0.6,
+      viewportFraction: 0.5,
       initialPage: currentGame,
     );
   }
@@ -57,16 +55,60 @@ class _GameSelectionState extends State<GameSelection> {
   Widget buildGameItemsSlider(int index) => AnimatedBuilder(
       animation: _pageController,
       builder: (context, child) {
-        double value = 0;
-        if (_pageController.position.haveDimensions) {
-          double? page = _pageController.page;
-          value = index - page!;
-          value = (value * 0.038).clamp(-1, 1);
-        }
-
-        return Transform.rotate(
-          angle: math.pi * value,
-          child: GameItems(gameItem: gameImages[index]),
+        return AnimatedScale(
+          scale: currentGame == index ? 1 : 0.6,
+          duration: const Duration(milliseconds: 300),
+          child: Column(
+            children: [
+              Text(
+                currentGame == index ? gameImages[index].title : "",
+                style: const TextStyle(fontSize: 32, letterSpacing: 7),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 200,
+                width: 200,
+                child: Image.asset(gameImages[index].path),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: const BoxDecoration(
+                    color: Colors.amber,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: currentGame == index
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              "Jogar",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36),
+                            ),
+                          ),
+                          SizedBox(
+                            child: Image.asset('assets/images/vector.png'),
+                          ),
+                        ],
+                      )
+                    : null,
+              ),
+              const SizedBox(height: 10),
+              Text(currentGame == index ? "Toque para jogar" : "")
+                  .animate(onPlay: (controller) => controller.repeat())
+                  .fadeIn(begin: 1.1, duration: 1000.ms, curve: Curves.easeIn)
+                  .then()
+                  .fadeOut(duration: 700.ms, curve: Curves.easeOut),
+            ],
+          ),
         );
       });
 }
