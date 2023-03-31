@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-
 import 'game_selection.dart';
 
 class GamesBipix extends StatefulWidget {
@@ -34,14 +30,11 @@ class _GamesBipixState extends State<GamesBipix> {
               color: Colors.grey.shade800,
               borderRadius: const BorderRadius.all(Radius.circular(20)),
             ),
-            child: Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: gameModeOptions.length,
-                itemBuilder: (context, index) =>
-                    buildNavigation(index, context),
-              ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: gameModeOptions.length,
+              itemBuilder: (context, index) => buildNavigation(index, context),
             ),
           ),
           const SizedBox(

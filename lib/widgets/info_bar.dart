@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class InfoBar extends StatelessWidget implements PreferredSizeWidget {
   const InfoBar({super.key});
@@ -46,7 +44,7 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          padding: const EdgeInsets.only(right: 60),
           child: Center(
             child: Container(
               padding: const EdgeInsets.only(right: 7, left: 1),

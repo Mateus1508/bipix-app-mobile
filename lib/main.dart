@@ -11,19 +11,20 @@ void main() {
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({Key? key});
+  const MainApp({super.key});
 
-  static final Map<String, WidgetBuilder> routes = {
+  static Map<String, WidgetBuilder> routes = {
     '/signup': (context) => const SignUp(),
     '/login': (context) => const Login(),
     '/home': (context) => const Home(),
     '/editprofile': (context) => const EditProfile(),
-    '/damas': (context) => MyApp(),
+    '/damas': (context) => const MyApp(),
   };
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Bipix",
       home: Loading(),
       routes: routes,
     );

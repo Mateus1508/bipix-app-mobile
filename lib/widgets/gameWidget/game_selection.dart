@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'dart:math' as math;
 import '../../models/games_list.dart';
 
 class GameSelection extends StatefulWidget {
@@ -68,8 +66,8 @@ class _GameSelectionState extends State<GameSelection> {
                 height: 20,
               ),
               SizedBox(
-                height: 200,
-                width: 200,
+                height: 150,
+                width: 150,
                 child: Image.asset(gameImages[index].path),
               ),
               const SizedBox(

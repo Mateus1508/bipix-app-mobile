@@ -34,31 +34,35 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const InfoBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 40,
-              margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
-              padding: const EdgeInsetsDirectional.all(5),
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade800,
-                  borderRadius: const BorderRadius.all(Radius.circular(20))),
-              child: Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: navigationItems.length,
-                  itemBuilder: (context, index) =>
-                      buildNavigation(index, context),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: const InfoBar(),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 40,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+                padding: const EdgeInsetsDirectional.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade800,
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                child: Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: navigationItems.length,
+                    itemBuilder: (context, index) =>
+                        buildNavigation(index, context),
+                  ),
                 ),
               ),
-            ),
-            navigationItemSelected(),
-          ],
+              navigationItemSelected(),
+            ],
+          ),
         ),
       ),
     );
