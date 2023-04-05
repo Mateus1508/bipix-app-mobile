@@ -1,7 +1,7 @@
 import 'package:bipixapp/widgets/info_bar.dart';
 import 'package:bipixapp/widgets/my_wallet.dart';
-import 'package:bipixapp/widgets/rechargePoint.dart';
 import 'package:flutter/material.dart';
+import '../widgets/rechargeWidget/rechargePoint.dart';
 import '../widgets/gameWidget/games_bipix.dart';
 
 class Home extends StatefulWidget {
@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
       return const MyWallet();
     }
     if (selectedItem == 2) {
-      return const rechargePoint();
+      return const RechargePoint();
     }
   }
 

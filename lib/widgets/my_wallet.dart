@@ -169,7 +169,10 @@ class _MyWalletState extends State<MyWallet> {
                 const SizedBox(height: 10),
                 const Text(
                   "Ganhe + \$ 1.00",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green),
                 ),
                 const SizedBox(height: 10),
                 const Text(
