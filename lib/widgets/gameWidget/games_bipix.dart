@@ -1,3 +1,4 @@
+import 'package:bipixapp/widgets/gameWidget/play_with_friends.dart';
 import 'package:flutter/material.dart';
 import 'game_selection.dart';
 
@@ -14,6 +15,15 @@ class _GamesBipixState extends State<GamesBipix> {
     "Conhecer pessoas",
     "Jogar com amigos",
   ];
+
+  navigationGameModeOption() {
+    if (selectedMode == 0) {
+      return const GameSelection();
+    }
+    if (selectedMode == 1) {
+      return const PlayWithFriends();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +50,7 @@ class _GamesBipixState extends State<GamesBipix> {
           const SizedBox(
             height: 10,
           ),
-          const GameSelection(),
+          navigationGameModeOption(),
         ],
       ),
     );
