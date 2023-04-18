@@ -2,6 +2,7 @@ import 'package:bipixapp/pages/edit_profile.dart';
 import 'package:bipixapp/pages/loading.dart';
 import 'package:bipixapp/pages/login.dart';
 import 'package:bipixapp/pages/home.dart';
+import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:bipixapp/widgets/damas.dart';
@@ -19,6 +20,7 @@ class MainApp extends StatelessWidget {
     '/home': (context) => const Home(),
     '/editprofile': (context) => const EditProfile(),
     '/damas': (context) => const MyApp(),
+    '/selectbet': (context) => const SelectBetValue(),
   };
 
   @override

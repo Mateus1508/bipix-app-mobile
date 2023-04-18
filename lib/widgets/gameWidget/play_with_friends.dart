@@ -1,3 +1,4 @@
+import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -44,27 +45,23 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
         Container(
           height: 300,
           width: 300,
+          padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: Colors.grey.shade800,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
             boxShadow: const [
-              BoxShadow(color: Colors.blue, spreadRadius: 3),
+              BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 5),
             ],
           ),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Text(
-                  '@Joaozinho',
-                  style: TextStyle(fontSize: 24),
-                ),
-              )
-            ],
+          child: Flexible(
+            child: ListView(
+              shrinkWrap: true,
+              children: const [
+                SelectFriend(),
+                SelectFriend(),
+                SelectFriend(),
+              ],
+            ),
           ),
         )
       ],
