@@ -1,3 +1,4 @@
+import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../models/games_list.dart';
@@ -84,7 +85,13 @@ class _GameSelectionState extends State<GameSelection> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, '/selectbet');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelectBetValue(
+                                          index: currentGame,
+                                        )),
+                              );
                             },
                             child: const Text(
                               "Jogar",

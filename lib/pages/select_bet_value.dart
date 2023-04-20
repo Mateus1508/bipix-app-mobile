@@ -1,11 +1,13 @@
 import 'dart:ffi';
+import '../../models/games_list.dart';
 
+import 'package:bipixapp/models/games_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class SelectBetValue extends StatefulWidget {
-  const SelectBetValue({super.key});
+  const SelectBetValue({super.key, int? index});
 
   @override
   State<SelectBetValue> createState() => _SelectBetValueState();
@@ -22,6 +24,8 @@ class _SelectBetValueState extends State<SelectBetValue> {
   ];
 
   String dropdownValue = betValues.first;
+
+  get index => null;
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +50,16 @@ class _SelectBetValueState extends State<SelectBetValue> {
                     image: DecorationImage(
                       colorFilter: ColorFilter.mode(
                           Colors.black.withOpacity(0.7), BlendMode.dstATop),
-                      image: const AssetImage('assets/images/dama.png'),
+                      image: AssetImage(gameImages[index].path),
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Dama',
+                      gameImages[index].title,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 64,
