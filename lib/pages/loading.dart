@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bipixapp/pages/InitialScreen.dart';
 import 'package:bipixapp/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -14,10 +15,10 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
     super.initState();
 
     // Aguarda 2 segundos antes de abrir a tela de login
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Login()),
+        MaterialPageRoute(builder: (context) => InitialScreen()),
       );
     });
   }

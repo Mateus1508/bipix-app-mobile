@@ -67,12 +67,19 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFF333333),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(25),
+        body: Container(
+          height: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/backgroundLogin.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
@@ -131,7 +138,12 @@ class _LoginState extends State<Login> {
                             backgroundColor: Colors.grey.shade800,
                             padding: const EdgeInsets.all(14),
                           ),
-                          child: const Text('Criar conta'),
+                          child: const Text(
+                            'Criar conta',
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -145,7 +157,12 @@ class _LoginState extends State<Login> {
                             backgroundColor: Colors.blue,
                             padding: const EdgeInsets.all(14),
                           ),
-                          child: const Text('Entrar'),
+                          child: const Text(
+                            'Entrar',
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                          ),
                         ),
                       ),
                     ],

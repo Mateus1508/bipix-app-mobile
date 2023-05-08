@@ -1,3 +1,4 @@
+import 'package:bipixapp/pages/InitialScreen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
 import 'package:bipixapp/pages/loading.dart';
 import 'package:bipixapp/pages/login.dart';
@@ -15,6 +16,7 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   static Map<String, WidgetBuilder> routes = {
+    '/initial': (context) => const InitialScreen(),
     '/signup': (context) => const SignUp(),
     '/login': (context) => const Login(),
     '/home': (context) => const Home(),
