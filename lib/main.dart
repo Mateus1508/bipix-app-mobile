@@ -7,6 +7,8 @@ import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:bipixapp/widgets/damas.dart';
+import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
+
 
 void main() {
   runApp(const MainApp());
