@@ -8,6 +8,10 @@ import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:bipixapp/widgets/damas.dart';
 
+
+
+
+
 void main() {
   runApp(const MainApp());
 }
