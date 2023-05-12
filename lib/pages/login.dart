@@ -1,3 +1,4 @@
+import 'package:bipixapp/dataSources/webServices/api.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/pages/home.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,12 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   late GoogleSignIn _googleSignIn;
+
+  Future handleLoginUser() async {
+    final response = await http.get(Uri.parse('$baseUrl/users'));
+
+    return response.body;
+  }
 
   Future<void> _handleGoogleSignIn() async {
     try {
@@ -151,7 +158,8 @@ class _LoginState extends State<Login> {
                         flex: 1,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/home');
+                            //Navigator.pushNamed(context, '/home');
+                            handleLoginUser();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
