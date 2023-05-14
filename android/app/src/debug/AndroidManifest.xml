@@ -5,4 +5,10 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <service
+    android:name=".NotificationService"
+    android:enabled="true"
+    android:exported="false"
+    android:foregroundServiceType="mediaProjection"
+/>
 </manifest>

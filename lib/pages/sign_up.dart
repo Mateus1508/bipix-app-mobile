@@ -1,7 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:bcrypt/bcrypt.dart';
-import 'package:postgres/postgres.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -164,17 +163,23 @@ class _SignUpState extends State<SignUp> {
                               Navigator.pushNamed(context, '/login');
 
                               // sucesso
-                              print(response.body);
+                              if (kDebugMode) {
+                                print(response.body);
+                              }
 
                               usernameController.clear();
                               passwordController.clear();
                               emailController.clear();
                               nameController.clear();
                             } else {
-                              print('Erro: ${response.statusCode}');
+                              if (kDebugMode) {
+                                print('Erro: ${response.statusCode}');
+                              }
 
                               // erro
-                              print(response.body);
+                              if (kDebugMode) {
+                                print(response.body);
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(

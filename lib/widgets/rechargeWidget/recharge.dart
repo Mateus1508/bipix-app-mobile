@@ -1,9 +1,6 @@
 import 'package:bipixapp/widgets/rechargeWidget/recharge_point.dart';
 import 'package:bipixapp/widgets/rechargeWidget/vip.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class Recharge extends StatefulWidget {
   const Recharge({super.key});

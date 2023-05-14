@@ -1,14 +1,11 @@
+import 'package:bipixapp/dataSources/webServices/api.dart';
 import 'package:bipixapp/pages/sign_up.dart';
-import 'package:bipixapp/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import 'package:auth_buttons/auth_buttons.dart';
-import 'package:auth_buttons/auth_buttons.dart'
-    show GoogleAuthButton, AuthButtonStyle, AuthButtonType, AuthIconType;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -21,6 +18,12 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   late GoogleSignIn _googleSignIn;
+
+  Future handleLoginUser() async {
+    final response = await http.get(Uri.parse('$baseUrl/users'));
+
+    return response.body;
+  }
 
   Future<void> _handleGoogleSignIn() async {
     try {
@@ -151,7 +154,8 @@ class _LoginState extends State<Login> {
                         flex: 1,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/home');
+                            //Navigator.pushNamed(context, '/home');
+                            handleLoginUser();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
