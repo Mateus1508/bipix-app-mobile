@@ -2,6 +2,7 @@ import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -36,6 +37,30 @@ class _LoginState extends State<Login> {
       // An error occurred during authentication
     }
   }
+
+
+Future<String> autenticarUsuario(String email, String senha) async {
+  final response = await http.post(
+    Uri.parse('https://bipixapi.cyclic.app/auth'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+      'senha': senha,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    return 'Usuário autenticado com sucesso.';
+  } else if (response.statusCode == 401) {
+    return 'Email ou senha incorretos.';
+  } else {
+    throw Exception('Erro ao autenticar usuário.');
+  }
+}
+
+
 
   Future<void> _handleFacebookSignIn() async {
     try {
@@ -151,7 +176,10 @@ class _LoginState extends State<Login> {
                         flex: 1,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/home');
+                              autenticarUsuario(emailController.text, passwordController.text).then((value) {
+    Navigator.pushNamed(context, '/home');
+  });
+                           
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,

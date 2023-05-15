@@ -10,6 +10,25 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
+Future<void> signUp(String nome, String email, String senha) async {
+  final response = await http.post(
+    Uri.parse('https://bipixapi.cyclic.app/users'),
+    body: {
+      'Nome': nome,
+      'senha': senha,
+      'email': email,
+    },
+  );
+
+  if (response.statusCode == 201) {
+    // Usuário criado com sucesso
+    print(response.body);
+  } else {
+    // Houve um erro ao criar o usuário
+    print('Erro ao criar usuário: ${response.body}');
+  }
+}
+
 TextEditingController nameController = TextEditingController();
 TextEditingController usernameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
@@ -150,32 +169,10 @@ class _SignUpState extends State<SignUp> {
                         flex: 1,
                         child: ElevatedButton(
                           onPressed: () async {
-                            var url = 'https://bipixapi.cyclic.app/users';
-                            var data = {
-                              'username': usernameController.text,
-                              'password': passwordController.text,
-                              'email': emailController.text,
-                              'nickname': nameController.text
-                            };
-                            var response =
-                                await http.post(Uri.parse(url), body: data);
-
-                            if (response.statusCode == 201) {
-                              Navigator.pushNamed(context, '/login');
-
-                              // sucesso
-                              print(response.body);
-
-                              usernameController.clear();
-                              passwordController.clear();
-                              emailController.clear();
-                              nameController.clear();
-                            } else {
-                              print('Erro: ${response.statusCode}');
-
-                              // erro
-                              print(response.body);
-                            }
+                            final String nome = nameController.text;
+                            final String email = emailController.text;
+                            final String senha = repeatPasswordController.text;
+                            await signUp(email, senha, nome);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
