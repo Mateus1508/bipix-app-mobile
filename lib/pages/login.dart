@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bipixapp/dataSources/webServices/api.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +21,25 @@ class _LoginState extends State<Login> {
   final passwordController = TextEditingController();
   late GoogleSignIn _googleSignIn;
 
-  Future handleLoginUser() async {
-    final response = await http.get(Uri.parse('$baseUrl/users'));
+  Future handleLoginUser(String email, String senha) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'senha': senha,
+      }),
+    );
 
-    return response.body;
+    if (response.statusCode == 200) {
+      return 'Usuário autenticado com sucesso.';
+    } else if (response.statusCode == 401) {
+      return 'Email ou senha incorretos.';
+    } else {
+      throw Exception('Erro ao autenticar usuário.');
+    }
   }
 
   Future<void> _handleGoogleSignIn() async {
@@ -160,8 +177,12 @@ class _LoginState extends State<Login> {
                         flex: 1,
                         child: ElevatedButton(
                           onPressed: () {
-                            //Navigator.pushNamed(context, '/home');
-                            handleLoginUser();
+                            handleLoginUser(
+                              emailController.text,
+                              passwordController.text,
+                            ).then((value) {
+                              Navigator.pushNamed(context, '/home');
+                            });
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
