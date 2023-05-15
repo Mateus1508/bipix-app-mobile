@@ -27,9 +27,9 @@ class _LoginState extends State<Login> {
 
   Future<void> _handleGoogleSignIn() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser =
+          _googleSignIn.signIn() as GoogleSignInAccount?;
       if (googleUser != null) {
-        // Navigate to the next screen if the user was successfully authenticated
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const SignUp()),
@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
 
   Future<void> _handleFacebookSignIn() async {
     try {
-      final LoginResult result = await FacebookAuth.instance.login();
+      final LoginResult result = FacebookAuth.instance.login() as LoginResult;
       if (result.status == LoginStatus.success) {
         // The user was successfully authenticated
         Navigator.pushNamed(context, '/home');
@@ -96,12 +96,15 @@ class _LoginState extends State<Login> {
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
+                      fillColor: Colors.black54,
+                      filled: true,
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2),
                       ),
                       labelText: 'Email',
                       labelStyle: TextStyle(
                         color: Colors.white,
+                        fontSize: 20,
                       ),
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
@@ -115,12 +118,15 @@ class _LoginState extends State<Login> {
                     style: const TextStyle(color: Colors.white),
                     obscureText: true,
                     decoration: const InputDecoration(
+                      fillColor: Colors.black54,
+                      filled: true,
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2),
                       ),
                       labelText: 'Password',
                       labelStyle: TextStyle(
                         color: Colors.white,
+                        fontSize: 20,
                       ),
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
@@ -144,7 +150,7 @@ class _LoginState extends State<Login> {
                           child: const Text(
                             'Criar conta',
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 20,
                             ),
                           ),
                         ),
@@ -164,7 +170,7 @@ class _LoginState extends State<Login> {
                           child: const Text(
                             'Entrar',
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 20,
                             ),
                           ),
                         ),
