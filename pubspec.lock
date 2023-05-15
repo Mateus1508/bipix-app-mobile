@@ -81,14 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-  events_emitter:
-    dependency: transitive
-    description:
-      name: events_emitter
-      sha256: a075477bdf9c8c0c31bb7c7b7bdd357b4486c34f30163119f96de4e7f54abeff
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.2"
   fake_async:
     dependency: transitive
     description:
@@ -150,14 +142,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
-  flutter_hooks:
-    dependency: transitive
-    description:
-      name: flutter_hooks
-      sha256: "6a126f703b89499818d73305e4ce1e3de33b4ae1c5512e3b8eab4b986f46774c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.18.6"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -192,14 +176,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_zoom_videosdk:
-    dependency: "direct main"
-    description:
-      name: flutter_zoom_videosdk
-      sha256: e92f2dd70bf758b8665220fc27f0d9da63dd23825db1cbfbc40017407ef763f7
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.7.0"
   google_fonts:
     dependency: transitive
     description:
@@ -456,14 +432,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
-  rxdart:
-    dependency: transitive
-    description:
-      name: rxdart
-      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.27.7"
   sasl_scram:
     dependency: transitive
     description:
