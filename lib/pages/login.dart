@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:bipixapp/dataSources/webServices/api.dart';
+import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/sign_up.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
@@ -34,7 +36,10 @@ class _LoginState extends State<Login> {
     );
 
     if (response.statusCode == 200) {
-      return 'Usuário autenticado com sucesso.';
+      if (kDebugMode) {
+        print('Usuário autenticado com sucesso.');
+      }
+      return const Home();
     } else if (response.statusCode == 401) {
       return 'Email ou senha incorretos.';
     } else {
@@ -61,7 +66,6 @@ class _LoginState extends State<Login> {
     try {
       final LoginResult result = FacebookAuth.instance.login() as LoginResult;
       if (result.status == LoginStatus.success) {
-        // The user was successfully authenticated
         Navigator.pushNamed(context, '/home');
       } else {
         // An error occurred during authentication
@@ -180,9 +184,7 @@ class _LoginState extends State<Login> {
                             handleLoginUser(
                               emailController.text,
                               passwordController.text,
-                            ).then((value) {
-                              Navigator.pushNamed(context, '/home');
-                            });
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
