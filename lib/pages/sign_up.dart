@@ -1,7 +1,7 @@
-import 'package:bipixapp/dataSources/webServices/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -16,14 +16,16 @@ TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController repeatPasswordController = TextEditingController();
 
-Future<void> handleSignUp(String nome, String email, String senha) async {
+Future<http.Response> signUp(
+    String username, String email, String password) async {
   final response = await http.post(
-    Uri.parse('$baseUrl/users'),
-    body: {
-      'Nome': nome,
-      'senha': senha,
+    Uri.parse('https://bipixapi.cyclic.app/users'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      'username': username, // Atualize as chaves dos campos
       'email': email,
-    },
+      'password': password,
+    }),
   );
 
   if (response.statusCode == 201) {
@@ -33,6 +35,7 @@ Future<void> handleSignUp(String nome, String email, String senha) async {
     // Houve um erro ao criar o usuário
     print('Erro ao criar usuário: ${response.body}');
   }
+  return response;
 }
 
 class _SignUpState extends State<SignUp> {
@@ -196,13 +199,22 @@ class _SignUpState extends State<SignUp> {
                           flex: 1,
                           child: ElevatedButton(
                             onPressed: () async {
-                              handleSignUp(
-                                      usernameController.text,
-                                      emailController.text,
-                                      passwordController.text)
-                                  .then((value) => {
-                                        Navigator.pushNamed(context, '/login'),
-                                      });
+                              final String username = usernameController.text;
+                              final String email = emailController.text;
+                              final String senha =
+                                  repeatPasswordController.text;
+
+                              final response =
+                                  await signUp(username, email, senha);
+
+                              // Limpar os campos se a resposta for bem-sucedida
+                              if (response.statusCode == 201) {
+                                usernameController.clear();
+                                emailController.clear();
+                                passwordController.clear();
+                                nameController.clear();
+                                repeatPasswordController.clear();
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,

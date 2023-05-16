@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:bipixapp/dataSources/webServices/api.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-
+import 'dart:convert';
 import 'package:auth_buttons/auth_buttons.dart';
 
 class Login extends StatefulWidget {
@@ -21,25 +19,10 @@ class _LoginState extends State<Login> {
   final passwordController = TextEditingController();
   late GoogleSignIn _googleSignIn;
 
-  Future handleLoginUser(String email, String senha) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/auth'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': email,
-        'senha': senha,
-      }),
-    );
+  Future handleLoginUser() async {
+    final response = await http.get(Uri.parse('$baseUrl/users'));
 
-    if (response.statusCode == 200) {
-      return 'Usuário autenticado com sucesso.';
-    } else if (response.statusCode == 401) {
-      return 'Email ou senha incorretos.';
-    } else {
-      throw Exception('Erro ao autenticar usuário.');
-    }
+    return response.body;
   }
 
   Future<void> _handleGoogleSignIn() async {
@@ -56,6 +39,32 @@ class _LoginState extends State<Login> {
       // An error occurred during authentication
     }
   }
+
+
+
+
+
+  Future<String> autenticarUsuario(String email, String senha) async {
+  final response = await http.post(
+    Uri.parse('https://bipixapi.cyclic.app/auth'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+      'senha': senha,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    return 'Usuário autenticado com sucesso.';
+  } else if (response.statusCode == 401) {
+    return 'Email ou senha incorretos.';
+  } else {
+    throw Exception('Erro ao autenticar usuário.');
+  }
+}
+
 
   Future<void> _handleFacebookSignIn() async {
     try {
@@ -176,13 +185,19 @@ class _LoginState extends State<Login> {
                       Expanded(
                         flex: 1,
                         child: ElevatedButton(
-                          onPressed: () {
-                            handleLoginUser(
-                              emailController.text,
-                              passwordController.text,
-                            ).then((value) {
-                              Navigator.pushNamed(context, '/home');
-                            });
+                          onPressed: () async {
+                            final String email = emailController.text;
+                           final String senha = passwordController.text;
+                            try {
+                  final String mensagem = await autenticarUsuario(email, senha);
+      // Autenticação bem-sucedida
+                 print(mensagem);
+                Navigator.pushNamed(context, '/home');
+            } catch (error) {
+      // Houve um erro ao autenticar o usuário
+            print(error.toString());
+          }
+                           
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
