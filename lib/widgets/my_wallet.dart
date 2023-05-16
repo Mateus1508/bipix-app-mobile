@@ -1,12 +1,45 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 class MyWallet extends StatefulWidget {
   const MyWallet({super.key});
 
   @override
   State<MyWallet> createState() => _MyWalletState();
 }
+
+Future<void> _selectPhoto() async {
+  final picker = ImagePicker();
+  final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+  if (pickedFile != null) {
+    // Envia a foto para a rota de upload
+    await uploadPhoto(File(pickedFile.path));
+  }
+}
+
+
+Future<void> uploadPhoto(File photo) async {
+  var request = http.MultipartRequest('POST', Uri.parse('https://bipixapi.cyclic.app/upload'));
+  request.files.add(await http.MultipartFile.fromPath('photo', photo.path));
+
+  try {
+    var response = await request.send();
+    if (response.statusCode == 201) {
+      // A foto foi enviada com sucesso
+      print('Foto enviada com sucesso');
+    } else {
+      // Houve um erro ao enviar a foto
+      print('Erro ao enviar a foto');
+    }
+  } catch (e) {
+    print('Erro ao enviar a foto: $e');
+  }
+}
+
 
 class _MyWalletState extends State<MyWallet> {
   double amount = 400.25;
@@ -39,23 +72,26 @@ class _MyWalletState extends State<MyWallet> {
                       child: Image.asset('assets/images/bipixLogo.png'),
                     ),
                   ),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      shape: BoxShape.rectangle,
-                      color: Color(0xFF3E3838),
-                    ),
-                    child: const Text(
-                      "Editar foto",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
+                  GestureDetector(
+  onTap: _selectPhoto,
+  child: Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(15)),
+      shape: BoxShape.rectangle,
+      color: Color(0xFF3E3838),
+    ),
+    child: Text(
+      "Editar foto",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+),
+
                 ],
               ),
               const SizedBox(
