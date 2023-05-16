@@ -60,45 +60,36 @@ class _MyWalletState extends State<MyWallet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Stack(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.amber.shade500,
-                            blurRadius: 2,
-                            spreadRadius: 5),
-                      ],
-                      color: const Color(0xFF454545),
-                    ),
-                    child: SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: Image.asset('assets/images/bipixLogo.png'),
-                    ),
-                  ),
-                ],
-              ),
               GestureDetector(
                 onTap: _selectPhoto,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    shape: BoxShape.rectangle,
-                    color: Color(0xFF3E3838),
-                  ),
-                  child: const Text(
-                    "Editar foto",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.amber.shade500,
+                              blurRadius: 2,
+                              spreadRadius: 5),
+                        ],
+                        color: const Color(0xFF454545),
+                      ),
+                      child: SizedBox(
+                        width: 120,
+                        height: 120,
+                        child: Image.asset('assets/images/bipixLogo.png'),
+                      ),
                     ),
-                  ),
+                    const Text(
+                      "Editar foto",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(

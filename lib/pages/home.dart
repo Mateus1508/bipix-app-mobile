@@ -39,11 +39,10 @@ class _HomeState extends State<Home> {
         appBar: const InfoBar(),
         body: SingleChildScrollView(
           child: Container(
-/*             height: double.infinity,
- */
+            height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/backgroundWhite.png"),
+                image: AssetImage("assets/images/backgroundWhite.jpg"),
                 fit: BoxFit.cover,
               ),
             ),

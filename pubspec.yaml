@@ -19,6 +19,8 @@ dependencies:
   flutter_animate: ^4.1.1+1
   page_transition: ^2.0.9
   image_picker: ^0.8.7+5
+  validatorless: ^1.2.3
+  crypto: ^3.0.3
 crypto: ^3.0.0
 
 dev_dependencies:

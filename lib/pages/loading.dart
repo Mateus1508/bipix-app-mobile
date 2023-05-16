@@ -7,10 +7,10 @@ class Loading extends StatefulWidget {
   const Loading({super.key});
 
   @override
-  _LoadingState createState() => _LoadingState();
+  LoadingState createState() => LoadingState();
 }
 
-class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
+class LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
