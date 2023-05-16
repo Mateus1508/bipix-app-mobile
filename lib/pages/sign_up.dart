@@ -1,10 +1,8 @@
-import 'dart:convert';
-
-import 'package:bipixapp/dataSources/webServices/api.dart';
-import 'package:bipixapp/pages/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -19,20 +17,22 @@ TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController repeatPasswordController = TextEditingController();
 
-handleSignUp(
-  String nome,
+Future<http.Response> signUp(
+  String username,
   String email,
-  String senha,
+  String password,
 ) async {
+  // Criptografar a senha usando SHA-256
+  final hashedPassword = sha256.convert(utf8.encode(password)).toString();
+
   final response = await http.post(
-    Uri.parse('$baseUrl/users'),
-    body: jsonEncode(
-      <String, String>{
-        'Nome': nome,
-        'email': email,
-        'senha': senha,
-      },
-    ),
+    Uri.parse('https://bipixapi.cyclic.app/users'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      'username': username,
+      'email': email,
+      'password': hashedPassword,
+    }),
   );
 
   if (response.statusCode == 201) {
@@ -44,6 +44,7 @@ handleSignUp(
           'Erro ao criar usuário: ${response.body}, status: ${response.statusCode}');
     }
   }
+  return response;
 }
 
 class _SignUpState extends State<SignUp> {
@@ -206,12 +207,33 @@ class _SignUpState extends State<SignUp> {
                         Expanded(
                           flex: 1,
                           child: ElevatedButton(
-                            onPressed: () {
-                              handleSignUp(
-                                usernameController.text,
-                                emailController.text,
-                                passwordController.text,
-                              );
+                            onPressed: () async {
+                              final String username = usernameController.text;
+                              final String email = emailController.text;
+                              final String senha =
+                                  repeatPasswordController.text;
+
+                              // Verificar se as senhas correspondem
+                              if (passwordController.text !=
+                                  repeatPasswordController.text) {
+                                // As senhas não correspondem
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('As senhas não correspondem')),
+                                );
+                                return;
+                              }
+                              final response =
+                                  await signUp(username, email, senha);
+                              // Limpar os campos se a resposta for bem-sucedida
+                              if (response.statusCode == 201) {
+                                usernameController.clear();
+                                emailController.clear();
+                                passwordController.clear();
+                                nameController.clear();
+                                repeatPasswordController.clear();
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
