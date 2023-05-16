@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -17,14 +18,20 @@ TextEditingController passwordController = TextEditingController();
 TextEditingController repeatPasswordController = TextEditingController();
 
 Future<http.Response> signUp(
-    String username, String email, String password) async {
+  String username,
+  String email,
+  String password,
+) async {
+  // Criptografar a senha usando SHA-256
+  final hashedPassword = sha256.convert(utf8.encode(password)).toString();
+
   final response = await http.post(
     Uri.parse('https://bipixapi.cyclic.app/users'),
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({
-      'username': username, // Atualize as chaves dos campos
+      'username': username,
       'email': email,
-      'password': password,
+      'password': hashedPassword,
     }),
   );
 
@@ -204,9 +211,19 @@ class _SignUpState extends State<SignUp> {
                               final String senha =
                                   repeatPasswordController.text;
 
+                              // Verificar se as senhas correspondem
+                              if (passwordController.text !=
+                                  repeatPasswordController.text) {
+                                // As senhas não correspondem
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('As senhas não correspondem')),
+                                );
+                                return;
+                              }
                               final response =
                                   await signUp(username, email, senha);
-
                               // Limpar os campos se a resposta for bem-sucedida
                               if (response.statusCode == 201) {
                                 usernameController.clear();
