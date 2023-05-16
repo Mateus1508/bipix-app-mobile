@@ -1,5 +1,4 @@
 import 'package:bipixapp/dataSources/webServices/api.dart';
-import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -145,7 +144,7 @@ class _LoginState extends State<Login> {
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2),
                       ),
-                      labelText: 'Password',
+                      labelText: 'Senha',
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -187,12 +186,14 @@ class _LoginState extends State<Login> {
                             try {
                               final String mensagem =
                                   await autenticarUsuario(email, senha);
-                              // Autenticação bem-sucedida
-                              print(mensagem);
+                              if (kDebugMode) {
+                                print(mensagem);
+                              }
                               Navigator.pushNamed(context, '/home');
                             } catch (error) {
-                              // Houve um erro ao autenticar o usuário
-                              print(error.toString());
+                              if (kDebugMode) {
+                                print(error.toString());
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(

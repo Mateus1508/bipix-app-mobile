@@ -1,3 +1,4 @@
+import 'package:bipixapp/dataSources/webServices/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,16 +18,15 @@ TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController repeatPasswordController = TextEditingController();
 
-Future<http.Response> signUp(
+Future<http.Response> handleSignUp(
   String username,
   String email,
   String password,
 ) async {
-  // Criptografar a senha usando SHA-256
   final hashedPassword = sha256.convert(utf8.encode(password)).toString();
 
   final response = await http.post(
-    Uri.parse('https://bipixapi.cyclic.app/users'),
+    Uri.parse('$baseUrl/users'),
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({
       'username': username,
@@ -36,9 +36,7 @@ Future<http.Response> signUp(
   );
 
   if (response.statusCode == 201) {
-    return const Login();
   } else {
-    // Houve um erro ao criar o usuário
     if (kDebugMode) {
       print(
           'Erro ao criar usuário: ${response.body}, status: ${response.statusCode}');
@@ -225,9 +223,12 @@ class _SignUpState extends State<SignUp> {
                                 return;
                               }
                               final response =
-                                  await signUp(username, email, senha);
+                                  await handleSignUp(username, email, senha);
                               // Limpar os campos se a resposta for bem-sucedida
                               if (response.statusCode == 201) {
+                                if (kDebugMode) {
+                                  print('usuário adicionado');
+                                }
                                 usernameController.clear();
                                 emailController.clear();
                                 passwordController.clear();
