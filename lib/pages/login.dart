@@ -17,8 +17,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formfield = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool passToggle = false;
   late GoogleSignIn _googleSignIn;
 
   Future handleLoginUser() async {
@@ -57,9 +59,7 @@ class _LoginState extends State<Login> {
     if (response.statusCode == 200) {
       return 'Usuário autenticado com sucesso.';
     } else if (response.statusCode == 401) {
-      return ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email ou senha incorretos!')),
-      );
+      return 'Email ou senha incorretos!';
     } else {
       throw Exception('Erro ao autenticar usuário.');
     }
@@ -106,6 +106,7 @@ class _LoginState extends State<Login> {
           child: Center(
             child: SingleChildScrollView(
               child: Form(
+                key: _formfield,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -144,31 +145,42 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 10),
                     TextFormField(
                       controller: passwordController,
-                      validator: Validatorless.regex(
-                        RegExp(
-                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'),
-                        'A senha deve possuir 8 caracteres, 1 letra maiuscula, 1 minuscula e um caractere especial!',
-                      ),
+                      validator: Validatorless.multiple([
+                        Validatorless.required('A senha é obrigatória!'),
+                      ]),
                       style: const TextStyle(color: Colors.white),
-                      obscureText: true,
-                      decoration: const InputDecoration(
+                      obscureText: passToggle,
+                      decoration: InputDecoration(
                         fillColor: Colors.black54,
                         filled: true,
-                        enabledBorder: OutlineInputBorder(
+                        suffix: InkWell(
+                          onTap: () {
+                            setState(() {
+                              passToggle = !passToggle;
+                            });
+                          },
+                          child: Icon(
+                            passToggle
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.white,
+                          ),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue, width: 2),
                         ),
                         labelText: 'Senha',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                         ),
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
+                        border: const OutlineInputBorder(),
+                        focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(width: 3, color: Colors.blue),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     Row(
                       children: [
                         Expanded(
@@ -194,18 +206,22 @@ class _LoginState extends State<Login> {
                           flex: 1,
                           child: ElevatedButton(
                             onPressed: () async {
-                              final String email = emailController.text;
-                              final String senha = passwordController.text;
-                              try {
-                                final Object mensagem =
-                                    await autenticarUsuario(email, senha);
-                                if (kDebugMode) {
-                                  print(mensagem);
-                                }
-                                Navigator.pushNamed(context, '/home');
-                              } catch (error) {
-                                if (kDebugMode) {
-                                  print(error.toString());
+                              var formValid =
+                                  _formfield.currentState?.validate() ?? false;
+                              if (formValid) {
+                                final String email = emailController.text;
+                                final String senha = passwordController.text;
+                                try {
+                                  final Object mensagem =
+                                      await autenticarUsuario(email, senha);
+                                  if (kDebugMode) {
+                                    print(mensagem);
+                                  }
+                                  /* Navigator.pushNamed(context, '/home'); */
+                                } catch (error) {
+                                  if (kDebugMode) {
+                                    print(error.toString());
+                                  }
                                 }
                               }
                             },
