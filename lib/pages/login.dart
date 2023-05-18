@@ -57,6 +57,7 @@ class _LoginState extends State<Login> {
     );
 
     if (response.statusCode == 200) {
+      Navigator.pushReplacementNamed(context, '/home');
       return 'Usuário autenticado com sucesso.';
     } else if (response.statusCode == 401) {
       return 'Email ou senha incorretos!';
