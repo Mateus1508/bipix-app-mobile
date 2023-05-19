@@ -57,6 +57,7 @@ class _LoginState extends State<Login> {
     );
 
     if (response.statusCode == 200) {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/home');
       return 'Usuário autenticado com sucesso.';
     } else if (response.statusCode == 401) {

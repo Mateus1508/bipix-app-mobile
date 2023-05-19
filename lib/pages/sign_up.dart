@@ -206,6 +206,7 @@ class _SignUpState extends State<SignUp> {
                           if (passwordController.text != value) {
                             return 'As senhas devem ser iguais!';
                           }
+                          return null;
                         },
                         style: const TextStyle(color: Colors.white),
                         obscureText: passToggle,

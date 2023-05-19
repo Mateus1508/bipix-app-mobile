@@ -31,7 +31,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Bipix",
-      home: const Loading(),
+      home: const Home(),
       routes: routes,
     );
   }

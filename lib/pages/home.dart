@@ -37,15 +37,16 @@ class _HomeState extends State<Home> {
     return SafeArea(
       child: Scaffold(
         appBar: const InfoBar(),
-        body: SingleChildScrollView(
-          child: Container(
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/backgroundWhite.jpg"),
-                fit: BoxFit.cover,
-              ),
+        body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/backgroundWhite.jpg"),
+              fit: BoxFit.cover,
             ),
+          ),
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
