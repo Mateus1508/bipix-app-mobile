@@ -18,7 +18,7 @@ class _GameSelectionState extends State<GameSelection> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      viewportFraction: 0.5,
+      viewportFraction: 0.4,
       initialPage: currentGame,
     );
   }
@@ -32,21 +32,18 @@ class _GameSelectionState extends State<GameSelection> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: SizedBox(
-          height: 200,
-          child: PageView.builder(
-              onPageChanged: (value) {
-                setState(() {
-                  currentGame = value;
-                });
-              },
-              controller: _pageController,
-              scrollDirection: Axis.horizontal,
-              itemCount: gameImages.length,
-              itemBuilder: (context, index) => buildGameItemsSlider(index)),
-        ),
+      child: SizedBox(
+        height: 400,
+        child: PageView.builder(
+            onPageChanged: (value) {
+              setState(() {
+                currentGame = value;
+              });
+            },
+            controller: _pageController,
+            scrollDirection: Axis.horizontal,
+            itemCount: gameImages.length,
+            itemBuilder: (context, index) => buildGameItemsSlider(index)),
       ),
     );
   }
@@ -61,10 +58,7 @@ class _GameSelectionState extends State<GameSelection> {
             children: [
               Text(
                 currentGame == index ? gameImages[index].title : "",
-                style: const TextStyle(fontSize: 32, letterSpacing: 7),
-              ),
-              const SizedBox(
-                height: 20,
+                style: const TextStyle(fontSize: 32, letterSpacing: 4),
               ),
               SizedBox(
                 height: 150,
@@ -98,7 +92,7 @@ class _GameSelectionState extends State<GameSelection> {
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 36),
+                                  fontSize: 24),
                             ),
                           ),
                           SizedBox(

@@ -35,13 +35,11 @@ class _RechargeState extends State<Recharge> {
             color: Colors.grey.shade800,
             borderRadius: const BorderRadius.all(Radius.circular(20)),
           ),
-          child: Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 2,
-              itemBuilder: (context, index) => buildNavigation(index, context),
-            ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: 2,
+            itemBuilder: (context, index) => buildNavigation(index, context),
           ),
         ),
         navigationRechargeItems(),

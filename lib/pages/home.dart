@@ -34,44 +34,38 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const InfoBar(),
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/backgroundWhite.jpg"),
-              fit: BoxFit.cover,
-            ),
+    return Scaffold(
+      appBar: const InfoBar(),
+      body: Container(
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/backgroundWhite.jpg"),
+            fit: BoxFit.cover,
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  height: 40,
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
-                  padding: const EdgeInsetsDirectional.all(5),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade800,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20))),
-                  child: Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: navigationItems.length,
-                      itemBuilder: (context, index) =>
-                          buildNavigation(index, context),
-                    ),
-                  ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 40,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade800,
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: navigationItems.length,
+                  itemBuilder: (context, index) =>
+                      buildNavigation(index, context),
                 ),
-                navigationItemSelected(),
-              ],
-            ),
+              ),
+              navigationItemSelected(),
+            ],
           ),
         ),
       ),
