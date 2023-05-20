@@ -17,8 +17,8 @@ class _LoadingState extends State<Loading> {
       backgroundColor: Colors.black12,
       body: Center(
         child: SizedBox(
-          width: 200,
-          height: 200,
+          width: 100,
+          height: 100,
           child: Image.asset('assets/images/bipixLogo.png')
               .animate(
                 onPlay: (controller) => controller.repeat(),
@@ -29,7 +29,7 @@ class _LoadingState extends State<Loading> {
                 duration: 1000.ms,
                 curve: Curves.easeInOut,
               )
-              .scaleXY(begin: 0, end: 1.5)
+              .scaleXY(begin: 1, end: 1.5)
               .then(delay: 500.ms)
               .flipV(
                 begin: 2,
@@ -37,7 +37,7 @@ class _LoadingState extends State<Loading> {
                 duration: 1000.ms,
                 curve: Curves.easeInOut,
               )
-              .scaleXY(begin: 1.5, end: 0),
+              .scaleXY(begin: 1.5, end: 1),
         ),
       ),
     );
