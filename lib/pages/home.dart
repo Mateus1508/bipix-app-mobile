@@ -1,6 +1,7 @@
 import 'package:bipixapp/widgets/info_bar.dart';
 import 'package:bipixapp/widgets/my_wallet.dart';
 import 'package:flutter/material.dart';
+import '../widgets/nav_bar.dart';
 import '../widgets/rechargeWidget/recharge.dart';
 import '../widgets/gameWidget/games_bipix.dart';
 
@@ -36,6 +37,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const InfoBar(),
+      bottomNavigationBar: const BottomBar(),
       body: Container(
         height: double.infinity,
         decoration: const BoxDecoration(
