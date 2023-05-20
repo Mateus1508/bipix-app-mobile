@@ -65,15 +65,15 @@ class _MyWalletState extends State<MyWallet> {
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.amber.shade500,
+                              color: Color(0XFF0472E8),
                               blurRadius: 2,
                               spreadRadius: 5),
                         ],
-                        color: const Color(0xFF454545),
+                        color: Color(0xFF454545),
                       ),
                       child: SizedBox(
                         width: 120,
@@ -81,12 +81,19 @@ class _MyWalletState extends State<MyWallet> {
                         child: Image.asset('assets/images/bipixLogo.png'),
                       ),
                     ),
-                    const Text(
-                      "Editar foto",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF454545),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: const Text(
+                        "Editar foto",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -132,7 +139,7 @@ class _MyWalletState extends State<MyWallet> {
             ],
           ),
           const SizedBox(
-            height: 50,
+            height: 30,
           ),
           Container(
             constraints: const BoxConstraints(minWidth: 100, maxWidth: 240),
@@ -150,7 +157,7 @@ class _MyWalletState extends State<MyWallet> {
                 Text(
                   "\$ $amount",
                   style: const TextStyle(
-                    fontSize: 48,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF373737),
                   ),
@@ -173,8 +180,8 @@ class _MyWalletState extends State<MyWallet> {
                     color: Colors.amber.shade500,
                   ),
                   child: SizedBox(
-                    width: 120,
-                    height: 120,
+                    width: 100,
+                    height: 100,
                     child: Image.asset('assets/images/recarregar.png'),
                   ),
                 )
@@ -200,7 +207,7 @@ class _MyWalletState extends State<MyWallet> {
                 const Text(
                   "Ganhe + \$ 1.00",
                   style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.green),
                 ),

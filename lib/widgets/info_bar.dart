@@ -11,15 +11,18 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
     String cash = "400,00";
 
     return AppBar(
+      backgroundColor: const Color(0XFF0472E8),
+      elevation: 2,
+      leading: Image.asset('assets/images/bipixLogo.png'),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 30),
+          padding: const EdgeInsets.only(right: 20),
           child: Center(
             child: Container(
               padding: const EdgeInsets.only(right: 7, left: 1),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
                       color: Colors.grey.shade300,
@@ -33,7 +36,7 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
                   const Icon(
                     Icons.wallet,
                     color: Colors.black,
-                    size: 18,
+                    size: 32,
                   ),
                   const SizedBox(
                     width: 10,
@@ -42,7 +45,7 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
                     "\$ $cash",
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 12,
+                      fontSize: 16,
                     ),
                   )
                 ],
@@ -51,8 +54,6 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         )
       ],
-      backgroundColor: Colors.transparent,
-      elevation: 0,
     );
   }
 }

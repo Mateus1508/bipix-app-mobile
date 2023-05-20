@@ -61,7 +61,9 @@ class _GamesBipixState extends State<GamesBipix> {
       height: 25,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: index == selectedMode ? Colors.blue : Colors.transparent,
+        color: index == selectedMode
+            ? const Color(0XFF0472E8)
+            : Colors.transparent,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: TextButton(

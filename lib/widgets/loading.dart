@@ -1,33 +1,20 @@
-import 'dart:async';
-import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
 
   @override
-  LoadingState createState() => LoadingState();
+  State<Loading> createState() => _LoadingState();
 }
 
-class LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-
-    // Aguarda 2 segundos antes de abrir a tela de login
-    Timer(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const InitialScreen()),
-      );
-    });
-  }
-
+class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.black12,
       body: Center(
         child: SizedBox(
           width: 200,
@@ -54,5 +41,6 @@ class LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
         ),
       ),
     );
+    ;
   }
 }

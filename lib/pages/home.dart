@@ -79,7 +79,9 @@ class _HomeState extends State<Home> {
       height: 25,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: index == selectedItem ? Colors.blue : Colors.transparent,
+        color: index == selectedItem
+            ? const Color(0XFF0472E8)
+            : Colors.transparent,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: TextButton(

@@ -1,11 +1,12 @@
 import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
-import 'package:bipixapp/pages/loading.dart';
+import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/login.dart';
 import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/rematch.dart';
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
+import 'package:bipixapp/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:bipixapp/widgets/damas.dart';
 
@@ -31,7 +32,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Bipix",
-      home: const Home(),
+      home: const LoadingApp(),
       routes: routes,
     );
   }

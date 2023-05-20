@@ -41,7 +41,7 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
           height: 20,
         ),
         Container(
-          height: 300,
+          height: 250,
           width: 300,
           padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
