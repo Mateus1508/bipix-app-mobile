@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -7,49 +7,52 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 class MyWallet extends StatefulWidget {
-  const MyWallet({super.key});
+  const MyWallet({Key? key}) : super(key: key);
 
   @override
   State<MyWallet> createState() => _MyWalletState();
 }
 
-Future<void> _selectPhoto() async {
-  final picker = ImagePicker();
-  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-  if (pickedFile != null) {
-    // Envia a foto para a rota de upload
-    await uploadPhoto(File(pickedFile.path));
-  }
-}
-
-Future<void> uploadPhoto(File photo) async {
-  var request = http.MultipartRequest(
-      'POST', Uri.parse('https://bipixapi.cyclic.app/upload'));
-  request.files.add(await http.MultipartFile.fromPath('photo', photo.path));
-
-  try {
-    var response = await request.send();
-    if (response.statusCode == 201) {
-      // A foto foi enviada com sucesso
-      if (kDebugMode) {
-        print('Foto enviada com sucesso');
-      }
-    } else {
-      // Houve um erro ao enviar a foto
-      if (kDebugMode) {
-        print('Erro ao enviar a foto');
-      }
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Erro ao enviar a foto: $e');
-    }
-  }
-}
-
 class _MyWalletState extends State<MyWallet> {
   double amount = 400.25;
+  File? selectedPhoto;
+
+  Future<void> _selectPhoto() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        selectedPhoto = File(pickedFile.path);
+      });
+      await uploadPhoto(selectedPhoto!);
+    }
+  }
+
+  Future<void> uploadPhoto(File photo) async {
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://bipixapi.cyclic.app/upload'));
+    request.files.add(await http.MultipartFile.fromPath('photo', photo.path));
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 201) {
+        // A foto foi enviada com sucesso
+        if (kDebugMode) {
+          print('Foto enviada com sucesso');
+        }
+      } else {
+        // Houve um erro ao enviar a foto
+        if (kDebugMode) {
+          print('Erro ao enviar a foto');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao enviar a foto: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +81,9 @@ class _MyWalletState extends State<MyWallet> {
                       child: SizedBox(
                         width: 120,
                         height: 120,
-                        child: Image.asset('assets/images/bipixLogo.png'),
+                        child: selectedPhoto != null
+                            ? Image.file(selectedPhoto!)
+                            : Image.asset('assets/images/bipixLogo.png'),
                       ),
                     ),
                     Container(
@@ -213,7 +218,7 @@ class _MyWalletState extends State<MyWallet> {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                    "Quando você assiste um anúncio,você ajuda a Bipix continuar Grátis."),
+                    "Quando você assiste um anúncio, você ajuda a Bipix continuar Grátis."),
               ],
             ),
           ),
