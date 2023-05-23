@@ -1,3 +1,4 @@
+import 'package:bipixapp/pages/game_page.dart';
 import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
 import 'package:bipixapp/pages/loading_app.dart';
@@ -26,13 +27,15 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/damas': (context) => const MyApp(),
     '/selectbet': (context) => const SelectBetValue(),
     '/rematch': (context) => const Rematch(),
+    '/velha': (context) => GamePage(),
+    
   };
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Bipix",
-      home: const LoadingApp(),
+      home:  GamePage(),
       routes: routes,
     );
   }
