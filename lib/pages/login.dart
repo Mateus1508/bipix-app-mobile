@@ -1,4 +1,3 @@
-import 'package:bipixapp/dataSources/webServices/api.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,8 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert';
 import 'package:auth_buttons/auth_buttons.dart';
 import 'package:validatorless/validatorless.dart';
+
+import '../services/api.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

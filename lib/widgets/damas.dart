@@ -48,7 +48,7 @@ var piecesArray = [
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
-]; 
+];
 
 void putPiece(int row, int col, PieceState player) {
   if (player == PieceState.player1) {
@@ -170,6 +170,7 @@ class CheckerBoard extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class CheckerPiece extends StatefulWidget {
   Color hue;
 

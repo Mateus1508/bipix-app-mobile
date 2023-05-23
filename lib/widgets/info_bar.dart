@@ -15,41 +15,39 @@ class InfoBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 2,
       leading: Image.asset('assets/images/bipixLogo.png'),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.only(right: 7, left: 1),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.shade300,
-                      blurRadius: 1,
-                      spreadRadius: 3),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.wallet,
+        Center(
+          child: Container(
+            padding: const EdgeInsets.only(right: 7, left: 1),
+            margin: const EdgeInsets.only(right: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.shade300,
+                    blurRadius: 1,
+                    spreadRadius: 3),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.wallet,
+                  color: Colors.black,
+                  size: 24,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "\$ $cash",
+                  style: const TextStyle(
                     color: Colors.black,
-                    size: 32,
+                    fontSize: 16,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "\$ $cash",
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         )
