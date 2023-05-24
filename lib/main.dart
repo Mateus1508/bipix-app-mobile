@@ -33,7 +33,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Bipix",
-      home: Home(),
+      home: const Home(),
       routes: routes,
     );
   }

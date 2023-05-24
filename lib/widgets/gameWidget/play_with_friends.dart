@@ -62,7 +62,7 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               border: Border.all(color: Colors.grey)),
           child: TextField(
             controller: searchController,
