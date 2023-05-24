@@ -15,7 +15,7 @@ class Rematch extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/login');
+              Navigator.pushNamed(context, '/velha');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.amber,
@@ -37,7 +37,7 @@ class Rematch extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/login');
+              Navigator.pushNamed(context, '/home');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,

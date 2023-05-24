@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SelectFriend extends StatelessWidget {
-  const SelectFriend({super.key});
+  final String? nome; // Alterado para String?
+
+  const SelectFriend({Key? key, this.nome}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +14,10 @@ class SelectFriend extends StatelessWidget {
         color: Colors.blue,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: const Text(
-        '@Joaozinho',
+      child: Text(
+        '@${nome ?? ''}', // Exibe o nome do amigo (se não for nulo)
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        style: const TextStyle(fontSize: 24, color: Colors.white),
       ),
     );
   }
