@@ -31,7 +31,10 @@ class _GamesBipixState extends State<GamesBipix> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Conheça novas pessoas"),
+          const Text(
+            "Conheça novas pessoas",
+            style: TextStyle(color: Colors.black, fontSize: 16),
+          ),
           Container(
             height: 40,
             margin: const EdgeInsets.symmetric(vertical: 30),

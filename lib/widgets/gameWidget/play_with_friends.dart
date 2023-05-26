@@ -1,4 +1,5 @@
 import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -30,7 +31,10 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
         users = jsonResponse;
       });
     } else {
-      print('Erro ao obter usuários. Código de status: ${response.statusCode}');
+      if (kDebugMode) {
+        print(
+            'Erro ao obter usuários. Código de status: ${response.statusCode}');
+      }
     }
   }
 

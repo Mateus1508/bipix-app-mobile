@@ -12,9 +12,9 @@ class Rematch extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              child: Image.asset('assets/images/tic-tac-toe.png'),
               height: 200,
               width: 200,
+              child: Image.asset('assets/images/tic-tac-toe.png'),
             ),
             const SizedBox(height: 30),
             const Text(

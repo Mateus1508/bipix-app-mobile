@@ -1,9 +1,10 @@
-import 'package:bipixapp/widgets/info_bar.dart';
-import 'package:bipixapp/widgets/my_wallet.dart';
+import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
+import 'package:bipixapp/widgets/navbarWidget/nav_bar.dart';
+import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
 import 'package:flutter/material.dart';
-import '../widgets/nav_bar.dart';
-import '../widgets/rechargeWidget/recharge.dart';
+
 import '../widgets/gameWidget/games_bipix.dart';
+import '../widgets/my_wallet.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -32,12 +33,11 @@ class _HomeState extends State<Home> {
     "Minha carteira",
     "Ponto de recarga"
   ];
-
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const InfoBar(),
-      bottomNavigationBar: const BottomBar(),
       body: Container(
         height: double.infinity,
         decoration: const BoxDecoration(

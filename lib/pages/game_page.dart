@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:bipixapp/widgets/Boardwidget.dart';
 import 'package:bipixapp/models/board.dart';
 
+import '../widgets/board_widget.dart';
+
 void main() {
-  runApp(GamePage());
+  runApp(const GamePage());
 }
 
 class GamePage extends StatefulWidget {
+  const GamePage({super.key});
+
   @override
   _GamePageState createState() => _GamePageState();
 }
