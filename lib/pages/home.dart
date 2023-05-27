@@ -33,7 +33,6 @@ class _HomeState extends State<Home> {
     "Minha carteira",
     "Ponto de recarga"
   ];
-  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -11,6 +11,7 @@ import 'package:bipixapp/pages/rematch.dart';
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/widgets/damas.dart';
+import 'package:bipixapp/widgets/navbarWidget/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -39,7 +40,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Bipix",
-      home: const Home(),
+      home: const BottomBar(),
       routes: routes,
     );
   }

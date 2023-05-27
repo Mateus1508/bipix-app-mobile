@@ -46,7 +46,7 @@ class _InfoBarState extends State<InfoBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 60),
+                margin: const EdgeInsets.only(left: 70),
                 padding: const EdgeInsets.only(right: 7, left: 1),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -79,24 +79,19 @@ class _InfoBarState extends State<InfoBar> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    style: IconButton.styleFrom(
-                      foregroundColor: Colors.white,
+              Container(
+                margin: const EdgeInsets.only(right: 10),
+                child: Row(
+                  children: [
+                    IconButton(
+                      style: IconButton.styleFrom(
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () => _handleShowModalBottomSheet(context),
+                      icon: const Icon(Icons.notifications),
                     ),
-                    onPressed: () => _handleShowModalBottomSheet(context),
-                    icon: const Icon(Icons.notifications),
-                  ),
-                  IconButton(
-                    style: IconButton.styleFrom(
-                      foregroundColor: Colors.white,
-                    ),
-                    onPressed: () {},
-                    icon: const Icon(Icons.menu),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
