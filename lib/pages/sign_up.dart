@@ -90,7 +90,7 @@ class _SignUpState extends State<SignUp> {
                           filled: true,
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
+                                BorderSide(color: Color(0XFF0472E8), width: 2),
                           ),
                           labelText: 'Seu nome',
                           labelStyle: TextStyle(
@@ -100,7 +100,7 @@ class _SignUpState extends State<SignUp> {
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 3, color: Colors.blue),
+                                BorderSide(width: 3, color: Color(0XFF0472E8)),
                           ),
                         ),
                       ),
@@ -116,7 +116,7 @@ class _SignUpState extends State<SignUp> {
                           filled: true,
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
+                                BorderSide(color: Color(0XFF0472E8), width: 2),
                           ),
                           labelText: 'Nome de usuário',
                           labelStyle: TextStyle(
@@ -126,7 +126,7 @@ class _SignUpState extends State<SignUp> {
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 3, color: Colors.blue),
+                                BorderSide(width: 3, color: Color(0XFF0472E8)),
                           ),
                         ),
                       ),
@@ -144,7 +144,7 @@ class _SignUpState extends State<SignUp> {
                           filled: true,
                           enabledBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
+                                BorderSide(color: Color(0XFF0472E8), width: 2),
                           ),
                           labelText: 'Email',
                           labelStyle: TextStyle(
@@ -154,7 +154,7 @@ class _SignUpState extends State<SignUp> {
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 3, color: Colors.blue),
+                                BorderSide(width: 3, color: Color(0XFF0472E8)),
                           ),
                         ),
                       ),
@@ -186,7 +186,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           enabledBorder: const OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
+                                BorderSide(color: Color(0XFF0472E8), width: 2),
                           ),
                           labelText: 'Senha',
                           labelStyle: const TextStyle(
@@ -196,7 +196,7 @@ class _SignUpState extends State<SignUp> {
                           border: const OutlineInputBorder(),
                           focusedBorder: const OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 3, color: Colors.blue),
+                                BorderSide(width: 3, color: Color(0XFF0472E8)),
                           ),
                         ),
                       ),
@@ -229,7 +229,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           enabledBorder: const OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
+                                BorderSide(color: Color(0XFF0472E8), width: 2),
                           ),
                           labelText: 'Repetir senha',
                           labelStyle: const TextStyle(
@@ -237,7 +237,7 @@ class _SignUpState extends State<SignUp> {
                           border: const OutlineInputBorder(),
                           focusedBorder: const OutlineInputBorder(
                             borderSide:
-                                BorderSide(width: 3, color: Colors.blue),
+                                BorderSide(width: 3, color: Color(0XFF0472E8)),
                           ),
                         ),
                       ),
@@ -304,7 +304,7 @@ class _SignUpState extends State<SignUp> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
+                                backgroundColor: Color(0XFF0472E8),
                                 padding: const EdgeInsets.all(14),
                               ),
                               child: const Text(

@@ -27,22 +27,17 @@ class _BottomBarState extends State<BottomBar> {
     return Scaffold(
       body: tabs[_currentIndex],
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
               color: Colors.grey,
-              width: 1,
+              spreadRadius: 1,
+              blurRadius: 4,
             ),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.grey,
-                spreadRadius: 1,
-                blurRadius: 3,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(10)),
+          ],
+        ),
         child: GNav(
           backgroundColor: Colors.transparent,
           padding: const EdgeInsets.all(15),

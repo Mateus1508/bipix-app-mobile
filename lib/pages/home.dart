@@ -1,5 +1,4 @@
 import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
-import 'package:bipixapp/widgets/navbarWidget/nav_bar.dart';
 import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
 import 'package:flutter/material.dart';
 

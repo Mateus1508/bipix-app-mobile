@@ -81,14 +81,27 @@ class _InfoBarState extends State<InfoBar> {
               ),
               Container(
                 margin: const EdgeInsets.only(right: 10),
-                child: Row(
-                  children: [
+                child: Stack(
+                  children: <Widget>[
                     IconButton(
                       style: IconButton.styleFrom(
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () => _handleShowModalBottomSheet(context),
                       icon: const Icon(Icons.notifications),
+                    ),
+                    Positioned(
+                      right: 20,
+                      top: 2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: const Text('3'),
+                      ),
                     ),
                   ],
                 ),

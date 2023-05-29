@@ -4,14 +4,13 @@ import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
 import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/login.dart';
-import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/pre_game.dart';
 import 'package:bipixapp/pages/profile.dart';
 import 'package:bipixapp/pages/rematch.dart';
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/widgets/damas.dart';
-import 'package:bipixapp/widgets/navbarWidget/nav_bar.dart';
+import 'package:bipixapp/pages/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,7 +24,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/initial': (context) => const InitialScreen(),
     '/signup': (context) => const SignUp(),
     '/login': (context) => const Login(),
-    '/home': (context) => const Home(),
+    '/home': (context) => const BottomBar(),
     '/editprofile': (context) => const EditProfile(),
     '/damas': (context) => const MyApp(),
     '/selectbet': (context) => const SelectBetValue(),

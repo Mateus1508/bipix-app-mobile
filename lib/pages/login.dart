@@ -132,7 +132,8 @@ class _LoginState extends State<Login> {
                         fillColor: Colors.black54,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2),
+                          borderSide: BorderSide(
+                              color: const Color(0XFF0472E8), width: 2),
                         ),
                         labelText: 'Email',
                         labelStyle: TextStyle(
@@ -141,7 +142,8 @@ class _LoginState extends State<Login> {
                         ),
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: Colors.blue),
+                          borderSide: BorderSide(
+                              width: 3, color: const Color(0XFF0472E8)),
                         ),
                       ),
                     ),
@@ -170,7 +172,8 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2),
+                          borderSide: BorderSide(
+                              color: const Color(0XFF0472E8), width: 2),
                         ),
                         labelText: 'Senha',
                         labelStyle: const TextStyle(
@@ -179,7 +182,8 @@ class _LoginState extends State<Login> {
                         ),
                         border: const OutlineInputBorder(),
                         focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 3, color: Colors.blue),
+                          borderSide: BorderSide(
+                              width: 3, color: const Color(0XFF0472E8)),
                         ),
                       ),
                     ),
@@ -220,7 +224,7 @@ class _LoginState extends State<Login> {
                                   if (kDebugMode) {
                                     print(mensagem);
                                   }
-                                  /* Navigator.pushNamed(context, '/home'); */
+                                  Navigator.pushNamed(context, '/home');
                                 } catch (error) {
                                   if (kDebugMode) {
                                     print(error.toString());
@@ -229,7 +233,7 @@ class _LoginState extends State<Login> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: const Color(0XFF0472E8),
                               padding: const EdgeInsets.all(14),
                             ),
                             child: const Text(
