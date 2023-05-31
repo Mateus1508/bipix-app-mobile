@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   http: ^0.13.4
   flutter_secure_storage: ^4.2.0
+  shared_preferences: ^2.1.1
   auth_buttons: ^3.0.0
   google_sign_in: ^6.0.2
   flutter_facebook_auth: ^4.4.1+1
@@ -25,7 +26,7 @@ dependencies:
   rxdart: ^0.27.7
   rflutter_alert: ^2.0.6
   get_it: ^7.6.0
-crypto: ^3.0.0
+# crypto: ^3.0.0
 
 dev_dependencies:
   flutter_test:
