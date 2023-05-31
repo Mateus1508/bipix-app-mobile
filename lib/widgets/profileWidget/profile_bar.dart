@@ -36,7 +36,7 @@ class ProfileBar extends StatelessWidget implements PreferredSizeWidget {
             foregroundColor: Colors.white,
           ),
           onPressed: () => _handleShowModalBottomSheet(context),
-          icon: const Icon(Icons.menu),
+          icon: const Icon(Icons.settings),
         ),
       ],
     );
