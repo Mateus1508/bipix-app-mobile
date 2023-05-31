@@ -1,7 +1,10 @@
 import 'dart:async';
+
 import 'package:bipixapp/pages/initial_screen.dart';
+import 'package:bipixapp/pages/nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingApp extends StatefulWidget {
   const LoadingApp({super.key});
@@ -12,17 +15,26 @@ class LoadingApp extends StatefulWidget {
 
 class LoadingAppState extends State<LoadingApp>
     with SingleTickerProviderStateMixin {
+  String? userId;
   @override
   void initState() {
     super.initState();
-
+    getUser();
     // Aguarda 2 segundos antes de abrir a tela de login
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const InitialScreen()),
+        MaterialPageRoute(
+          builder: (context) =>
+              userId != null ? const BottomBar() : const InitialScreen(),
+        ),
       );
     });
+  }
+
+  getUser() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    userId = sharedPreferences.getString("USER_ID");
   }
 
   @override
