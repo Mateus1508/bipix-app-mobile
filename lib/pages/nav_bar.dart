@@ -2,8 +2,6 @@ import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class BottomBar extends StatefulWidget {

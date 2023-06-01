@@ -48,7 +48,7 @@ class _LoginState extends State<Login> {
 
   Future<Object> autenticarUsuario(String email, String senha) async {
     final response = await http.post(
-      Uri.parse('https://bipixapi.cyclic.app/auth'),
+      Uri.parse('$baseUrl/auth'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -138,8 +138,8 @@ class _LoginState extends State<Login> {
                         fillColor: Colors.black54,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0XFF0472E8), width: 2),
+                          borderSide:
+                              BorderSide(color: Color(0XFF0472E8), width: 2),
                         ),
                         labelText: 'Email',
                         labelStyle: TextStyle(
@@ -148,8 +148,8 @@ class _LoginState extends State<Login> {
                         ),
                         border: OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 3, color: const Color(0XFF0472E8)),
+                          borderSide:
+                              BorderSide(width: 3, color: Color(0XFF0472E8)),
                         ),
                       ),
                     ),
@@ -178,8 +178,8 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: const Color(0XFF0472E8), width: 2),
+                          borderSide:
+                              BorderSide(color: Color(0XFF0472E8), width: 2),
                         ),
                         labelText: 'Senha',
                         labelStyle: const TextStyle(
@@ -188,8 +188,8 @@ class _LoginState extends State<Login> {
                         ),
                         border: const OutlineInputBorder(),
                         focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 3, color: const Color(0XFF0472E8)),
+                          borderSide:
+                              BorderSide(width: 3, color: Color(0XFF0472E8)),
                         ),
                       ),
                     ),
@@ -230,7 +230,6 @@ class _LoginState extends State<Login> {
                                   if (kDebugMode) {
                                     print(mensagem);
                                   }
-                                  Navigator.pushNamed(context, '/home');
                                 } catch (error) {
                                   if (kDebugMode) {
                                     print(error.toString());
