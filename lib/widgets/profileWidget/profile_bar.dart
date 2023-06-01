@@ -35,7 +35,7 @@ class ProfileBar extends StatelessWidget implements PreferredSizeWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => InitialScreen(),
+          builder: (context) => const InitialScreen(),
         ));
   }
 
