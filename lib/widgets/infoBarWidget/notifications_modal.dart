@@ -67,7 +67,7 @@ class _NotificationsModalBottomSheeetState
                               widget.notifications![index];
                           return Card(
                             elevation: 3,
-                            margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                            margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
