@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert';
 import 'package:auth_buttons/auth_buttons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../services/api.dart';
@@ -58,6 +59,11 @@ class _LoginState extends State<Login> {
     );
 
     if (response.statusCode == 200) {
+      // Salva o id do usuário localmente
+      final instance = await SharedPreferences.getInstance();
+      await instance.setString("USER_ID", jsonDecode(response.body)["userId"]);
+      // await const FlutterSecureStorage()
+      //     .write(key: "USER_ID", value: jsonDecode(response.body)["userId"]);
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/home');
       return 'Usuário autenticado com sucesso.';

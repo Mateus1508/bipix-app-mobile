@@ -110,7 +110,10 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
               itemBuilder: (context, index) {
                 final user = filteredUsers[index];
                 final nome = user['nome'] as String?;
-                return SelectFriend(nome: nome);
+                return SelectFriend(
+                  nome: nome,
+                  id: user["id"] ?? "",
+                );
               },
             ),
           )
