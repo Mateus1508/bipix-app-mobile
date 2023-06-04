@@ -1,7 +1,9 @@
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../models/games_list.dart';
+import '../../services/ad_helper.dart';
 
 class GameSelection extends StatefulWidget {
   const GameSelection({super.key});
@@ -13,9 +15,38 @@ class GameSelection extends StatefulWidget {
 class _GameSelectionState extends State<GameSelection> {
   late PageController _pageController;
   int currentGame = 1;
+  late BannerAd _bottomBannerAd;
+
+  bool _isBottomBannerAdLoaded = false;
+  void _createBottomBannerAd() {
+    RequestConfiguration configuration = RequestConfiguration(
+      testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
+    );
+    MobileAds mobileAds = MobileAds.instance;
+    mobileAds.updateRequestConfiguration(configuration);
+    _bottomBannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _isBottomBannerAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print(ad);
+          print(error);
+          ad.dispose();
+        },
+      ),
+    );
+    _bottomBannerAd.load();
+  }
 
   @override
   void initState() {
+    _createBottomBannerAd();
     super.initState();
     _pageController = PageController(
       viewportFraction: 0.4,
@@ -25,6 +56,7 @@ class _GameSelectionState extends State<GameSelection> {
 
   @override
   void dispose() {
+    _bottomBannerAd.dispose();
     super.dispose();
     _pageController.dispose();
   }
@@ -108,6 +140,14 @@ class _GameSelectionState extends State<GameSelection> {
                   .fadeIn(begin: 1.1, duration: 1000.ms, curve: Curves.easeIn)
                   .then()
                   .fadeOut(duration: 700.ms, curve: Curves.easeOut),
+              if (_isBottomBannerAdLoaded)
+                Container(
+                  height: _bottomBannerAd.size.height.toDouble(),
+                  width: _bottomBannerAd.size.width.toDouble(),
+                  child: AdWidget(
+                    ad: _bottomBannerAd,
+                  ),
+                )
             ],
           ),
         );

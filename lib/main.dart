@@ -2,7 +2,6 @@ import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/game_page.dart';
 import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
-import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/login.dart';
 import 'package:bipixapp/pages/pre_game.dart';
 import 'package:bipixapp/pages/profile.dart';
@@ -12,8 +11,13 @@ import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/widgets/damas.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-void main() {
+import 'pages/loading_app.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   runApp(const MainApp());
 }
 
