@@ -57,108 +57,117 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ProfileBar(),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: _selectPhoto,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color(0XFF0472E8),
-                                  blurRadius: 2,
-                                  spreadRadius: 5),
-                            ],
-                            color: Color(0xFF454545),
-                          ),
-                          child: SizedBox(
-                            width: 250,
-                            height: 250,
-                            child: selectedPhoto != null
-                                ? Image.file(selectedPhoto!)
-                                : Image.asset('assets/images/bipixLogo.png'),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF454545),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: const Text(
-                            "Editar foto",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+      body: Container(
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/backgroundWhite.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: _selectPhoto,
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color(0XFF0472E8),
+                                    blurRadius: 2,
+                                    spreadRadius: 5),
+                              ],
+                              color: Color(0xFF454545),
+                            ),
+                            child: SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: selectedPhoto != null
+                                  ? Image.file(selectedPhoto!)
+                                  : Image.asset('assets/images/bipixLogo.png'),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Container(
-                    constraints:
-                        const BoxConstraints(minWidth: 100, maxWidth: 200),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Bipix",
-                          style: TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF373737),
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF454545),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Text(
+                              "Editar foto",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          "@bipix.user",
-                          style: TextStyle(
-                              fontSize: 18,
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Container(
+                      constraints:
+                          const BoxConstraints(minWidth: 100, maxWidth: 200),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "Bipix",
+                            style: TextStyle(
+                              fontSize: 36,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF373737)),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          '“A vida é feita de desafios, eu estou preparada."',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF373737),
+                              color: Color(0xFF373737),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {}, child: const Text('Editar perfil')),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Compartilhar perfil')),
-                  const SizedBox(width: 10),
-                ],
-              ),
-            ],
+                          SizedBox(height: 5),
+                          Text(
+                            "@bipix.user",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF373737)),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            '“A vida é feita de desafios, eu estou preparada."',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF373737),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {}, child: const Text('Editar perfil')),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('Compartilhar perfil')),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
