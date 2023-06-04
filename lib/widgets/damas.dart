@@ -57,15 +57,17 @@ class _GameRendererState extends State<GameRenderer> {
                   final isDarkSquare = (row + col) % 2 == 0;
                   final color = isDarkSquare ? Colors.black : Colors.brown[300];
 
-                  if (row < 3 && isDarkSquare) {
+                  if (gameLogic.board[row][col] == 1) {
                     return GestureDetector(
                       onTap: () {
-                        // Verifica e executa o movimento ao clicar na peça
-                        if (gameLogic.board[row][col] == 1 &&
-                            gameLogic.isValidMove(col, row, col + 1, row + 1, 1)) {
-                          setState(() {
-                            gameLogic.makeMove(col, row, col + 1, row + 1, 1);
-                          });
+                        if (row < 7 && col < 7) {
+                          if (gameLogic.isValidMove(
+                              col, row, col + 1, row + 1, 1)) {
+                            setState(() {
+                              gameLogic.makeMove(
+                                  col, row, col + 1, row + 1, 1);
+                            });
+                          }
                         }
                       },
                       child: Container(
@@ -77,15 +79,17 @@ class _GameRendererState extends State<GameRenderer> {
                     );
                   }
 
-                  if (row > 4 && isDarkSquare) {
+                  if (gameLogic.board[row][col] == 2) {
                     return GestureDetector(
                       onTap: () {
-                        // Verifica e executa o movimento ao clicar na peça
-                        if (gameLogic.board[row][col] == 2 &&
-                            gameLogic.isValidMove(col, row, col + 1, row - 1, 2)) {
-                          setState(() {
-                            gameLogic.makeMove(col, row, col + 1, row - 1, 2);
-                          });
+                        if (row > 0 && col < 7) {
+                          if (gameLogic.isValidMove(
+                              col, row, col + 1, row - 1, 2)) {
+                            setState(() {
+                              gameLogic.makeMove(
+                                  col, row, col + 1, row - 1, 2);
+                            });
+                          }
                         }
                       },
                       child: Container(
