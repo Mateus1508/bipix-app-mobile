@@ -43,6 +43,7 @@ class ProfileBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0XFF0472E8),
+      leading: Image.asset('assets/images/bipixLogo.png'),
       actions: [
         IconButton(
           style: IconButton.styleFrom(

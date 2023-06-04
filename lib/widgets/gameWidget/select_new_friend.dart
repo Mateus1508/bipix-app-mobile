@@ -6,11 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/api.dart';
 
-class SelectFriend extends StatelessWidget {
+class SelectNewFriend extends StatelessWidget {
   final String? nome;
   final String id;
 
-  const SelectFriend({Key? key, this.nome, required this.id}) : super(key: key);
+  const SelectNewFriend({Key? key, this.nome, required this.id})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,49 @@ class SelectFriend extends StatelessWidget {
           backgroundColor: const Color(0XFF0472E8),
           padding: const EdgeInsets.all(2),
         ),
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            useRootNavigator: true,
+            builder: (context) => AlertDialog(
+              title: const Text(
+                'Quer adicionar (nome do amigo) na sua lista de amigos ?',
+                style: TextStyle(fontSize: 14),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () async {
+                      final instance = await SharedPreferences.getInstance();
+                      String userId = instance.getString("USER_ID")!;
+                      final response = await http.post(
+                        Uri.parse('$baseUrl/addFriend'),
+                        headers: {'Content-Type': 'application/json'},
+                        body: jsonEncode({
+                          'userId': userId,
+                          'friendId': id,
+                          'nome': nome,
+                        }),
+                      );
+                      if (kDebugMode) {
+                        print(response.body);
+                      }
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Adicionar',
+                      style: TextStyle(color: Color(0XFF0472E8)),
+                    )),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Cancelar',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),

@@ -1,4 +1,5 @@
-import 'package:bipixapp/widgets/gameWidget/play_with_friends.dart';
+import 'package:bipixapp/widgets/gameWidget/my_friends.dart';
+import 'package:bipixapp/widgets/gameWidget/add_new_friends.dart';
 import 'package:flutter/material.dart';
 import 'game_selection.dart';
 
@@ -14,14 +15,16 @@ class _GamesBipixState extends State<GamesBipix> {
   List<String> gameModeOptions = [
     "Conhecer pessoas",
     "Jogar com amigos",
+    "Amigos"
   ];
 
   navigationGameModeOption() {
     if (selectedMode == 0) {
       return const GameSelection();
-    }
-    if (selectedMode == 1) {
-      return const PlayWithFriends();
+    } else if (selectedMode == 1) {
+      return const AddNewFriends();
+    } else if (selectedMode == 2) {
+      return const Myfriends();
     }
   }
 

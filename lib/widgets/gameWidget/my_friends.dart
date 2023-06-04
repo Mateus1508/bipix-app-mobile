@@ -1,21 +1,24 @@
+import 'dart:convert';
+
 import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
+import 'package:bipixapp/widgets/gameWidget/select_new_friend.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:bipixapp/services/api.dart';
 
-class PlayWithFriends extends StatefulWidget {
-  const PlayWithFriends({Key? key});
+import '../../services/api.dart';
+
+class Myfriends extends StatefulWidget {
+  const Myfriends({Key? key}) : super(key: key);
 
   @override
-  State<PlayWithFriends> createState() => _PlayWithFriendsState();
+  State<Myfriends> createState() => _MyfriendsState();
 }
 
-class _PlayWithFriendsState extends State<PlayWithFriends> {
-  List<dynamic> users = [];
+class _MyfriendsState extends State<Myfriends> {
   TextEditingController searchController = TextEditingController();
+  List<dynamic> users = [];
 
   @override
   void initState() {
@@ -24,12 +27,15 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
   }
 
   Future<void> fetchUsers() async {
-    final response = await http.get(Uri.parse('$baseUrl/users'));
+    final response = await http.get(Uri.parse('$baseUrl/listfriend'));
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
       setState(() {
         users = jsonResponse;
+        if (kDebugMode) {
+          print("lista de amigos $users");
+        }
       });
     } else {
       if (kDebugMode) {
@@ -46,9 +52,11 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        final nome = user['nome'] as String?;
-        return nome?.toLowerCase().contains(searchQuery) ?? false;
+        final friends = user['friends'].value as String?;
+        return friends?.toLowerCase().contains(searchQuery) ?? false;
       }).toList();
+    } else {
+      filteredUsers = users.map((user) => user['friends']).toList();
     }
 
     return Column(
@@ -56,7 +64,7 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
-          "Adicione um amigo",
+          "Procurar amigo",
           style: TextStyle(fontSize: 14),
         ),
         const SizedBox(height: 15),
@@ -92,35 +100,34 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
         const SizedBox(
           height: 20,
         ),
-        if (filteredUsers.isNotEmpty)
-          Container(
-            height: 250,
-            width: 300,
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: const [
-                BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 5),
-              ],
-            ),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: filteredUsers.length,
-              itemBuilder: (context, index) {
-                final user = filteredUsers[index];
-                final nome = user['nome'] as String?;
-                return SelectFriend(
-                  nome: nome,
-                  id: user["id"] ?? "",
-                );
-              },
-            ),
-          )
-              .animate()
-              .fade(delay: 100.ms)
-              .slideY(begin: 2, end: 0, curve: Curves.easeIn, duration: 500.ms)
-              .then(),
+        Container(
+          height: 250,
+          width: 300,
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 5),
+            ],
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: filteredUsers.length,
+            itemBuilder: (context, index) {
+              final user = filteredUsers[index];
+              final friends = user['friends'].nome;
+              return SelectFriend(
+                nome: friends,
+                id: user.friends['id'] ?? "",
+              );
+            },
+          ),
+        )
+            .animate()
+            .fade(delay: 100.ms)
+            .slideY(begin: 2, end: 0, curve: Curves.easeIn, duration: 500.ms)
+            .then(),
       ],
     );
   }
