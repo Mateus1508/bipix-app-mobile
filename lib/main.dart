@@ -40,7 +40,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     return MaterialApp(
       title: "Bipix",
       debugShowCheckedModeBanner: false,
-      home: const LoadingApp(),
+      home: MyApp(),
       routes: routes,
     );
   }
