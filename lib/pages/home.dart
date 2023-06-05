@@ -3,7 +3,6 @@ import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/gameWidget/games_bipix.dart';
-import '../widgets/my_wallet.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,24 +19,18 @@ class _HomeState extends State<Home> {
       return const GamesBipix();
     }
     if (selectedItem == 1) {
-      return const MyWallet();
-    }
-    if (selectedItem == 2) {
       return const Recharge();
     }
   }
 
-  List<String> navigationItems = [
-    "Jogos Bipix",
-    "Minha carteira",
-    "Ponto de recarga"
-  ];
+  List<String> navigationItems = ["Jogos Bipix", "Ponto de recarga"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const InfoBar(),
       body: Container(
         height: double.infinity,
+        width: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/backgroundWhite.jpg"),
