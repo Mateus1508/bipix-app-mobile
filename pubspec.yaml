@@ -38,6 +38,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/tic_tac_toe/
+    - assets/images/games_logos/
     
 
    
