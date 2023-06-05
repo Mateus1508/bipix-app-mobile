@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/login': (context) => const Login(),
     '/home': (context) => const BottomBar(),
     '/editprofile': (context) => const EditProfile(),
-    '/damas': (context) => const MyApp(),
+    '/damas': (context) => MyApp(),
     '/selectbet': (context) => const SelectBetValue(),
     '/rematch': (context) => const Rematch(),
     '/velha': (context) => const GamePage(),
@@ -44,7 +44,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     return MaterialApp(
       title: "Bipix",
       debugShowCheckedModeBanner: false,
-      home: const LoadingApp(),
+      home:  MyApp(),
       routes: routes,
     );
   }
