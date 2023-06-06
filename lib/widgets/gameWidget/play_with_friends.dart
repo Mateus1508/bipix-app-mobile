@@ -111,6 +111,7 @@ class _PlayWithFriendsState extends State<PlayWithFriends> {
                 final user = filteredUsers[index];
                 final nome = user['nome'] as String?;
                 return SelectFriend(
+                  photo: user["photo"],
                   nome: nome,
                   id: user["id"] ?? "",
                 );
