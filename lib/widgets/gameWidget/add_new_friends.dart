@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bipixapp/services/api.dart';
 
+import 'select_friend.dart';
+
 class AddNewFriends extends StatefulWidget {
   const AddNewFriends({Key? key});
 
@@ -110,7 +112,8 @@ class _AddNewFriendsState extends State<AddNewFriends> {
               itemBuilder: (context, index) {
                 final user = filteredUsers[index];
                 final nome = user['nome'] as String?;
-                return SelectNewFriend(
+                return SelectFriend(
+                  photo: user["photo"],
                   nome: nome,
                   id: user["id"] ?? "",
                 );
