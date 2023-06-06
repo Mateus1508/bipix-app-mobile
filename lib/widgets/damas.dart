@@ -82,6 +82,44 @@ class _GameRendererState extends State<GameRenderer> {
                       final color =
                           isDarkSquare ? Colors.black : Colors.brown[300];
 
+
+                  if (gameLogic.board[row][col] == 1) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (row < 7 && col < 7) {
+                          if (gameLogic.isValidMove(
+                              col, row, col + 1, row + 1, 1)) {
+                            setState(() {
+                              gameLogic.makeMove(
+                                  col, row, col + 1, row + 1, 1);
+                            });
+                          }
+                        }
+                      },
+                      child: Container(
+                        color: color,
+                        width: constraints.maxWidth / 8,
+                        height: constraints.maxWidth / 8,
+                        child: Icon(Icons.circle, color: Colors.white),
+                      ),
+                    );
+                  }
+
+                  if (gameLogic.board[row][col] == 2) {
+                    return GestureDetector(
+                      onTap: () {
+                        if (row > 0 && col < 7) {
+                          if (gameLogic.isValidMove(
+                              col, row, col + 1, row - 1, 2)) {
+                            setState(() {
+                              gameLogic.makeMove(
+                                  col, row, col + 1, row - 1, 2);
+                            });
+                          }
+                        }
+                      },
+                      child: Container(
+
                       if (row < 3 && isDarkSquare) {
                         return GestureDetector(
                           onTap: () {
@@ -129,6 +167,7 @@ class _GameRendererState extends State<GameRenderer> {
                       }
 
                       return Container(
+
                         color: color,
                         width: constraints.maxWidth / 8,
                         height: constraints.maxWidth / 8,
