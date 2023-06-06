@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:bipixapp/services/webservice.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -8,9 +10,11 @@ import '../../services/api.dart';
 
 class SelectFriend extends StatelessWidget {
   final String? nome;
+  final String? photo;
   final String id;
 
-  const SelectFriend({Key? key, this.nome, required this.id}) : super(key: key);
+  const SelectFriend({Key? key, this.nome, this.photo, required this.id})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +39,7 @@ class SelectFriend extends StatelessWidget {
               actions: [
                 TextButton(
                     onPressed: () async {
-                      final instance = await SharedPreferences.getInstance();
-                      String userId = instance.getString("USER_ID")!;
+                      String userId = await Webservice.getUserId();
                       final response = await http.post(
                         Uri.parse('$baseUrl/addFriend'),
                         headers: {'Content-Type': 'application/json'},
@@ -83,7 +86,15 @@ class SelectFriend extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50.0),
                         border: Border.all(color: Colors.grey, width: 1)),
-                    child: Image.asset('assets/images/bipixLogo.png'),
+                    child: photo == null || photo!.isEmpty
+                        ? Image.asset('assets/images/bipixLogo.png')
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.memory(
+                              base64Decode(photo!),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
                   ) // substitui pela ft da pessoa
                   ),
               const SizedBox(
