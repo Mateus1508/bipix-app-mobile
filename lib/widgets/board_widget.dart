@@ -5,7 +5,7 @@ import 'package:bipixapp/pages/rematch.dart';
 class BoardWidget extends StatefulWidget {
   final Board board;
 
-  BoardWidget({required this.board});
+  const BoardWidget({super.key, required this.board});
 
   @override
   _BoardWidgetState createState() => _BoardWidgetState();
@@ -13,12 +13,12 @@ class BoardWidget extends StatefulWidget {
 
 class _BoardWidgetState extends State<BoardWidget> {
   bool gameOver = false;
-  String currentPlayer = 'X'; // Variável currentPlayer declarada aqui
+  String switchPlayer = 'X';
 
   void updateCellValue(int row, int col) {
     if (!gameOver && widget.board.cells[row][col].value.isEmpty) {
       setState(() {
-        widget.board.cells[row][col].value = currentPlayer;
+        widget.board.cells[row][col].value = switchPlayer;
         widget.board.cells[row][col].isFilled = true;
         String winner = widget.board.checkWinner();
         gameOver = winner.isNotEmpty;
@@ -27,10 +27,10 @@ class _BoardWidgetState extends State<BoardWidget> {
           // Verifica se há um vencedor e navega para a tela Rematch
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Rematch()),
+            MaterialPageRoute(builder: (context) => const Rematch()),
           );
         } else {
-          currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+          switchPlayer = (switchPlayer == 'X') ? 'O' : 'X';
         }
       });
     }
@@ -52,16 +52,16 @@ class _BoardWidgetState extends State<BoardWidget> {
           onTap: () => updateCellValue(row, col),
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade500, width: 2),
+              border: Border.all(color: const Color(0XFF0472E8), width: 15),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
-              child: Text(
-                cell.value,
-                style: TextStyle(
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                  color: (cell.value == 'O') ? Colors.blue : Colors.red,
-                ),
+              child: SizedBox(
+                height: 100,
+                width: 100,
+                child: cell.value != ""
+                    ? Image.asset("assets/images/tic_tac_toe/${cell.value}.png")
+                    : null,
               ),
             ),
           ),

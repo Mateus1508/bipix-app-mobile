@@ -7,8 +7,9 @@ class GameItem {
 }
 
 List<GameItem> gameImages = [
-  GameItem(1, 'Truco', 'assets/images/truco.png'),
-  GameItem(2, 'Dama', 'assets/images/dama.png'),
-  GameItem(4, 'Velha', 'assets/images/tic-tac-toe.png'),
-  GameItem(5, 'Ludo', 'assets/images/ludo.png'),
+  GameItem(1, 'Truco', 'assets/images/games_logos/truco.png'),
+  GameItem(2, 'Dama', 'assets/images/games_logos/checkers.png'),
+  GameItem(4, 'Velha', 'assets/images/games_logos/tic_tac_toe.png'),
+  GameItem(5, 'Ludo', 'assets/images/games_logos/ludo.png'),
+  GameItem(6, 'Xadrez', 'assets/images/games_logos/chess.png'),
 ];
