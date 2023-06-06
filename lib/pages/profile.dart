@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/profileWidget/profile_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+
+import '../services/api.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -29,9 +32,9 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> uploadPhoto(File photo) async {
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('https://bipixapi.cyclic.app/upload'));
+    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/upload'));
     request.files.add(await http.MultipartFile.fromPath('photo', photo.path));
+    request.fields["userId"] = await Webservice.getUserId();
 
     try {
       var response = await request.send();
@@ -80,12 +83,18 @@ class _ProfileState extends State<Profile> {
                             ],
                             color: Color(0xFF454545),
                           ),
-                          child: SizedBox(
-                            width: 250,
-                            height: 250,
-                            child: selectedPhoto != null
-                                ? Image.file(selectedPhoto!)
-                                : Image.asset('assets/images/bipixLogo.png'),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(200),
+                            child: SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: selectedPhoto != null
+                                  ? Image.file(
+                                      selectedPhoto!,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.asset('assets/images/bipixLogo.png'),
+                            ),
                           ),
                         ),
                         Container(
