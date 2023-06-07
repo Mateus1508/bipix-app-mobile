@@ -105,6 +105,9 @@ class _HomeState extends State<Home> {
       return const GamesBipix();
     }
     if (selectedItem == 1) {
+      return const MyWallet();
+    }
+    if (selectedItem == 2) {
       return const Recharge();
     }
   }
