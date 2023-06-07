@@ -82,57 +82,95 @@ class _GameRendererState extends State<GameRenderer> {
                       final color =
                           isDarkSquare ? Colors.black : Colors.brown[300];
 
-                      if (row < 3 && isDarkSquare) {
-                        return GestureDetector(
-                          onTap: () {
-                            // Verifica e executa o movimento ao clicar na peça
-                            if (gameLogic.board[row][col] == 1 &&
-                                gameLogic.isValidMove(
-                                    col, row, col + 1, row + 1, 1)) {
-                              setState(() {
-                                gameLogic.makeMove(
-                                    col, row, col + 1, row + 1, 1);
-                              });
-                            }
-                          },
-                          child: Container(
-                            color: color,
-                            width: constraints.maxWidth / 8,
-                            height: constraints.maxWidth / 8,
-                            child: Image.asset(
-                                'assets/images/checkers/icon_green.png'),
-                          ),
-                        );
-                      }
+                      //   if (gameLogic.board[row][col] == 1) {
+                      //     return GestureDetector(
+                      //       onTap: () {
+                      //         if (row < 7 && col < 7) {
+                      //           if (gameLogic.isValidMove(
+                      //               col, row, col + 1, row + 1, 1)) {
+                      //             setState(() {
+                      //               gameLogic.makeMove(
+                      //                   col, row, col + 1, row + 1, 1);
+                      //             });
+                      //           }
+                      //         }
+                      //       },
+                      //       child: Container(
+                      //         color: color,
+                      //         width: constraints.maxWidth / 8,
+                      //         height: constraints.maxWidth / 8,
+                      //         child: Icon(Icons.circle, color: Colors.white),
+                      //       ),
+                      //     );
+                      //   }
 
-                      if (row > 4 && isDarkSquare) {
-                        return GestureDetector(
-                          onTap: () {
-                            // Verifica e executa o movimento ao clicar na peça
-                            if (gameLogic.board[row][col] == 2 &&
-                                gameLogic.isValidMove(
-                                    col, row, col + 1, row - 1, 2)) {
-                              setState(() {
-                                gameLogic.makeMove(
-                                    col, row, col + 1, row - 1, 2);
-                              });
-                            }
-                          },
-                          child: Container(
-                            color: color,
-                            width: constraints.maxWidth / 8,
-                            height: constraints.maxWidth / 8,
-                            child: Image.asset(
-                                'assets/images/checkers/icon_blue.png'),
-                          ),
-                        );
-                      }
+                      //   if (gameLogic.board[row][col] == 2) {
+                      //     return GestureDetector(
+                      //       onTap: () {
+                      //         if (row > 0 && col < 7) {
+                      //           if (gameLogic.isValidMove(
+                      //               col, row, col + 1, row - 1, 2)) {
+                      //             setState(() {
+                      //               gameLogic.makeMove(
+                      //                   col, row, col + 1, row - 1, 2);
+                      //             });
+                      //           }
+                      //         }
+                      //       },
+                      //       child: Container(
 
-                      return Container(
-                        color: color,
-                        width: constraints.maxWidth / 8,
-                        height: constraints.maxWidth / 8,
-                      );
+                      //       if (row < 3 && isDarkSquare) {
+                      //         return GestureDetector(
+                      //           onTap: () {
+                      //             // Verifica e executa o movimento ao clicar na peça
+                      //             if (gameLogic.board[row][col] == 1 &&
+                      //                 gameLogic.isValidMove(
+                      //                     col, row, col + 1, row + 1, 1)) {
+                      //               setState(() {
+                      //                 gameLogic.makeMove(
+                      //                     col, row, col + 1, row + 1, 1);
+                      //               });
+                      //             }
+                      //           },
+                      //           child: Container(
+                      //             color: color,
+                      //             width: constraints.maxWidth / 8,
+                      //             height: constraints.maxWidth / 8,
+                      //             child: Image.asset(
+                      //                 'assets/images/checkers/icon_green.png'),
+                      //           ),
+                      //         );
+                      //       }
+
+                      //       if (row > 4 && isDarkSquare) {
+                      //         return GestureDetector(
+                      //           onTap: () {
+                      //             // Verifica e executa o movimento ao clicar na peça
+                      //             if (gameLogic.board[row][col] == 2 &&
+                      //                 gameLogic.isValidMove(
+                      //                     col, row, col + 1, row - 1, 2)) {
+                      //               setState(() {
+                      //                 gameLogic.makeMove(
+                      //                     col, row, col + 1, row - 1, 2);
+                      //               });
+                      //             }
+                      //           },
+                      //           child: Container(
+                      //             color: color,
+                      //             width: constraints.maxWidth / 8,
+                      //             height: constraints.maxWidth / 8,
+                      //             child: Image.asset(
+                      //                 'assets/images/checkers/icon_blue.png'),
+                      //           ),
+                      //         );
+                      //       }
+
+                      //       return Container(
+
+                      //         color: color,
+                      //         width: constraints.maxWidth / 8,
+                      //         height: constraints.maxWidth / 8,
+                      //       );
                     },
                   );
                 },

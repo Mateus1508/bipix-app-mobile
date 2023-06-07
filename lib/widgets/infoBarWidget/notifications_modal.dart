@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:bipixapp/services/api.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/webservice.dart';
+
 class NotificationsModalBottomSheeet extends StatefulWidget {
   const NotificationsModalBottomSheeet({super.key, this.notifications});
 
@@ -25,10 +27,9 @@ class _NotificationsModalBottomSheeetState
   }
 
   clearNewNotifications() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final response = await http.post(
       Uri.parse('$baseUrl/clearNewNotifications'),
-      body: {"userId": sharedPreferences.getString("USER_ID")},
+      body: {"userId": await Webservice.getUserId()},
     );
     if (kDebugMode) {
       print(response);

@@ -1,7 +1,9 @@
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../models/games_list.dart';
+import '../../services/ad_helper.dart';
 
 class GameSelection extends StatefulWidget {
   const GameSelection({super.key});
