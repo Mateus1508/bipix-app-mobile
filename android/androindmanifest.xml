@@ -1,0 +1,6 @@
+<service
+    android:name=".NotificationService"
+    android:enabled="true"
+    android:exported="false"
+    android:foregroundServiceType="mediaProjection"
+/>
