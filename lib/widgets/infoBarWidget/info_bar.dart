@@ -26,7 +26,7 @@ class _InfoBarState extends State<InfoBar> {
   int newNotifications = 0;
   @override
   void initState() {
-    getNotifications();
+    // getNotifications();
     super.initState();
   }
 
@@ -87,8 +87,6 @@ class _InfoBarState extends State<InfoBar> {
 
   @override
   Widget build(BuildContext context) {
-    String cash = "400,00";
-
     return AppBar(
       backgroundColor: const Color(0XFF0472E8),
       elevation: 2,
@@ -128,7 +126,7 @@ class _InfoBarState extends State<InfoBar> {
                           width: 10,
                         ),
                         Text(
-                          "\$ $cash",
+                          "\$ ${userSnap.data!["credit"]},00",
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,

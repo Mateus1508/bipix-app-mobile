@@ -21,6 +21,7 @@ import 'pages/loading_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await MobileAds.instance.initialize();
   runApp(const MainApp());
 }
 
