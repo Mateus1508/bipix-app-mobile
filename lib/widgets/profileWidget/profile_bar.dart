@@ -18,9 +18,9 @@ class ProfileBar extends StatelessWidget implements PreferredSizeWidget {
           borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
       builder: (context) => DraggableScrollableSheet(
         expand: false,
-        initialChildSize: 0.4,
+        initialChildSize: 0.33,
         minChildSize: 0.32,
-        maxChildSize: 0.9,
+        maxChildSize: 0.6,
         builder: (context, scrollController) => SingleChildScrollView(
           controller: scrollController,
           child: const SettingsModalBottomSheeet(),

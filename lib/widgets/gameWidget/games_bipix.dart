@@ -53,9 +53,6 @@ class _GamesBipixState extends State<GamesBipix> {
               itemBuilder: (context, index) => buildNavigation(index, context),
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
           navigationGameModeOption(),
         ],
       ),

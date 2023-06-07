@@ -1,3 +1,4 @@
+import 'package:bipixapp/widgets/PaymentWidget/buy_coins.dart';
 import 'package:bipixapp/widgets/PaymentWidget/payment_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -60,38 +61,79 @@ class _PaymentState extends State<Payment> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {},
-                        child: const MyWalletButtonStyle(
-                            text: 'Comprar moedas', icon: Icons.attach_money)),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const MyWalletButtonStyle(
-                          text: 'Comprar moedas', icon: Icons.attach_money),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const BuyCoins()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      backgroundColor:
+                          Colors.amber.shade600, // background (button) color
                     ),
-                  ],
-                ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 15),
+                          padding: const EdgeInsets.all(5),
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Image.asset('assets/images/payment/crown.png'),
+                        ),
+                        const Text(
+                          'Comprar moedas',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    )),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const MyWalletButtonStyle(
-                          text: 'Comprar moedas', icon: Icons.attach_money),
+                ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      backgroundColor:
+                          Colors.blue.shade800, // background (button) color
                     ),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const MyWalletButtonStyle(
-                          text: 'Comprar moedas', icon: Icons.attach_money),
-                    ),
-                  ],
-                ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 15),
+                          padding: const EdgeInsets.all(5),
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: const Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.blue,
+                            size: 30,
+                          ),
+                        ),
+                        const Text(
+                          'Assistir para ganhar',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    )),
               ],
             ),
           ),

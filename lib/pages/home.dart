@@ -154,8 +154,9 @@ class _HomeState extends State<Home> {
             children: [
               Container(
                 height: 40,
+                width: 500,
                 margin:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     color: Colors.grey.shade800,
@@ -204,6 +205,7 @@ class _HomeState extends State<Home> {
   Container buildNavigation(int index, BuildContext context) {
     return Container(
       height: 25,
+      width: MediaQuery.of(context).size.width * 0.461,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: index == selectedItem

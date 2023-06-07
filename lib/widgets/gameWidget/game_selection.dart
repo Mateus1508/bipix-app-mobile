@@ -20,7 +20,7 @@ class _GameSelectionState extends State<GameSelection> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      viewportFraction: 0.4,
+      viewportFraction: 0.5,
       initialPage: currentGame,
     );
   }
@@ -35,7 +35,7 @@ class _GameSelectionState extends State<GameSelection> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
-        height: 400,
+        height: 500,
         child: PageView.builder(
             onPageChanged: (value) {
               setState(() {
@@ -45,7 +45,8 @@ class _GameSelectionState extends State<GameSelection> {
             controller: _pageController,
             scrollDirection: Axis.horizontal,
             itemCount: gameImages.length,
-            itemBuilder: (context, index) => buildGameItemsSlider(index)),
+            itemBuilder: (context, index) =>
+                Stack(children: <Widget>[buildGameItemsSlider(index)])),
       ),
     );
   }
@@ -54,7 +55,7 @@ class _GameSelectionState extends State<GameSelection> {
       animation: _pageController,
       builder: (context, child) {
         return AnimatedScale(
-          scale: currentGame == index ? 1 : 0.6,
+          scale: currentGame == index ? 1.0 : 0.7,
           duration: const Duration(milliseconds: 300),
           child: Column(
             children: [
@@ -63,15 +64,15 @@ class _GameSelectionState extends State<GameSelection> {
                 style: const TextStyle(fontSize: 32, letterSpacing: 4),
               ),
               SizedBox(
-                height: 150,
-                width: 150,
+                height: 200,
+                width: 200,
                 child: Image.asset(gameImages[index].path),
               ),
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 decoration: const BoxDecoration(
                     color: Colors.amber,
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -94,7 +95,7 @@ class _GameSelectionState extends State<GameSelection> {
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 24),
+                                  fontSize: 32),
                             ),
                           ),
                           SizedBox(
