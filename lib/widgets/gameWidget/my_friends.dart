@@ -27,7 +27,7 @@ class _MyfriendsState extends State<Myfriends> {
   }
 
   Future<void> fetchUsers() async {
-    final response = await http.get(Uri.parse('$baseUrl/listfriend'));
+    final response = await http.get(Uri.parse('$baseUrl/listfriends'));
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);

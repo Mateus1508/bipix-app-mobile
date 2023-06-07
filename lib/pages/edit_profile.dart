@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:validatorless/validatorless.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -7,94 +8,109 @@ class EditProfile extends StatefulWidget {
   State<EditProfile> createState() => _EditProfileState();
 }
 
+final _formfield = GlobalKey<FormState>();
+TextEditingController nameController = TextEditingController();
+TextEditingController usernameController = TextEditingController();
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
+TextEditingController repeatPasswordController = TextEditingController();
+
 class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0XFF0472E8),
+      ),
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(25),
-            child: Column(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    shape: BoxShape.rectangle,
-                    color: Colors.blue,
-                  ),
-                  child: IconButton(
-                    iconSize: 32,
-                    icon: const Icon(
-                      Icons.turn_left_rounded,
-                      color: Colors.white,
+          child: Form(
+            key: _formfield,
+            child: Padding(
+              padding: const EdgeInsets.all(25),
+              child: Column(
+                children: [
+                  const Text(
+                    "Editar Perfil",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-                    onPressed: () {},
                   ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Editar Perfil",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFF454545),
-                      ),
-                      child: SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: Image.asset('assets/images/bipixLogo.png'),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 3),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        shape: BoxShape.rectangle,
-                        color: Color(0xFF3E3838),
-                      ),
-                      child: const Text(
-                        "Editar foto",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                  const SizedBox(height: 20),
+                  Stack(
+                    children: <Widget>[
+                      Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF454545),
+                        ),
+                        child: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Image.asset('assets/images/bipixLogo.png'),
                         ),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 20),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxHeight: 200,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 3),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          shape: BoxShape.rectangle,
+                          color: Color(0xFF3E3838),
+                        ),
+                        child: const Text(
+                          "Editar foto",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  child: const TextField(
-                    maxLines: null,
-                    style: TextStyle(color: Colors.black),
-                    keyboardType: TextInputType.multiline,
-                    maxLength: 200,
-                    decoration: InputDecoration(
-                      hintText:
-                          '“A vida é feita de desafios, eu estou preparado."',
+                  const SizedBox(height: 20),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 200,
+                    ),
+                    child: const TextField(
+                      maxLines: null,
+                      style: TextStyle(color: Colors.black),
+                      keyboardType: TextInputType.multiline,
+                      maxLength: 200,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                            width: 2,
+                          ),
+                        ),
+                        labelText: 'A sua frase preferida',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 3, color: Colors.blue),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.name,
+                    controller: nameController,
+                    validator: Validatorless.required('O nome é obrigatório!'),
+                    decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                          width: 2,
-                        ),
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
                       ),
-                      labelText: 'A sua frase',
+                      labelText: 'Seu nome',
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
@@ -104,135 +120,135 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  style: TextStyle(color: Colors.black),
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    hintText: 'Fulano de Tal',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 2),
-                    ),
-                    labelText: 'Seu nome',
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  style: TextStyle(color: Colors.black),
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    hintText: '@fulano.bipix',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 2),
-                    ),
-                    labelText: 'Nome de usuário',
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  style: TextStyle(color: Colors.black),
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'exemplo@exemplo.com',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 2),
-                    ),
-                    labelText: 'Email',
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  style: TextStyle(color: Colors.black),
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'exemplo@exemplo.com',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 2),
-                    ),
-                    labelText: 'Confirmar email',
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  style: TextStyle(color: Colors.black),
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'minhaSenha123',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 2),
-                    ),
-                    labelText: 'Senha',
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const TextField(
-                  style: TextStyle(color: Colors.black),
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 2),
-                    ),
-                    labelText: 'Repetir senha',
-                    labelStyle: TextStyle(
-                      color: Colors.black,
-                    ),
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(children: [
-                  Expanded(
-                    flex: 1,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        padding: const EdgeInsets.all(14),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.name,
+                    controller: usernameController,
+                    validator: Validatorless.required(
+                        'O nome de usuário é obrigatório!'),
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
                       ),
-                      child: const Text('Salvar'),
+                      labelText: 'Nome de usuário',
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: Colors.blue),
+                      ),
                     ),
                   ),
-                ]),
-              ],
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    validator: Validatorless.multiple([
+                      Validatorless.required('O email é obrigatório!'),
+                      Validatorless.email('Formato de email incorreto!'),
+                    ]),
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
+                      labelText: 'Email',
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    style: const TextStyle(color: Colors.black),
+                    validator: Validatorless.multiple([
+                      Validatorless.regex(
+                        RegExp(r'^(?=.*[a-z])'),
+                        'Deve conter ao menos uma letra minúscula',
+                      ),
+                      Validatorless.regex(
+                        RegExp(r'^(?=.*[A-Z])'),
+                        'Deve conter ao menos uma letra maiúscula',
+                      ),
+                      Validatorless.regex(
+                        RegExp(r'^(?=.*[$*&@#])'),
+                        'Deve conter ao menos um caractere especial',
+                      ),
+                      Validatorless.regex(
+                        RegExp(r'^[0-9a-zA-Z$*&@#]{8,}'),
+                        'deve conter ao menos 8 dos caracteres mencionados',
+                      ),
+                      Validatorless.regex(
+                        RegExp(r'^(?=.*\d)'),
+                        'deve conter ao menos 1 dígito',
+                      ),
+                    ]),
+                    obscureText: true,
+                    controller: passwordController,
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
+                      labelText: 'Senha',
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    style: const TextStyle(color: Colors.black),
+                    obscureText: true,
+                    controller: repeatPasswordController,
+                    validator: (value) {
+                      if (passwordController.text != value) {
+                        return 'As senhas devem ser iguais!';
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
+                      labelText: 'Repetir senha',
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                      ),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 3, color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(children: [
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0XFF0472E8),
+                          padding: const EdgeInsets.all(14),
+                        ),
+                        child: const Text(
+                          'Salvar perfil',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
             ),
           ),
         ),

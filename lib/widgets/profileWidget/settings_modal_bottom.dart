@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'modal_item_option.dart';
+
 class SettingsModalBottomSheeet extends StatelessWidget {
   const SettingsModalBottomSheeet({super.key});
 
@@ -19,14 +21,32 @@ class SettingsModalBottomSheeet extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
               )),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('bla'),
-              Text('bla'),
-              Text('bla'),
-              Text('bla'),
-            ],
+          Container(
+            width: 150,
+            padding: const EdgeInsets.symmetric(
+              vertical: 17,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                ModalItem(
+                  icon: Icons.dark_mode,
+                  text: 'Aparência:',
+                ),
+                ModalItem(
+                  icon: Icons.language,
+                  text: 'Idioma:',
+                ),
+                ModalItem(
+                  icon: Icons.person,
+                  text: 'Alterar conta',
+                ),
+                ModalItem(
+                  icon: Icons.help,
+                  text: 'Ajuda',
+                ),
+              ],
+            ),
           ),
         ]);
   }

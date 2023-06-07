@@ -158,7 +158,10 @@ class _ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                        onPressed: () {}, child: const Text('Editar perfil')),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/editprofile');
+                        },
+                        child: const Text('Editar perfil')),
                     const SizedBox(width: 10),
                     ElevatedButton(
                         onPressed: () {},
