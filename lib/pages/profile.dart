@@ -96,84 +96,6 @@ class _ProfileState extends State<Profile> {
                                   : Image.asset('assets/images/bipixLogo.png'),
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF454545),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const Text(
-                              "Editar foto",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    Container(
-                      constraints:
-                          const BoxConstraints(minWidth: 100, maxWidth: 200),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Bipix",
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF373737),
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            "@bipix.user",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF373737)),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '“A vida é feita de desafios, eu estou preparada."',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF373737),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/editprofile');
-                        },
-                        child: const Text('Editar perfil')),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Compartilhar perfil')),
-                    const SizedBox(width: 10),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
                         ),
                         Container(
                           padding: const EdgeInsets.all(5),
@@ -237,7 +159,10 @@ class _ProfileState extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () {}, child: const Text('Editar perfil')),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/editprofile');
+                      },
+                      child: const Text('Editar perfil')),
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () {},
