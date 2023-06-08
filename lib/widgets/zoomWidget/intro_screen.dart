@@ -26,7 +26,7 @@ class IntroButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/join', arguments: JoinArguments(isJoin));
+        Navigator.pushNamed(context, "/join", arguments: JoinArguments(isJoin));
       },
       child: Container(
         height: 60.0,

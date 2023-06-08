@@ -68,7 +68,7 @@ class VideoView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isVideoOn = useState(false);
+    var isVideoOn = useState(true);
     var isTalking = useState(false);
     var isMuted = useState(false);
     var isMounted = useIsMounted();

@@ -105,7 +105,7 @@ class SessionFormState extends State<SessionForm> {
           ),
           TextFormField(
             decoration: const InputDecoration(
-              hintText: 'Required (1 for Host, 0 for attendee)',
+              hintText: 'Required (1 for Host, 0 para usuário)',
               labelText: 'Role Type',
             ),
             controller: roleTypeController,
@@ -127,7 +127,7 @@ class SessionFormState extends State<SessionForm> {
                   sessionTimeoutMinController.text = "40";
                 }
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, '/call',
+                  Navigator.pushNamed(context, "/call",
                       arguments: CallArguments(
                           sessionNameController.text,
                           sessionPwdController.text,
@@ -195,7 +195,7 @@ class _JoinScreenState extends State<JoinScreen> {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, '/intro');
+            Navigator.pushNamed(context, "/intro");
           },
         ),
       ),

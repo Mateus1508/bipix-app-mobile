@@ -29,9 +29,9 @@ void main() {
         child: ZoomVideoSdkProvider(),
       ),
       routes: {
-        "/join": (context) => const JoinScreen(),
-        "/call": (context) => const CallScreen(),
-        "/intro": (context) => const IntroScreen(),
+        "Join": (context) => const JoinScreen(),
+        "Call": (context) => const CallScreen(),
+        "Intro": (context) => const IntroScreen(),
       },
     ),
   );

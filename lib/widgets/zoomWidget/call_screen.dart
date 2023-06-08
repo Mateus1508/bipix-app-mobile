@@ -11,9 +11,9 @@ import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
 import 'package:flutter_zoom_videosdk/native/zoom_videosdk_chat_message.dart';
 import 'package:flutter_zoom_videosdk/native/zoom_videosdk_event_listener.dart';
 import 'package:flutter_zoom_videosdk/native/zoom_videosdk_user.dart';
-import 'utils/jwt.dart';
+import "utils/jwt.dart";
 import 'package:google_fonts/google_fonts.dart';
-import 'call_screen.dart';
+import 'package:shared_value/shared_value.dart';
 import 'video_view.dart';
 import 'intro_screen.dart';
 import 'join_screen.dart';
@@ -139,7 +139,7 @@ class _CallScreenState extends State<CallScreen> {
               .listen((event) {
             Navigator.pushNamed(
               context,
-              '/join',
+              "Join",
               arguments: JoinArguments(false),
             );
           });
@@ -149,7 +149,39 @@ class _CallScreenState extends State<CallScreen> {
     }, []);
 
     useEffect(() {
-      updateVideoInfo() {}
+      updateVideoInfo() {
+        Timer timer =
+            Timer.periodic(const Duration(milliseconds: 1000), (time) async {
+          if (!isMounted()) return;
+
+          bool? videoOn = false;
+          videoOn = await fullScreenUser.value?.videoStatus?.isOn();
+
+          // Video statistic info doesn't update when there's no remote users
+          if (fullScreenUser.value == null ||
+              (videoOn != null && videoOn == false) ||
+              users.value.length < 2) {
+            time.cancel();
+            videoInfo.value = "";
+            return;
+          }
+
+          var fps = isSharing.value
+              ? await fullScreenUser.value?.shareStatisticInfo?.getFps()
+              : await fullScreenUser.value?.videoStatisticInfo?.getFps();
+
+          var height = isSharing.value
+              ? await fullScreenUser.value?.shareStatisticInfo?.getHeight()
+              : await fullScreenUser.value?.videoStatisticInfo?.getHeight();
+
+          var width = isSharing.value
+              ? await fullScreenUser.value?.shareStatisticInfo?.getWidth()
+              : await fullScreenUser.value?.videoStatisticInfo?.getWidth();
+
+          videoInfo.value = ("${width}x$height ${fps}FPS");
+          updateVideoInfo();
+        });
+      }
 
       updateVideoInfo();
       return null;
@@ -353,9 +385,76 @@ class _CallScreenState extends State<CallScreen> {
             "sender: ${ZoomVideoSdkUser.fromJson(jsonDecode(data['sender']))}, command: ${data['command']}");
       });
 
+      final chatNewMessageNotify =
+          emitter.on(EventType.onChatNewMessageNotify, (data) async {
+        if (!isMounted()) return;
+        ZoomVideoSdkChatMessage newMessage =
+            ZoomVideoSdkChatMessage.fromJson(jsonDecode(data.toString()));
+        chatMessages.value.add(newMessage);
+        messageLength.value += 1;
+        listScrollController
+            .jumpTo(listScrollController.position.maxScrollExtent);
+      });
+
+      final chatDeleteMessageNotify =
+          emitter.on(EventType.onChatDeleteMessageNotify, (data) async {
+        data = data as Map;
+        debugPrint(
+            "onChatDeleteMessageNotify: messageID: ${data['msgID']}, deleteBy: ${data['type']}");
+      });
+
+      final liveStreamStatusChangeListener =
+          emitter.on(EventType.onLiveStreamStatusChanged, (data) async {
+        data = data as Map;
+        debugPrint("onLiveStreamStatusChanged: status: ${data['status']}");
+      });
+
+      final liveTranscriptionStatusChangeListener =
+          emitter.on(EventType.onLiveTranscriptionStatus, (data) async {
+        data = data as Map;
+        debugPrint("onLiveTranscriptionStatus: status: ${data['status']}");
+      });
+
+      final cloudRecordingStatusListener =
+          emitter.on(EventType.onCloudRecordingStatus, (data) async {
+        data = data as Map;
+        debugPrint("onCloudRecordingStatus: status: ${data['status']}");
+        if (data['status'] == RecordingStatus.Start) {
+          isRecordingStarted.value = true;
+        } else {
+          isRecordingStarted.value = false;
+        }
+      });
+
+      final inviteByPhoneStatusListener =
+          emitter.on(EventType.onInviteByPhoneStatus, (data) async {
+        data = data as Map;
+        debugPrint(
+            "onInviteByPhoneStatus: status: ${data['status']}, reason: ${data['reason']}");
+      });
+
+      final multiCameraStreamStatusChangedListener =
+          emitter.on(EventType.onMultiCameraStreamStatusChanged, (data) async {
+        data = data as Map;
+        ZoomVideoSdkUser? changedUser =
+            ZoomVideoSdkUser.fromJson(jsonDecode(data['changedUser']));
+        var status = data['status'];
+        users.value.map((user) => {
+              if (changedUser.userId == user.userId)
+                {
+                  if (status == MultiCameraStreamStatus.Joined)
+                    {user.hasMultiCamera = true}
+                  else if (status == MultiCameraStreamStatus.Left)
+                    {user.hasMultiCamera = false}
+                }
+            });
+      });
+
       final requireSystemPermission =
           emitter.on(EventType.onRequireSystemPermission, (data) async {
         data = data as Map;
+        ZoomVideoSdkUser? changedUser =
+            ZoomVideoSdkUser.fromJson(jsonDecode(data['changedUser']));
         var permissionType = data['permissionType'];
         switch (permissionType) {
           case SystemPermissionType.Camera:
@@ -414,13 +513,14 @@ class _CallScreenState extends State<CallScreen> {
         );
         if (errorType == Errors.SessionJoinFailed) {
           Timer(
-            const Duration(milliseconds: 1000),
-            () => Navigator.pushNamed(
-              context,
-              "Join",
-              arguments: JoinArguments(false),
-            ),
-          );
+              const Duration(milliseconds: 1000),
+              () => {
+                    Navigator.pushNamed(
+                      context,
+                      "Join",
+                      arguments: JoinArguments(false),
+                    ),
+                  });
         }
       });
 
@@ -435,8 +535,15 @@ class _CallScreenState extends State<CallScreen> {
             userLeaveListener.cancel(),
             userNameChangedListener.cancel(),
             userShareStatusChangeListener.cancel(),
+            chatNewMessageNotify.cancel(),
+            liveStreamStatusChangeListener.cancel(),
+            cloudRecordingStatusListener.cancel(),
+            inviteByPhoneStatusListener.cancel(),
             eventErrorListener.cancel(),
             commandReceived.cancel(),
+            chatDeleteMessageNotify.cancel(),
+            liveTranscriptionStatusChangeListener.cancel(),
+            multiCameraStreamStatusChangedListener.cancel(),
             requireSystemPermission.cancel(),
           };
     }, [zoom, users.value, chatMessages.value, isMounted]);
@@ -635,7 +742,10 @@ class _CallScreenState extends State<CallScreen> {
               LiveTranscriptionStatus.Start;
       bool canStartLiveTranscription =
           await zoom.liveTranscriptionHelper.canStartLiveTranscription();
+      bool canStartLiveStream =
+          await zoom.liveStreamHelper.canStartLiveStream() == Errors.Success;
       debugPrint(await zoom.liveStreamHelper.canStartLiveStream());
+      bool startLiveStream = false;
       bool isHost = (mySelf != null) ? (await mySelf.getIsHost()) : false;
       List<ListTile> options = [
         ListTile(
@@ -793,7 +903,6 @@ class _CallScreenState extends State<CallScreen> {
                 }));
       }
 
-      // ignore: use_build_context_synchronously
       showDialog(
           context: context,
           builder: (context) {
@@ -825,7 +934,7 @@ class _CallScreenState extends State<CallScreen> {
       if (!isMounted()) return;
       Navigator.pushNamed(
         context,
-        '/join',
+        "Join",
         arguments: JoinArguments(false),
       );
     }
@@ -877,7 +986,6 @@ class _CallScreenState extends State<CallScreen> {
           options.removeAt(1);
           options.insert(0, endSession);
         }
-        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (context) {
@@ -893,7 +1001,6 @@ class _CallScreenState extends State<CallScreen> {
         if (isHost) {
           options.insert(1, endSession);
         }
-        // ignore: use_build_context_synchronously
         showCupertinoModalPopup(
           context: context,
           builder: (context) => CupertinoActionSheet(
@@ -937,7 +1044,7 @@ class _CallScreenState extends State<CallScreen> {
         duration: const Duration(seconds: 3),
         child: VideoView(
           user: fullScreenUser.value,
-          hasMultiCamera: true,
+          hasMultiCamera: false,
           sharing: sharingUser.value == null
               ? false
               : (sharingUser.value?.userId == fullScreenUser.value?.userId),
@@ -964,7 +1071,7 @@ class _CallScreenState extends State<CallScreen> {
               child: Center(
                 child: VideoView(
                   user: users.value[index],
-                  hasMultiCamera: true,
+                  hasMultiCamera: false,
                   sharing: sharingUser.value == null
                       ? false
                       : sharingUser.value?.userId == users.value[index].userId,
@@ -986,7 +1093,7 @@ class _CallScreenState extends State<CallScreen> {
           color: Colors.black,
           child: const Center(
             child: Text(
-              "Connecting..",
+              "Connecting...",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,
