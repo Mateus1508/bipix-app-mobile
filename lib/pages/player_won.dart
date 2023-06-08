@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Rematch extends StatelessWidget {
-  const Rematch({super.key});
+class PlayerWon extends StatelessWidget {
+  const PlayerWon({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -14,13 +14,13 @@ class Rematch extends StatelessWidget {
             SizedBox(
               height: 200,
               width: 200,
-              child: Image.asset('assets/images/tic-tac-toe.png'),
+              child: Image.asset('assets/images/games_logos/tic_tac_toe.png'),
             ),
             const SizedBox(height: 30),
             const Text(
-              'Vamos tentar de novo ?',
+              'VITÓRIAAA',
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 32,
                   fontWeight: FontWeight.bold),
             ),
@@ -40,7 +40,7 @@ class Rematch extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'Revanche',
+                'Permitir revanche',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
