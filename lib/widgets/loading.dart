@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../pages/initial_screen.dart';
+import '../pages/nav_bar.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -9,6 +13,23 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
+  bool loaded = false;
+  @override
+  void initState() {
+    Future.delayed(3.seconds, () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => loaded ? BottomBar() : InitialScreen()));
+    });
+    Future(() async {
+      String? userId =
+          (await SharedPreferences.getInstance()).getString("USER_ID");
+      if (userId != null) loaded = true;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
