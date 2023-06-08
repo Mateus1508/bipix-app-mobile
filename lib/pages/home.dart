@@ -26,7 +26,6 @@ class _HomeState extends State<Home> {
 
   List<String> navigationItems = [
     "Jogos Bipix",
-    "Minha carteira",
     "Ponto de recarga"
   ];
   void _loadRewardedAd() {
