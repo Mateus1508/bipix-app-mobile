@@ -76,8 +76,8 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
       darkTheme: darkTheme(),
-      home: SafeArea(
-        child: MyApp(),
+      home: const SafeArea(
+        child: InitialScreen(),
       ),
       routes: routes,
     );
