@@ -25,13 +25,19 @@ class GameRenderer extends StatefulWidget {
 
 class _GameRendererState extends State<GameRenderer> {
   GameLogic gameLogic = GameLogic();
+  bool playerTurn = true; // Adicionado
+
+  void switchPlayer() {
+    // Adicionado
+    setState(() {
+      playerTurn = !playerTurn;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final boardSize = MediaQuery.of(context).size.width * 0.9;
     final squareSize = boardSize / 8;
-
-    bool playerTurn = true;
 
     return Scaffold(
       appBar: AppBar(
@@ -82,95 +88,94 @@ class _GameRendererState extends State<GameRenderer> {
                       final color =
                           isDarkSquare ? Colors.black : Colors.brown[300];
 
-                      //   if (gameLogic.board[row][col] == 1) {
-                      //     return GestureDetector(
-                      //       onTap: () {
-                      //         if (row < 7 && col < 7) {
-                      //           if (gameLogic.isValidMove(
-                      //               col, row, col + 1, row + 1, 1)) {
-                      //             setState(() {
-                      //               gameLogic.makeMove(
-                      //                   col, row, col + 1, row + 1, 1);
-                      //             });
-                      //           }
-                      //         }
-                      //       },
-                      //       child: Container(
-                      //         color: color,
-                      //         width: constraints.maxWidth / 8,
-                      //         height: constraints.maxWidth / 8,
-                      //         child: Icon(Icons.circle, color: Colors.white),
-                      //       ),
-                      //     );
-                      //   }
+                      if (gameLogic.board[row][col] == 1) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (row < 7) {
+                              if (gameLogic.canCapture(col, row, 1)) {
+                                setState(() {
+                                  gameLogic.captureSequence(col, row, 1);
+                                  switchPlayer(); // Adicionado
+                                });
+                              } else {
+                                if (col < 7 &&
+                                    gameLogic.isValidMove(
+                                        col, row, col + 1, row + 1, 1)) {
+                                  setState(() {
+                                    gameLogic.makeMove(
+                                        col, row, col + 1, row + 1, 1);
+                                    switchPlayer(); // Adicionado
+                                  });
+                                }
+                                if (col > 0 &&
+                                    gameLogic.isValidMove(
+                                        col, row, col - 1, row + 1, 1)) {
+                                  setState(() {
+                                    gameLogic.makeMove(
+                                        col, row, col - 1, row + 1, 1);
+                                    switchPlayer(); // Adicionado
+                                  });
+                                }
+                              }
+                            }
+                          },
+                          child: Container(
+                            color: color,
+                            width: constraints.maxWidth / 8,
+                            height: constraints.maxWidth / 8,
+                            child: Image.asset(
+                                'assets/images/checkers/icon_green.png'),
+                          ),
+                        );
+                      }
 
-                      //   if (gameLogic.board[row][col] == 2) {
-                      //     return GestureDetector(
-                      //       onTap: () {
-                      //         if (row > 0 && col < 7) {
-                      //           if (gameLogic.isValidMove(
-                      //               col, row, col + 1, row - 1, 2)) {
-                      //             setState(() {
-                      //               gameLogic.makeMove(
-                      //                   col, row, col + 1, row - 1, 2);
-                      //             });
-                      //           }
-                      //         }
-                      //       },
-                      //       child: Container(
+                      if (gameLogic.board[row][col] == 2) {
+                        return GestureDetector(
+                          onTap: () {
+                            print('Peça azul pressionada');
+                            if (row < 7) {
+                              if (gameLogic.canCapture(col, row, 2)) {
+                                setState(() {
+                                  gameLogic.captureSequence(col, row, 2);
+                                  switchPlayer(); // Adicionado
+                                });
+                              } else {
+                                if (col < 7 &&
+                                    gameLogic.isValidMove(
+                                        col, row, col + 1, row - 1, 2)) {
+                                  setState(() {
+                                    gameLogic.makeMove(
+                                        col, row, col + 1, row - 1, 2);
+                                    switchPlayer(); // Adicionado
+                                  });
+                                }
+                                if (col > 0 &&
+                                    gameLogic.isValidMove(
+                                        col, row, col - 1, row - 1, 2)) {
+                                  setState(() {
+                                    gameLogic.makeMove(
+                                        col, row, col - 1, row - 1, 2);
+                                    switchPlayer(); // Adicionado
+                                  });
+                                }
+                              }
+                            }
+                          },
+                          child: Container(
+                            color: color,
+                            width: constraints.maxWidth / 8,
+                            height: constraints.maxWidth / 8,
+                            child: Image.asset(
+                                'assets/images/checkers/icon_blue.png'),
+                          ),
+                        );
+                      }
 
-                      //       if (row < 3 && isDarkSquare) {
-                      //         return GestureDetector(
-                      //           onTap: () {
-                      //             // Verifica e executa o movimento ao clicar na peça
-                      //             if (gameLogic.board[row][col] == 1 &&
-                      //                 gameLogic.isValidMove(
-                      //                     col, row, col + 1, row + 1, 1)) {
-                      //               setState(() {
-                      //                 gameLogic.makeMove(
-                      //                     col, row, col + 1, row + 1, 1);
-                      //               });
-                      //             }
-                      //           },
-                      //           child: Container(
-                      //             color: color,
-                      //             width: constraints.maxWidth / 8,
-                      //             height: constraints.maxWidth / 8,
-                      //             child: Image.asset(
-                      //                 'assets/images/checkers/icon_green.png'),
-                      //           ),
-                      //         );
-                      //       }
-
-                      //       if (row > 4 && isDarkSquare) {
-                      //         return GestureDetector(
-                      //           onTap: () {
-                      //             // Verifica e executa o movimento ao clicar na peça
-                      //             if (gameLogic.board[row][col] == 2 &&
-                      //                 gameLogic.isValidMove(
-                      //                     col, row, col + 1, row - 1, 2)) {
-                      //               setState(() {
-                      //                 gameLogic.makeMove(
-                      //                     col, row, col + 1, row - 1, 2);
-                      //               });
-                      //             }
-                      //           },
-                      //           child: Container(
-                      //             color: color,
-                      //             width: constraints.maxWidth / 8,
-                      //             height: constraints.maxWidth / 8,
-                      //             child: Image.asset(
-                      //                 'assets/images/checkers/icon_blue.png'),
-                      //           ),
-                      //         );
-                      //       }
-
-                      //       return Container(
-
-                      //         color: color,
-                      //         width: constraints.maxWidth / 8,
-                      //         height: constraints.maxWidth / 8,
-                      //       );
+                      return Container(
+                        color: color,
+                        width: constraints.maxWidth / 8,
+                        height: constraints.maxWidth / 8,
+                      );
                     },
                   );
                 },

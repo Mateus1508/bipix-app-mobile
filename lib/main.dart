@@ -1,3 +1,4 @@
+
 import 'package:bipixapp/firebase_options.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/game_page.dart';
@@ -62,7 +63,8 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/payment': (context) => const Payment(),
     '/join': (context) => const JoinScreen(),
     '/call': (context) => const CallScreen(),
-    '/intro': (context) => const IntroScreen()
+    '/intro': (context) => const IntroScreen(),
+    '/damas':(context) => MyApp(),
   };
 
   @override
@@ -73,8 +75,8 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
       darkTheme: darkTheme(),
-      home: const SafeArea(
-        child: IntroScreen(),
+      home:  SafeArea(
+        child:MyApp(),
       ),
       routes: routes,
     );
