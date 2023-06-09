@@ -124,7 +124,7 @@ class _GameRendererState extends State<GameRenderer> {
                             width: constraints.maxWidth / 8,
                             height: constraints.maxWidth / 8,
                             child: Image.asset(
-                                'assets/images/checkers/icon_green.png'),
+                                'assets/images/checkers/icon_brown.png'),
                           ),
                         );
                       }
