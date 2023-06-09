@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bipixapp/models/board.dart';
-import 'package:bipixapp/pages/rematch.dart';
+import 'package:bipixapp/pages/player_lose.dart';
 
 class BoardWidget extends StatefulWidget {
   final Board board;
@@ -27,7 +27,7 @@ class _BoardWidgetState extends State<BoardWidget> {
           // Verifica se há um vencedor e navega para a tela Rematch
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Rematch()),
+            MaterialPageRoute(builder: (context) => const PlayerLose()),
           );
         } else {
           switchPlayer = (switchPlayer == 'X') ? 'O' : 'X';
