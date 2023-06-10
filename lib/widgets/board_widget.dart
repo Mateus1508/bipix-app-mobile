@@ -24,7 +24,7 @@ class _BoardWidgetState extends State<BoardWidget> {
         gameOver = winner.isNotEmpty;
 
         if (gameOver) {
-          // Verifica se há um vencedor e navega para a tela Rematch
+          // Verifica se há um vencedor e navega para a tela playerlose
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const PlayerLose()),
