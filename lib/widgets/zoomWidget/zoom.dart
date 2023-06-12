@@ -24,7 +24,7 @@ class ZoomVideoSdkProvider extends StatelessWidget {
 void main() {
   runApp(
     MaterialApp(
-      title: 'My app', // used by the OS task switcher
+      title: 'My Appp', // used by the OS task switcher
       home: const SafeArea(
         child: ZoomVideoSdkProvider(),
       ),
