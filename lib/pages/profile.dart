@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/profileWidget/profile_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -18,6 +20,16 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   double amount = 400.25;
   File? selectedPhoto;
+
+  Future<String> getUserName(String userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['nome'];
+    } else {
+      throw Exception('Erro ao recuperar o usuário');
+    }
+  }
 
   Future<void> _selectPhoto() async {
     final picker = ImagePicker();
@@ -156,18 +168,38 @@ class _ProfileState extends State<Profile> {
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/editprofile');
-                      },
-                      child: const Text('Editar perfil')),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Compartilhar perfil')),
-                  const SizedBox(width: 10),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/editprofile');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: const Color(0XFF0472E8),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: const Text(
+                        'Editar perfil',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: const Color(0XFF0472E8),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: const Text(
+                        'Compartilhar perfil',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],

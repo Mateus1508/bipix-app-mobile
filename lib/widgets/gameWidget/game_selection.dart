@@ -58,10 +58,12 @@ class _GameSelectionState extends State<GameSelection> {
           scale: currentGame == index ? 1.0 : 0.7,
           duration: const Duration(milliseconds: 300),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 currentGame == index ? gameImages[index].title : "",
-                style: const TextStyle(fontSize: 32, letterSpacing: 4),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 24, letterSpacing: 4),
               ),
               SizedBox(
                 height: 200,
