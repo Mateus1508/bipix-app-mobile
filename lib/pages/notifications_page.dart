@@ -5,12 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsPage extends StatelessWidget {
+  const NotificationsPage({super.key});
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getNotificationsStream() async* {
     String userId = await Webservice.getUserId();
     await for (final query in FirebaseFirestore.instance
         .collection("usuários")
         .doc(userId)
         .collection("notifications")
+        .orderBy("created_at", descending: true)
         .snapshots()) {
       yield query;
     }
@@ -93,7 +96,9 @@ class NotificationWidget extends StatelessWidget {
           if (data.status == "WAITING_ANSWER") ...[
             NotificationButton(
               onTap: () {
-                Webservice.post(function: "answerFriendRequest", body: {
+                String function = "answerFriendRequest";
+                if (data.type == "GAME_INVITE") function = "answerGameInvite";
+                Webservice.post(function: function, body: {
                   "notification": data.toJson(),
                   "answer": true,
                 });
@@ -102,7 +107,9 @@ class NotificationWidget extends StatelessWidget {
             hSpace(10),
             NotificationButton(
               onTap: () {
-                Webservice.post(function: "answerFriendRequest", body: {
+                String function = "answerFriendRequest";
+                if (data.type == "GAME_INVITE") function = "answerGameInvite";
+                Webservice.post(function: function, body: {
                   "notification": data.toJson(),
                   "answer": false,
                 });
@@ -110,14 +117,12 @@ class NotificationWidget extends StatelessWidget {
               invert: true,
             ),
           ],
-          if (data.status == "FRIEND_REQUEST_REFUSED" ||
-              data.status == "FRIEND_REQUEST_ACCEPTED")
+          if (data.status.contains("REFUSED") ||
+              data.status.contains("ACCEPTED"))
             NotificationButton(
               onTap: () {},
-              status: data.status == "FRIEND_REQUEST_REFUSED"
-                  ? "Recusado"
-                  : "Aceito",
-              invert: data.status == "FRIEND_REQUEST_REFUSED",
+              status: data.status.contains("REFUSED") ? "Recusado" : "Aceito",
+              invert: data.status.contains("REFUSED"),
             ),
         ],
       ),
