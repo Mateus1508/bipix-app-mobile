@@ -12,8 +12,10 @@ class SelectFriend extends StatelessWidget {
   final String? nome;
   final String? photo;
   final String id;
+  final void Function() onTap;
 
-  const SelectFriend({Key? key, this.nome, this.photo, required this.id})
+  const SelectFriend(
+      {Key? key, this.nome, this.photo, required this.id, required this.onTap})
       : super(key: key);
 
   @override
@@ -27,49 +29,7 @@ class SelectFriend extends StatelessWidget {
           backgroundColor: const Color(0XFF0472E8),
           padding: const EdgeInsets.all(2),
         ),
-        onPressed: () {
-          showDialog(
-            context: context,
-            useRootNavigator: true,
-            builder: (context) => AlertDialog(
-              title: const Text(
-                'Quer adicionar (nome do amigo) na sua lista de amigos ?',
-                style: TextStyle(fontSize: 14),
-              ),
-              actions: [
-                TextButton(
-                    onPressed: () async {
-                      String userId = await Webservice.getUserId();
-                      final response = await http.post(
-                        Uri.parse('$baseUrl/addFriend'),
-                        headers: {'Content-Type': 'application/json'},
-                        body: jsonEncode({
-                          'userId': userId,
-                          'friendId': id,
-                          'nome': nome,
-                          // '': id,
-                        }),
-                      );
-                      if (kDebugMode) {
-                        print(response.body);
-                      }
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      'Adicionar',
-                      style: TextStyle(color: Color(0XFF0472E8)),
-                    )),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Cancelar',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
+        onPressed: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
