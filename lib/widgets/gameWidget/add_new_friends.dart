@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bipixapp/services/api.dart';
 
+import '../../services/webservice.dart';
 import 'select_friend.dart';
 
 class AddNewFriends extends StatefulWidget {
@@ -116,6 +117,11 @@ class _AddNewFriendsState extends State<AddNewFriends> {
                   photo: user["photo"],
                   nome: nome,
                   id: user["id"] ?? "",
+                  onTap: () => inviteFriendDialog(
+                    photo: user["photo"],
+                    nome: nome!,
+                    id: user["id"],
+                  ),
                 );
               },
             ),
@@ -125,6 +131,56 @@ class _AddNewFriendsState extends State<AddNewFriends> {
               .slideY(begin: 2, end: 0, curve: Curves.easeIn, duration: 500.ms)
               .then(),
       ],
+    );
+  }
+
+  inviteFriendDialog({
+    required String photo,
+    required String nome,
+    required String id,
+  }) {
+    showDialog(
+      context: context,
+      useRootNavigator: true,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Quer adicionar $nome na sua lista de amigos ?',
+          style: TextStyle(fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () async {
+                String userId = await Webservice.getUserId();
+                final response = await http.post(
+                  Uri.parse('$baseUrl/addFriend'),
+                  headers: {'Content-Type': 'application/json'},
+                  body: jsonEncode({
+                    'userId': userId,
+                    'friendId': id,
+                    'nome': nome,
+                    // '': id,
+                  }),
+                );
+                if (kDebugMode) {
+                  print(response.body);
+                }
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Adicionar',
+                style: TextStyle(color: Color(0XFF0472E8)),
+              )),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.red),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
