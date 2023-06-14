@@ -24,10 +24,7 @@ class _HomeState extends State<Home> {
 
   int selectedItem = 0;
 
-  List<String> navigationItems = [
-    "Jogos Bipix",
-    "Ponto de recarga"
-  ];
+  List<String> navigationItems = ["Jogos Bipix", "Ponto de recarga"];
   void _loadRewardedAd() {
     RequestConfiguration configuration = RequestConfiguration(
       testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
@@ -135,39 +132,29 @@ class _HomeState extends State<Home> {
               ),
             )
           : null,
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/backgroundWhite.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 40,
-                width: 500,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: navigationItems.length,
-                  itemBuilder: (context, index) =>
-                      buildNavigation(index, context),
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 40,
+              width: 500,
+              margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade800,
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: navigationItems.length,
+                itemBuilder: (context, index) =>
+                    buildNavigation(index, context),
               ),
-              navigationItemSelected(),
-            ],
-          ),
+            ),
+            navigationItemSelected(),
+          ],
         ),
       ),
       floatingActionButton: _rewardedAd != null
@@ -222,6 +209,7 @@ class _HomeState extends State<Home> {
           navigationItems[index],
           style: const TextStyle(
             color: Colors.white,
+            fontSize: 18,
           ),
         ),
       ),
