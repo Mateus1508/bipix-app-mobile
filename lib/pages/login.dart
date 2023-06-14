@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert';
-import 'package:auth_buttons/auth_buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -23,7 +22,12 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool passToggle = false;
-  late GoogleSignIn _googleSignIn;
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
 
   Future handleLoginUser() async {
     final response = await http.get(Uri.parse('$baseUrl/users'));
@@ -33,16 +37,10 @@ class _LoginState extends State<Login> {
 
   Future<void> _handleGoogleSignIn() async {
     try {
-      final GoogleSignInAccount? googleUser =
-          _googleSignIn.signIn() as GoogleSignInAccount?;
-      if (googleUser != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SignUp()),
-        );
-      }
+      await _googleSignIn.signIn();
+      Navigator.pushNamed(context, '/home');
     } catch (error) {
-      // An error occurred during authentication
+      print(error);
     }
   }
 
@@ -96,8 +94,6 @@ class _LoginState extends State<Login> {
     super.initState();
     _googleSignIn = GoogleSignIn();
   }
-
-  AuthButtonStyle? authButtonStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -251,38 +247,22 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
                     const Text(
                       "Ou entrar com",
                       style: TextStyle(
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GoogleAuthButton(
-                          onPressed: handleGoogleSignIn,
-                          style: const AuthButtonStyle(
-                            buttonType: AuthButtonType.icon,
-                          ),
-                        ),
-                        const SizedBox(width: 30),
-                        FacebookAuthButton(
-                          onPressed: _handleFacebookSignIn,
-                          style: const AuthButtonStyle(
-                            buttonType: AuthButtonType.icon,
-                          ),
-                        ),
-                        const SizedBox(width: 30),
-                        AppleAuthButton(
-                          onPressed: () {},
-                          style: const AuthButtonStyle(
-                            buttonType: AuthButtonType.icon,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 30),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.white,
+                      child: IconButton(
+                        onPressed: _handleGoogleSignIn,
+                        icon: Image.asset(
+                            "assets/images/social_media_icons/google.png"),
+                      ),
                     ),
                   ],
                 ),
