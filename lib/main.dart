@@ -66,6 +66,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/intro': (context) => const IntroScreen(),
     '/damas': (context) => MyApp(),
     '/playerwon': (context) => const PlayerWon(),
+    'loadingapp':(context) => const LoadingApp(),
   };
 
   @override
