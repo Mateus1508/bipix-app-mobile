@@ -1,4 +1,4 @@
-import 'package:bipixapp/pages/notificaitions_page.dart';
+import 'package:bipixapp/pages/notifications_page.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/infoBarWidget/notifications_modal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -161,15 +161,30 @@ class _InfoBarState extends State<InfoBar> {
                           Positioned(
                             right: 20,
                             top: 2,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(50),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NotificationsPage()));
+                                Webservice.post(
+                                  function: "clearNewNotifications",
+                                  body: {
+                                    "userId": await Webservice.getUserId()
+                                  },
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Text(userSnap.data!["new_notifications"]
+                                    .toString()),
                               ),
-                              child: Text(userSnap.data!["new_notifications"]
-                                  .toString()),
                             ),
                           ),
                       ],
