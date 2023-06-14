@@ -13,6 +13,7 @@ import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/themes/theme_constants.dart';
 import 'package:bipixapp/widgets/damas.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
+import 'package:bipixapp/widgets/loading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bipixapp/widgets/zoomWidget/call_screen.dart';
 import 'package:bipixapp/widgets/zoomWidget/intro_screen.dart';
@@ -20,7 +21,6 @@ import 'package:bipixapp/widgets/zoomWidget/join_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'pages/loading_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,7 +77,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       home: const SafeArea(
-        child: InitialScreen(),
+        child: Loading(),
       ),
       routes: routes,
     );
