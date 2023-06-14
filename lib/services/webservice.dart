@@ -26,4 +26,7 @@ class Webservice {
     }
     return response;
   }
+
+  static Future<Response> get(String function) async =>
+      await http.get(Uri.parse("$baseUrl/$function"));
 }

@@ -36,6 +36,7 @@ Future<http.Response> handleSignUp(
       'username': username,
       'email': email,
       'password': hashedPassword,
+      "phrase": "",
     }),
   );
 
