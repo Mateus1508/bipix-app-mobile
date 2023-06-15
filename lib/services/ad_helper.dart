@@ -26,9 +26,9 @@ class AdHelper {
 
   static String get interstitialAdUnitId {
     if (Platform.isAndroid) {
-      return "ca-app-pub-7035408665940003/8361705472";
+      return "ca-app-pub-3940256099942544/1033173712";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-7035408665940003/3300950487";
+      return "ca-app-pub-3940256099942544/4411468910";
     } else {
       throw UnsupportedError("Usupported platform");
     }
@@ -101,6 +101,31 @@ class AdHelper {
         onAdFailedToLoad: (ad, error) {
           ad.dispose();
         },
+      ),
+    );
+  }
+
+  static Future<void> loadInterstistialAd(
+      {required void Function(InterstitialAd ad) onAdLoaded}) async {
+    InterstitialAd.load(
+      adUnitId: interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdShowedFullScreenContent: (ad) {},
+            onAdImpression: (ad) {},
+            onAdFailedToShowFullScreenContent: (ad, err) {
+              ad.dispose();
+            },
+            onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+            },
+            onAdClicked: (ad) {},
+          );
+          onAdLoaded(ad);
+        },
+        onAdFailedToLoad: (LoadAdError error) {},
       ),
     );
   }
