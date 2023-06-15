@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../models/notification.dart';
+import '../../pages/game_page.dart';
 
 class InfoBar extends StatefulWidget implements PreferredSizeWidget {
   const InfoBar({super.key});
@@ -98,6 +99,16 @@ class _InfoBarState extends State<InfoBar> {
             initialData: const {},
             stream: getUserStream(),
             builder: (context, userSnap) {
+              if (userSnap.data!["current_section_id"] != null) {
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GamePage(
+                            sectionId: userSnap.data!["current_section_id"]),
+                      ));
+                });
+              }
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
