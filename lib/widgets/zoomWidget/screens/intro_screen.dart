@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:bipixapp/widgets/zoomWidget/components/intro_image_list.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'components/intro_image_list.dart';
 
-import './components/menu_bar.dart';
+import '../components/menu_bar.dart';
 
 class JoinArguments {
   final bool isJoin;

@@ -27,25 +27,8 @@ void main() async {
   runApp(const MainApp());
 }
 
-class ZoomVideoSdkProvider extends StatelessWidget {
-  const ZoomVideoSdkProvider({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    var zoom = ZoomVideoSdk();
-    InitConfig initConfig = InitConfig(
-      domain: "zoom.us",
-      enableLog: true,
-    );
-    zoom.initSdk(initConfig);
-    return const SafeArea(
-      child: ZoomVideoSdkProvider(),
-    );
-  }
-}
-
 class MainApp extends StatelessWidget with WidgetsBindingObserver {
-  const MainApp({super.key});
+  const MainApp({Key? key});
 
   static Map<String, WidgetBuilder> routes = {
     '/initial': (context) => const InitialScreen(),
@@ -59,9 +42,9 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/pregame': (context) => const PreGame(),
     '/profile': (context) => const Profile(),
     '/payment': (context) => const Payment(),
-    '/join': (context) => const JoinScreen(),
-    '/call': (context) => const CallScreen(),
-    '/intro': (context) => const IntroScreen(),
+    "Join": (context) => const JoinScreen(),
+    "Call": (context) => const CallScreen(),
+    "Intro": (context) => const IntroScreen(),
     '/damas': (context) => MyApp(),
     // '/playerwon': (context) => const PlayerWon(),
     'loadingapp': (context) => const LoadingApp(),
@@ -69,14 +52,19 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    const Zoom = ZoomVideoSdkProvider();
+    var zoom = ZoomVideoSdk();
+    InitConfig initConfig = InitConfig(
+      domain: "zoom.us",
+      enableLog: true,
+    );
+    zoom.initSdk(initConfig);
     return MaterialApp(
       title: "Bipix",
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
       darkTheme: darkTheme(),
       home: const SafeArea(
-        child: Loading(),
+        child: IntroScreen(),
       ),
       routes: routes,
     );

@@ -14,8 +14,8 @@ import 'package:flutter_zoom_videosdk/native/zoom_videosdk_user.dart';
 import 'package:bipixapp/widgets/zoomWidget/utils/jwt.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'video_view.dart';
-import 'comment_list.dart';
+import '../components/video_view.dart';
+import '../components/comment_list.dart';
 import 'intro_screen.dart';
 import 'join_screen.dart';
 
