@@ -1,4 +1,5 @@
 import 'package:bipixapp/firebase_options.dart';
+import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/game_page.dart';
 import 'package:bipixapp/pages/initial_screen.dart';
@@ -66,7 +67,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/intro': (context) => const IntroScreen(),
     '/damas': (context) => MyApp(),
     '/playerwon': (context) => const PlayerWon(),
-    'loadingapp':(context) => const LoadingApp(),
+    'loadingapp': (context) => const LoadingApp(),
   };
 
   @override
@@ -78,7 +79,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       home: const SafeArea(
-        child: Loading(),
+        child: LoadingApp(),
       ),
       routes: routes,
     );

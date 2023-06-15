@@ -1,3 +1,5 @@
+import 'package:bipixapp/widgets/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,7 +8,6 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validatorless/validatorless.dart';
-
 import '../services/api.dart';
 
 class Login extends StatefulWidget {
@@ -21,12 +22,17 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool passToggle = false;
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ],
-  );
+  GoogleSignIn googleSignIn = GoogleSignIn();
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      currentUser = user;
+    });
+  }
 
   Future handleLoginUser() async {
     final response = await http.get(Uri.parse('$baseUrl/users'));
@@ -34,14 +40,36 @@ class _LoginState extends State<Login> {
     return response.body;
   }
 
-  Future<void> _handleGoogleSignIn() async {
+  Future<UserCredential> _handleGoogleSignIn() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    if (kDebugMode) {
+      print(credential);
+    }
+
+    if (currentUser != null) {
+      Navigator.pushNamed(context, '/home');
+    }
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  /* Future<void> _handleGoogleSignIn() async {
     try {
-      await _googleSignIn.signIn();
+
+      final FirebaseUser user = authResult.user;
+
       Navigator.pushNamed(context, '/home');
     } catch (error) {
       print(error);
     }
-  }
+  } */
 
   Future<Object> autenticarUsuario(String email, String senha) async {
     final response = await http.post(
@@ -86,12 +114,6 @@ class _LoginState extends State<Login> {
 
   void handleGoogleSignIn() {
     _handleGoogleSignIn();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _googleSignIn = GoogleSignIn();
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:bipixapp/widgets/profileWidget/settings_modal_bottom.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,6 +52,7 @@ class ProfileBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           onPressed: () async {
             _logout(context);
+            await FirebaseAuth.instance.signOut();
           },
           icon: const Icon(Icons.logout),
         ),
