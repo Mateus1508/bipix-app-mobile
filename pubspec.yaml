@@ -36,7 +36,16 @@ dependencies:
   events_emitter: ^0.5.2
   permission_handler: ^10.2.0
   google_fonts: ^4.0.3
+  flutter_launcher_icons: ^0.13.1
 
+
+flutter_icons:
+  image_path: "assets/app_icon/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#0472E8"
+  adaptive_icon_foreground: "assets/app_icon/icon_android.png"
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +61,8 @@ flutter:
     - assets/images/checkers/
     - assets/images/payment/
     - assets/images/social_media_icons/
+    - assets/app_icon/
+    
     
 
    
