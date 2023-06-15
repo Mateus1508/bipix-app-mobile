@@ -40,38 +40,6 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Stack(
-                    children: <Widget>[
-                      Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF454545),
-                        ),
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Image.asset('assets/images/bipixLogo.png'),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 3),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          shape: BoxShape.rectangle,
-                          color: Color(0xFF3E3838),
-                        ),
-                        child: const Text(
-                          "Editar foto",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   ConstrainedBox(
                     constraints: const BoxConstraints(
