@@ -56,22 +56,6 @@ class AdHelper {
     return _appOpenAd != null;
   }
 
-  void loadAppOpenAd() async {
-    await updateConfigurations();
-    AppOpenAd.load(
-      adUnitId: appOpenAdUnitId,
-      orientation: AppOpenAd.orientationPortrait,
-      request: const AdRequest(),
-      adLoadCallback: AppOpenAdLoadCallback(
-        onAdLoaded: (ad) {
-          _appOpenLoadTime = DateTime.now();
-          _appOpenAd = ad;
-        },
-        onAdFailedToLoad: (error) {},
-      ),
-    );
-  }
-
   Future<void> loadRewardedAd({
     required final void Function(RewardedAd ad) onLoaded,
   }) async {
@@ -98,6 +82,41 @@ class AdHelper {
           onLoaded(ad);
         },
         onAdFailedToLoad: (err) {},
+      ),
+    );
+  }
+
+  static Future<BannerAd> loadBanner({
+    required void Function(Ad ad) onAdLoaded,
+  }) async {
+    await updateConfigurations();
+    return BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          onAdLoaded(ad);
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+  }
+
+  void loadAppOpenAd() async {
+    await updateConfigurations();
+    AppOpenAd.load(
+      adUnitId: appOpenAdUnitId,
+      orientation: AppOpenAd.orientationPortrait,
+      request: const AdRequest(),
+      adLoadCallback: AppOpenAdLoadCallback(
+        onAdLoaded: (ad) {
+          _appOpenLoadTime = DateTime.now();
+          _appOpenAd = ad;
+        },
+        onAdFailedToLoad: (error) {},
       ),
     );
   }
