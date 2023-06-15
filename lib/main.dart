@@ -10,6 +10,7 @@ import 'package:bipixapp/pages/profile.dart';
 import 'package:bipixapp/pages/player_lose.dart';
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
+import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/themes/theme_constants.dart';
 import 'package:bipixapp/widgets/damas.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
@@ -20,7 +21,6 @@ import 'package:bipixapp/widgets/zoomWidget/join_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'pages/loading_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +46,7 @@ class ZoomVideoSdkProvider extends StatelessWidget {
   }
 }
 
-class MainApp extends StatelessWidget with WidgetsBindingObserver {
+class MainApp extends StatefulWidget with WidgetsBindingObserver {
   const MainApp({super.key});
 
   static Map<String, WidgetBuilder> routes = {
@@ -69,6 +69,23 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
   };
 
   @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  late AppLifecycleReactor _appLifecycleReactor;
+
+  @override
+  initState() {
+    AdHelper appOpenAdManager = AdHelper()..loadAppOpenAd();
+    _appLifecycleReactor =
+        AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
+    _appLifecycleReactor.listenToAppStateChanges();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     const Zoom = ZoomVideoSdkProvider();
     return MaterialApp(
@@ -79,7 +96,7 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
       home: const SafeArea(
         child: InitialScreen(),
       ),
-      routes: routes,
+      routes: MainApp.routes,
     );
   }
 }
