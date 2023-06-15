@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "700616056019-bnglra990t1jj61pkdrqubs39b5t1mr0.apps.googleusercontent.com",
+          "client_id": "700616056019-ud7uku54kuabppk2i0u9241hsq7rujia.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.mateusbelmonte.bipixapp",
+            "certificate_hash": "ebdf6af2181f4596c9c90e9ff9afde30fbd34deb"
+          }
+        },
+        {
+          "client_id": "700616056019-tr08eli4agiqe6ipo15g9flnd3scon1b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

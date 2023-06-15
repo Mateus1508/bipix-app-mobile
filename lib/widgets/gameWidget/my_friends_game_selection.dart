@@ -5,14 +5,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../models/games_list.dart';
 import '../../services/ad_helper.dart';
 
-class GameSelection extends StatefulWidget {
-  const GameSelection({super.key});
+class MyFriendsGameSelection extends StatefulWidget {
+  const MyFriendsGameSelection({super.key});
 
   @override
-  State<GameSelection> createState() => _GameSelectionState();
+  State<MyFriendsGameSelection> createState() => _MyFriendsGameSelectionState();
 }
 
-class _GameSelectionState extends State<GameSelection> {
+class _MyFriendsGameSelectionState extends State<MyFriendsGameSelection> {
   late PageController _pageController;
   int currentGame = 1;
 
@@ -66,48 +66,13 @@ class _GameSelectionState extends State<GameSelection> {
                 style: const TextStyle(fontSize: 24, letterSpacing: 4),
               ),
               SizedBox(
-                height: 200,
-                width: 200,
+                height: 150,
+                width: 150,
                 child: Image.asset(gameImages[index].path),
               ),
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                decoration: const BoxDecoration(
-                    color: Colors.amber,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: currentGame == index
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelectBetValue(
-                                          index: currentGame,
-                                        )),
-                              );
-                            },
-                            child: const Text(
-                              "Jogar",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 32),
-                            ),
-                          ),
-                          SizedBox(
-                            child: Image.asset('assets/images/vector.png'),
-                          ),
-                        ],
-                      )
-                    : null,
-              ),
-              const SizedBox(height: 10),
               Text(currentGame == index ? "Toque para jogar" : "")
                   .animate(onPlay: (controller) => controller.repeat())
                   .fadeIn(begin: 1.1, duration: 1000.ms, curve: Curves.easeIn)

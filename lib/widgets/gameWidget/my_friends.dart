@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bipixapp/widgets/gameWidget/game_selection.dart';
+import 'package:bipixapp/widgets/gameWidget/my_friends_game_selection.dart';
 import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
 import 'package:bipixapp/widgets/gameWidget/select_new_friend.dart';
 import 'package:flutter/foundation.dart';
@@ -147,8 +149,13 @@ class _MyfriendsState extends State<Myfriends> {
       useRootNavigator: true,
       builder: (context) => AlertDialog(
         title: Text(
-          'Quer convidar $nome para jogar?',
-          style: TextStyle(fontSize: 14),
+          'Escolha um jogo para jogar com $nome',
+          style: TextStyle(fontSize: 16),
+        ),
+        content: Container(
+          width: 200,
+          height: 200,
+          child: MyFriendsGameSelection(),
         ),
         actions: [
           TextButton(
