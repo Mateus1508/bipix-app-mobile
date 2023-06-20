@@ -57,7 +57,7 @@ class _MyfriendsState extends State<Myfriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        return (user["nome"] as String).contains(searchQuery);
+        return (user["name"] as String).contains(searchQuery);
       }).toList();
     } else {
       filteredUsers = users;
@@ -122,11 +122,11 @@ class _MyfriendsState extends State<Myfriends> {
               final user = filteredUsers[index];
 
               return SelectFriend(
-                nome: user["nome"],
+                name: user["name"],
                 id: user["id"],
                 onTap: () => inviteFriendDialog(
                   friendId: user["id"],
-                  nome: user["nome"],
+                  name: user["name"],
                 ),
               );
             },
@@ -142,14 +142,14 @@ class _MyfriendsState extends State<Myfriends> {
 
   inviteFriendDialog({
     required String friendId,
-    required String nome,
+    required String name,
   }) {
     showDialog(
       context: context,
       useRootNavigator: true,
       builder: (context) => AlertDialog(
         title: Text(
-          'Escolha um jogo para jogar com $nome',
+          'Escolha um jogo para jogar com $name',
           style: TextStyle(fontSize: 16),
         ),
         content: Container(

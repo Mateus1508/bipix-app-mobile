@@ -10,7 +10,7 @@ class NotificationsPage extends StatelessWidget {
   Stream<QuerySnapshot<Map<String, dynamic>>> getNotificationsStream() async* {
     String userId = await Webservice.getUserId();
     await for (final query in FirebaseFirestore.instance
-        .collection("usuários")
+        .collection("users")
         .doc(userId)
         .collection("notifications")
         .orderBy("created_at", descending: true)
