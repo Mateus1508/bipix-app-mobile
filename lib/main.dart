@@ -1,5 +1,7 @@
 import 'package:bipixapp/firebase_options.dart';
+import 'package:bipixapp/pages/call_page.dart';
 import 'package:bipixapp/pages/loading_app.dart';
+import 'package:bipixapp/pages/login_call.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
@@ -13,35 +15,15 @@ import 'package:bipixapp/widgets/damas.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
 import 'package:bipixapp/widgets/loading.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bipixapp/widgets/zoomWidget/call_screen.dart';
-import 'package:bipixapp/widgets/zoomWidget/intro_screen.dart';
-import 'package:bipixapp/widgets/zoomWidget/join_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await MobileAds.instance.initialize();
   runApp(const MainApp());
-}
-
-class ZoomVideoSdkProvider extends StatelessWidget {
-  const ZoomVideoSdkProvider({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    var zoom = ZoomVideoSdk();
-    InitConfig initConfig = InitConfig(
-      domain: "zoom.us",
-      enableLog: true,
-    );
-    zoom.initSdk(initConfig);
-    return const SafeArea(
-      child: ZoomVideoSdkProvider(),
-    );
-  }
 }
 
 class MainApp extends StatelessWidget with WidgetsBindingObserver {
@@ -59,25 +41,25 @@ class MainApp extends StatelessWidget with WidgetsBindingObserver {
     '/pregame': (context) => const PreGame(),
     '/profile': (context) => const Profile(),
     '/payment': (context) => const Payment(),
-    '/join': (context) => const JoinScreen(),
-    '/call': (context) => const CallScreen(),
-    '/intro': (context) => const IntroScreen(),
     '/damas': (context) => MyApp(),
     // '/playerwon': (context) => const PlayerWon(),
-    'loadingapp': (context) => const LoadingApp(),
+    '/loadingapp': (context) => const LoadingApp(),
+    '/logincall': (context) => const LoginCall(),
+    '/call': (context) => const CallPage(
+          callID: '',
+          currentSectionID: '',
+        ),
+    '/logincall': (context) => const LoginCall()
   };
 
   @override
   Widget build(BuildContext context) {
-    const Zoom = ZoomVideoSdkProvider();
     return MaterialApp(
       title: "Bipix",
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
       darkTheme: darkTheme(),
-      home: const SafeArea(
-        child: Loading(),
-      ),
+      home: const SafeArea(child: LoadingApp()),
       routes: routes,
     );
   }
