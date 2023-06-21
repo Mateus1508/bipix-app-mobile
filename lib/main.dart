@@ -1,19 +1,18 @@
 import 'package:bipixapp/firebase_options.dart';
+import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/payment.dart';
-import 'package:bipixapp/pages/game_page.dart';
 import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
 import 'package:bipixapp/pages/login.dart';
-import 'package:bipixapp/pages/player_won.dart';
 import 'package:bipixapp/pages/pre_game.dart';
 import 'package:bipixapp/pages/profile.dart';
-import 'package:bipixapp/pages/player_lose.dart';
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/themes/theme_constants.dart';
 import 'package:bipixapp/widgets/damas.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
+import 'package:bipixapp/widgets/loading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bipixapp/widgets/zoomWidget/call_screen.dart';
 import 'package:bipixapp/widgets/zoomWidget/intro_screen.dart';
@@ -56,8 +55,8 @@ class MainApp extends StatefulWidget with WidgetsBindingObserver {
     '/home': (context) => const BottomBar(),
     '/editprofile': (context) => const EditProfile(),
     '/selectbet': (context) => const SelectBetValue(),
-    '/playerlose': (context) => const PlayerLose(),
-    '/velha': (context) => const GamePage(),
+    // '/playerlose': (context) => const PlayerLose(),
+    // '/velha': (context) => const GamePage(),
     '/pregame': (context) => const PreGame(),
     '/profile': (context) => const Profile(),
     '/payment': (context) => const Payment(),
@@ -65,7 +64,8 @@ class MainApp extends StatefulWidget with WidgetsBindingObserver {
     '/call': (context) => const CallScreen(),
     '/intro': (context) => const IntroScreen(),
     '/damas': (context) => MyApp(),
-    '/playerwon': (context) => const PlayerWon(),
+    // '/playerwon': (context) => const PlayerWon(),
+    'loadingapp': (context) => const LoadingApp(),
   };
 
   @override
@@ -94,7 +94,7 @@ class _MainAppState extends State<MainApp> {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       home: const SafeArea(
-        child: InitialScreen(),
+        child: LoadingApp(),
       ),
       routes: MainApp.routes,
     );

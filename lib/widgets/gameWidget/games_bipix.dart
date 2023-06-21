@@ -12,11 +12,8 @@ class GamesBipix extends StatefulWidget {
 
 class _GamesBipixState extends State<GamesBipix> {
   int selectedMode = 0;
-  List<String> gameModeOptions = [
-    "Conhecer pessoas",
-    "Jogar com amigos",
-    "Amigos"
-  ];
+
+  List<String> gameModeOptions = ["Conhecer", "Adicionar", "Amigos"];
 
   navigationGameModeOption() {
     if (selectedMode == 0) {
@@ -82,6 +79,7 @@ class _GamesBipixState extends State<GamesBipix> {
           gameModeOptions[index],
           style: const TextStyle(
             color: Colors.white,
+            fontSize: 16,
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bipixapp/services/api.dart';
 
+import '../../services/webservice.dart';
 import 'select_friend.dart';
 
 class AddNewFriends extends StatefulWidget {
@@ -48,8 +49,8 @@ class _AddNewFriendsState extends State<AddNewFriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        final nome = user['nome'] as String?;
-        return nome?.toLowerCase().contains(searchQuery) ?? false;
+        final name = user['name'] as String?;
+        return name?.toLowerCase().contains(searchQuery) ?? false;
       }).toList();
     }
 
@@ -111,11 +112,16 @@ class _AddNewFriendsState extends State<AddNewFriends> {
               itemCount: filteredUsers.length,
               itemBuilder: (context, index) {
                 final user = filteredUsers[index];
-                final nome = user['nome'] as String?;
+                final name = user['name'] as String?;
                 return SelectFriend(
                   photo: user["photo"],
-                  nome: nome,
+                  name: name,
                   id: user["id"] ?? "",
+                  onTap: () => inviteFriendDialog(
+                    photo: user["photo"],
+                    name: name!,
+                    id: user["id"],
+                  ),
                 );
               },
             ),
@@ -125,6 +131,56 @@ class _AddNewFriendsState extends State<AddNewFriends> {
               .slideY(begin: 2, end: 0, curve: Curves.easeIn, duration: 500.ms)
               .then(),
       ],
+    );
+  }
+
+  inviteFriendDialog({
+    required String photo,
+    required String name,
+    required String id,
+  }) {
+    showDialog(
+      context: context,
+      useRootNavigator: true,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Quer adicionar $name na sua lista de amigos ?',
+          style: TextStyle(fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () async {
+                String userId = await Webservice.getUserId();
+                final response = await http.post(
+                  Uri.parse('$baseUrl/addFriend'),
+                  headers: {'Content-Type': 'application/json'},
+                  body: jsonEncode({
+                    'userId': userId,
+                    'friendId': id,
+                    'name': name,
+                    // '': id,
+                  }),
+                );
+                if (kDebugMode) {
+                  print(response.body);
+                }
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Adicionar',
+                style: TextStyle(color: Color(0XFF0472E8)),
+              )),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.red),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

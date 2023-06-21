@@ -1,13 +1,17 @@
 import 'dart:convert';
 
+import 'package:bipixapp/widgets/gameWidget/game_selection.dart';
+import 'package:bipixapp/widgets/gameWidget/my_friends_game_selection.dart';
 import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
 import 'package:bipixapp/widgets/gameWidget/select_new_friend.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 import '../../services/api.dart';
+import '../../services/webservice.dart';
 
 class Myfriends extends StatefulWidget {
   const Myfriends({Key? key}) : super(key: key);
@@ -27,7 +31,8 @@ class _MyfriendsState extends State<Myfriends> {
   }
 
   Future<void> fetchUsers() async {
-    final response = await http.get(Uri.parse('$baseUrl/listfriends'));
+    final Response response =
+        await Webservice.get("listFriends/${await Webservice.getUserId()}");
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
@@ -52,11 +57,10 @@ class _MyfriendsState extends State<Myfriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        final friends = user['friends'].value as String?;
-        return friends?.toLowerCase().contains(searchQuery) ?? false;
+        return (user["name"] as String).contains(searchQuery);
       }).toList();
     } else {
-      filteredUsers = users.map((user) => user['friends']).toList();
+      filteredUsers = users;
     }
 
     return Column(
@@ -116,10 +120,14 @@ class _MyfriendsState extends State<Myfriends> {
             itemCount: filteredUsers.length,
             itemBuilder: (context, index) {
               final user = filteredUsers[index];
-              final friends = user['friends'].nome;
+
               return SelectFriend(
-                nome: friends,
-                id: user.friends['id'] ?? "",
+                name: user["name"],
+                id: user["id"],
+                onTap: () => inviteFriendDialog(
+                  friendId: user["id"],
+                  name: user["name"],
+                ),
               );
             },
           ),
@@ -129,6 +137,58 @@ class _MyfriendsState extends State<Myfriends> {
             .slideY(begin: 2, end: 0, curve: Curves.easeIn, duration: 500.ms)
             .then(),
       ],
+    );
+  }
+
+  inviteFriendDialog({
+    required String friendId,
+    required String name,
+  }) {
+    showDialog(
+      context: context,
+      useRootNavigator: true,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Escolha um jogo para jogar com $name',
+          style: TextStyle(fontSize: 16),
+        ),
+        content: Container(
+          width: 200,
+          height: 200,
+          child: MyFriendsGameSelection(),
+        ),
+        actions: [
+          TextButton(
+              onPressed: () async {
+                String userId = await Webservice.getUserId();
+                final response = await http.post(
+                  Uri.parse('$baseUrl/inviteFriend'),
+                  headers: {'Content-Type': 'application/json'},
+                  body: jsonEncode({
+                    'userId': userId,
+                    'friendId': friendId,
+                  }),
+                );
+                if (kDebugMode) {
+                  print(response.body);
+                }
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Convidar',
+                style: TextStyle(color: Color(0XFF0472E8)),
+              )),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.red),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

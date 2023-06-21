@@ -79,18 +79,34 @@ class _PaymentState extends State<Payment> {
                 const SizedBox(
                   height: 30,
                 ),
-                Container(
-                  constraints:
-                      const BoxConstraints(minWidth: 100, maxWidth: 240),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const BuyCoins()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    backgroundColor:
+                        Colors.amber.shade600, // background (button) color
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "Meu saldo",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFF373737),
+                      Container(
+                        margin: const EdgeInsets.only(right: 15),
+                        padding: const EdgeInsets.all(5),
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
                         ),
+                        child: Image.asset('assets/images/payment/crown.png'),
                       ),
                       const SizedBox(height: 5),
                       StreamBuilder(
@@ -113,26 +129,20 @@ class _PaymentState extends State<Payment> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const BuyCoins()),
-                      );
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 30),
+                      padding: const EdgeInsets.all(15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       backgroundColor:
-                          Colors.amber.shade600, // background (button) color
+                          Colors.blue.shade800, // background (button) color
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
                           margin: const EdgeInsets.only(right: 15),
@@ -142,12 +152,11 @@ class _PaymentState extends State<Payment> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(50),
                           ),
-                          child: Image.asset('assets/images/payment/crown.png'),
-                        ),
-                        const Text(
-                          'Comprar moedas',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+                          child: const Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.blue,
+                            size: 30,
+                          ),
                         ),
                       ],
                     )),

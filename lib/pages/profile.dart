@@ -1,11 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/profileWidget/profile_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api.dart';
 
 class Profile extends StatefulWidget {
@@ -18,6 +20,16 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   double amount = 400.25;
   File? selectedPhoto;
+
+  Future<String> getUserName(String userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['name'];
+    } else {
+      throw Exception('Erro ao recuperar o usuário');
+    }
+  }
 
   Future<void> _selectPhoto() async {
     final picker = ImagePicker();
@@ -54,6 +66,42 @@ class _ProfileState extends State<Profile> {
         print('Erro ao enviar a foto: $e');
       }
     }
+  }
+
+  Future<void> fetchUsername(String userId) async {
+    print('Fetching username for user: $userId');
+
+    final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
+
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      setState(() {
+        username = jsonData['username'];
+      });
+      print('Username fetched successfully: $username');
+    } else {
+      // Se a chamada à API falhar, definimos o username como '@bipix.user'
+      print('API call failed. Status code: ${response.statusCode}');
+      setState(() {
+        username = '@bipix.user';
+      });
+      throw Exception('Falha ao carregar o nome do usuário');
+    }
+  }
+
+  Future<String> getUserId() async {
+    return Webservice.getUserId();
+  }
+
+  String username = 'Carregando...';
+  @override
+  void initState() {
+    super.initState();
+    getUserId().then((userId) {
+      fetchUsername(userId);
+    }).catchError((error) {
+      print('Error in initState: $error');
+    });
   }
 
   @override
@@ -122,7 +170,7 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
                           "Bipix",
                           style: TextStyle(
@@ -133,7 +181,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          "@bipix.user",
+                          "@" + username,
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -156,18 +204,38 @@ class _ProfileState extends State<Profile> {
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/editprofile');
-                      },
-                      child: const Text('Editar perfil')),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Compartilhar perfil')),
-                  const SizedBox(width: 10),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/editprofile');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: const Color(0XFF0472E8),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: const Text(
+                        'Editar perfil',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: const Color(0XFF0472E8),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: const Text(
+                        'Compartilhar perfil',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],

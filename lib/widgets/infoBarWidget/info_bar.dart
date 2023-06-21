@@ -1,4 +1,4 @@
-import 'package:bipixapp/pages/notificaitions_page.dart';
+import 'package:bipixapp/pages/notifications_page.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/infoBarWidget/notifications_modal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../models/notification.dart';
+import '../../pages/game_page.dart';
 
 class InfoBar extends StatefulWidget implements PreferredSizeWidget {
   const InfoBar({super.key});
@@ -78,7 +79,7 @@ class _InfoBarState extends State<InfoBar> {
   Stream<Map<String, dynamic>> getUserStream() async* {
     String userId = await Webservice.getUserId();
     await for (final doc in FirebaseFirestore.instance
-        .collection("usuários")
+        .collection("users")
         .doc(userId)
         .snapshots()) {
       yield doc.data() ?? {};
@@ -98,6 +99,16 @@ class _InfoBarState extends State<InfoBar> {
             initialData: const {},
             stream: getUserStream(),
             builder: (context, userSnap) {
+              if (userSnap.data!["current_section_id"] != null) {
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GamePage(
+                            sectionId: userSnap.data!["current_section_id"]),
+                      ));
+                });
+              }
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -161,15 +172,30 @@ class _InfoBarState extends State<InfoBar> {
                           Positioned(
                             right: 20,
                             top: 2,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(50),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NotificationsPage()));
+                                Webservice.post(
+                                  function: "clearNewNotifications",
+                                  body: {
+                                    "userId": await Webservice.getUserId()
+                                  },
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Text(userSnap.data!["new_notifications"]
+                                    .toString()),
                               ),
-                              child: Text(userSnap.data!["new_notifications"]
-                                  .toString()),
                             ),
                           ),
                       ],

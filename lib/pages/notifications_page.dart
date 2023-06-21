@@ -5,12 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsPage extends StatelessWidget {
+  const NotificationsPage({super.key});
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getNotificationsStream() async* {
     String userId = await Webservice.getUserId();
     await for (final query in FirebaseFirestore.instance
-        .collection("usuários")
+        .collection("users")
         .doc(userId)
         .collection("notifications")
+        .orderBy("created_at", descending: true)
         .snapshots()) {
       yield query;
     }
@@ -52,74 +55,78 @@ class NotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: maxWidth(context),
-      height: 75,
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: getColors(context).primaryContainer),
-        ),
-      ),
-      child: Row(
-        children: [
-          Avatar(),
-          hSpace(5),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data.title,
-                  style: getStyles(context).titleSmall?.copyWith(
-                        color: getColors(context).onBackground,
-                      ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.only(left: 4, top: 3, right: 5),
-                  child: Text(
-                    data.content,
-                    style: getStyles(context).displaySmall?.copyWith(
-                          color: getColors(context).secondaryContainer,
-                          fontSize: 13,
-                        ),
-                    maxLines: 2,
-                  ),
-                ),
-              ],
-            ),
+    return SingleChildScrollView(
+      child: Container(
+        width: maxWidth(context),
+        height: 75,
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: getColors(context).primaryContainer),
           ),
-          if (data.status == "WAITING_ANSWER") ...[
-            NotificationButton(
-              onTap: () {
-                Webservice.post(function: "answerFriendRequest", body: {
-                  "notification": data.toJson(),
-                  "answer": true,
-                });
-              },
+        ),
+        child: Row(
+          children: [
+            Avatar(),
+            hSpace(5),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data.title,
+                    style: getStyles(context).titleSmall?.copyWith(
+                          color: getColors(context).onBackground,
+                        ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(left: 4, top: 3, right: 5),
+                    child: Text(
+                      data.content,
+                      style: getStyles(context).displaySmall?.copyWith(
+                            color: getColors(context).secondaryContainer,
+                            fontSize: 13,
+                          ),
+                      maxLines: 2,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            hSpace(10),
-            NotificationButton(
-              onTap: () {
-                Webservice.post(function: "answerFriendRequest", body: {
-                  "notification": data.toJson(),
-                  "answer": false,
-                });
-              },
-              invert: true,
-            ),
+            if (data.status == "WAITING_ANSWER") ...[
+              NotificationButton(
+                onTap: () {
+                  String function = "answerFriendRequest";
+                  if (data.type == "GAME_INVITE") function = "answerGameInvite";
+                  Webservice.post(function: function, body: {
+                    "notification": data.toJson(),
+                    "answer": true,
+                  });
+                },
+              ),
+              hSpace(10),
+              NotificationButton(
+                onTap: () {
+                  String function = "answerFriendRequest";
+                  if (data.type == "GAME_INVITE") function = "answerGameInvite";
+                  Webservice.post(function: function, body: {
+                    "notification": data.toJson(),
+                    "answer": false,
+                  });
+                },
+                invert: true,
+              ),
+            ],
+            if (data.status.contains("REFUSED") ||
+                data.status.contains("ACCEPTED"))
+              NotificationButton(
+                onTap: () {},
+                status: data.status.contains("REFUSED") ? "Recusado" : "Aceito",
+                invert: data.status.contains("REFUSED"),
+              ),
           ],
-          if (data.status == "FRIEND_REQUEST_REFUSED" ||
-              data.status == "FRIEND_REQUEST_ACCEPTED")
-            NotificationButton(
-              onTap: () {},
-              status: data.status == "FRIEND_REQUEST_REFUSED"
-                  ? "Recusado"
-                  : "Aceito",
-              invert: data.status == "FRIEND_REQUEST_REFUSED",
-            ),
-        ],
+        ),
       ),
     );
   }
