@@ -64,10 +64,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     '/loadingapp': (context) => const LoadingApp(),
     '/call': (context) => const CallOverlay(),
     '/logincall': (context) => const LoginCall(),
+    // '/join': (context) => const JoinScreen(),
+    // '/call': (context) => const CallScreen(),
+    // '/intro': (context) => const IntroScreen(),
+    // '/damas': (context) => MyApp(),
+
+    // '/playerwon': (context) => const PlayerWon(),
+    'loadingapp': (context) => const LoadingApp(),
   };
 
-  @override
-  State<MyApp> createState() => _MyAppState();
   @override
   initState() {
     AdHelper appOpenAdManager = AdHelper()..loadAppOpenAd();
