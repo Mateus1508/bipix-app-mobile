@@ -1,7 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class PlayerWon extends StatelessWidget {
-  const PlayerWon({super.key});
+class PlayerWon extends StatefulWidget {
+  const PlayerWon({super.key, required this.sectionId});
+
+  final String sectionId;
+
+  @override
+  State<PlayerWon> createState() => _PlayerWonState();
+}
+
+class _PlayerWonState extends State<PlayerWon> {
+  bool allowed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +36,16 @@ class PlayerWon extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/velha');
-              },
+              onPressed: allowed
+                  ? null
+                  : () async {
+                      await FirebaseFirestore.instance
+                          .collection("sections")
+                          .doc(widget.sectionId)
+                          .update({"allow_rematch": true});
+                      allowed = true;
+                      setState(() {});
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.amber.shade700,
                 shape: RoundedRectangleBorder(

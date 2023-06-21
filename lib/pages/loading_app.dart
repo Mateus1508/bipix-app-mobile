@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:bipixapp/pages/initial_screen.dart';
-import 'package:bipixapp/pages/nav_bar.dart';
-import 'package:bipixapp/services/webservice.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -15,25 +13,27 @@ class LoadingApp extends StatefulWidget {
 
 class LoadingAppState extends State<LoadingApp>
     with SingleTickerProviderStateMixin {
-  String? userId;
   @override
   void initState() {
     super.initState();
-    getUser();
     // Aguarda 2 segundos antes de abrir a tela de login
     Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              userId != null ? const BottomBar() : const InitialScreen(),
-        ),
-      );
+      getUser(context);
     });
   }
 
-  getUser() async {
-    userId = await Webservice.getUserId();
+  getUser(context) async {
+    await Future.delayed(2.seconds);
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      if (user.emailVerified) {
+        Navigator.pushNamed(context, "/home");
+      } else {
+        Navigator.pushNamed(context, "/initial");
+      }
+    } else {
+      Navigator.pushNamed(context, "/initial");
+    }
   }
 
   @override

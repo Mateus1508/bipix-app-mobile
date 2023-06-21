@@ -49,8 +49,8 @@ class _AddNewFriendsState extends State<AddNewFriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        final nome = user['nome'] as String?;
-        return nome?.toLowerCase().contains(searchQuery) ?? false;
+        final name = user['name'] as String?;
+        return name?.toLowerCase().contains(searchQuery) ?? false;
       }).toList();
     }
 
@@ -112,14 +112,14 @@ class _AddNewFriendsState extends State<AddNewFriends> {
               itemCount: filteredUsers.length,
               itemBuilder: (context, index) {
                 final user = filteredUsers[index];
-                final nome = user['nome'] as String?;
+                final name = user['name'] as String?;
                 return SelectFriend(
                   photo: user["photo"],
-                  nome: nome,
+                  name: name,
                   id: user["id"] ?? "",
                   onTap: () => inviteFriendDialog(
                     photo: user["photo"],
-                    nome: nome!,
+                    name: name!,
                     id: user["id"],
                   ),
                 );
@@ -136,7 +136,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
 
   inviteFriendDialog({
     required String photo,
-    required String nome,
+    required String name,
     required String id,
   }) {
     showDialog(
@@ -144,7 +144,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
       useRootNavigator: true,
       builder: (context) => AlertDialog(
         title: Text(
-          'Quer adicionar $nome na sua lista de amigos ?',
+          'Quer adicionar $name na sua lista de amigos ?',
           style: TextStyle(fontSize: 14),
         ),
         actions: [
@@ -157,7 +157,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
                   body: jsonEncode({
                     'userId': userId,
                     'friendId': id,
-                    'nome': nome,
+                    'name': name,
                     // '': id,
                   }),
                 );

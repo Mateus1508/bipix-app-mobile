@@ -19,12 +19,10 @@ class _LoadingState extends State<Loading> {
 
   loadPage() async {
     await Future.delayed(2.seconds);
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    final userId = sharedPreferences.getString("USER_ID");
-    if (userId != null) {
+    try {
+      await Webservice.getUserId();
       Navigator.pushNamed(context, "/home");
-    } else {
+    } catch (e) {
       Navigator.pushNamed(context, "/initial");
     }
   }

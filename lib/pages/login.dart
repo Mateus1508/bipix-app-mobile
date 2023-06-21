@@ -1,14 +1,13 @@
-import 'package:bipixapp/pages/sign_up.dart';
+import 'package:bipixapp/services/utilities.dart';
+import 'package:bipixapp/services/webservice.dart';
+import 'package:bipixapp/widgets/load_overlay.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'dart:convert';
-import 'package:auth_buttons/auth_buttons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validatorless/validatorless.dart';
-
 import '../services/api.dart';
 
 class Login extends StatefulWidget {
@@ -23,7 +22,17 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool passToggle = false;
-  late GoogleSignIn _googleSignIn;
+  GoogleSignIn googleSignIn = GoogleSignIn();
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      currentUser = user;
+    });
+  }
 
   Future handleLoginUser() async {
     final response = await http.get(Uri.parse('$baseUrl/users'));
@@ -31,47 +40,92 @@ class _LoginState extends State<Login> {
     return response.body;
   }
 
-  Future<void> _handleGoogleSignIn() async {
-    try {
-      final GoogleSignInAccount? googleUser =
-          _googleSignIn.signIn() as GoogleSignInAccount?;
-      if (googleUser != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SignUp()),
-        );
-      }
-    } catch (error) {
-      // An error occurred during authentication
+  Future<UserCredential> _handleGoogleSignIn() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    if (kDebugMode) {
+      print(credential);
     }
+
+    if (currentUser != null) {
+      Navigator.pushNamed(context, '/home');
+    }
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  Future<Object> autenticarUsuario(String email, String senha) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/auth'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': email,
-        'senha': senha,
-      }),
-    );
+  /* Future<void> _handleGoogleSignIn() async {
+    try {
 
-    if (response.statusCode == 200) {
-      // Salva o id do usuário localmente
-      final instance = await SharedPreferences.getInstance();
-      await instance.setString("USER_ID", jsonDecode(response.body)["userId"]);
-      // await const FlutterSecureStorage()
-      //     .write(key: "USER_ID", value: jsonDecode(response.body)["userId"]);
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/home');
-      return 'Usuário autenticado com sucesso.';
-    } else if (response.statusCode == 401) {
-      return 'Email ou senha incorretos!';
-    } else {
-      throw Exception('Erro ao autenticar usuário.');
+      final FirebaseUser user = authResult.user;
+
+      Navigator.pushNamed(context, '/home');
+    } catch (error) {
+      print(error);
     }
+  } */
+
+  Future<String> autenticarUsuario(String email, String password) async {
+    final entry = LoadOverlay.load();
+    Overlay.of(context).insert(entry);
+
+    final http.Response response;
+
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (credential.user == null) {
+        entry.remove();
+        return "Usuário não encontrado.";
+      }
+
+      if (!credential.user!.emailVerified) {
+        entry.remove();
+        return "E-mail não verificado. Verifique o e-mail para continuar";
+      }
+
+      response = await Webservice.post(function: "sign-in", body: {
+        'email': email,
+        'userId': credential.user!.uid,
+      });
+
+      if (response.statusCode == 200) {
+        // Salva o id do usuário localmente
+        Navigator.pushReplacementNamed(context, '/home');
+        entry.remove();
+        return 'Usuário autenticado com sucesso.';
+      } else if (response.statusCode == 401) {
+        entry.remove();
+        return 'Email ou senha incorretos!';
+      } else {
+        throw Exception('Erro ao autenticar usuário.');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        entry.remove();
+        return "Usuário não encontrado.";
+      }
+      if (e.code == "wrong-password") {
+        entry.remove();
+        return "Senha incorreta.";
+      }
+    } catch (e) {
+      print("Erro: $e");
+      entry.remove();
+      return e.toString();
+    }
+
+    entry.remove();
+    return "Erro";
   }
 
   Future<void> _handleFacebookSignIn() async {
@@ -90,14 +144,6 @@ class _LoginState extends State<Login> {
   void handleGoogleSignIn() {
     _handleGoogleSignIn();
   }
-
-  @override
-  void initState() {
-    super.initState();
-    _googleSignIn = GoogleSignIn();
-  }
-
-  AuthButtonStyle? authButtonStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -219,22 +265,14 @@ class _LoginState extends State<Login> {
                           flex: 1,
                           child: ElevatedButton(
                             onPressed: () async {
-                              var formValid =
-                                  _formfield.currentState?.validate() ?? false;
-                              if (formValid) {
-                                final String email = emailController.text;
-                                final String senha = passwordController.text;
-                                try {
-                                  final Object mensagem =
-                                      await autenticarUsuario(email, senha);
-                                  if (kDebugMode) {
-                                    print(mensagem);
-                                  }
-                                } catch (error) {
-                                  if (kDebugMode) {
-                                    print(error.toString());
-                                  }
-                                }
+                              if (_formfield.currentState!.validate()) {
+                                showCustomSnackBar(
+                                  context,
+                                  await autenticarUsuario(
+                                    emailController.text,
+                                    passwordController.text,
+                                  ),
+                                );
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -251,38 +289,22 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
                     const Text(
                       "Ou entrar com",
                       style: TextStyle(
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GoogleAuthButton(
-                          onPressed: handleGoogleSignIn,
-                          style: const AuthButtonStyle(
-                            buttonType: AuthButtonType.icon,
-                          ),
-                        ),
-                        const SizedBox(width: 30),
-                        FacebookAuthButton(
-                          onPressed: _handleFacebookSignIn,
-                          style: const AuthButtonStyle(
-                            buttonType: AuthButtonType.icon,
-                          ),
-                        ),
-                        const SizedBox(width: 30),
-                        AppleAuthButton(
-                          onPressed: () {},
-                          style: const AuthButtonStyle(
-                            buttonType: AuthButtonType.icon,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 30),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.white,
+                      child: IconButton(
+                        onPressed: _handleGoogleSignIn,
+                        icon: Image.asset(
+                            "assets/images/social_media_icons/google.png"),
+                      ),
                     ),
                   ],
                 ),

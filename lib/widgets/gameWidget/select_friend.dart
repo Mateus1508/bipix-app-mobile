@@ -1,21 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:bipixapp/services/webservice.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../services/api.dart';
 
 class SelectFriend extends StatelessWidget {
-  final String? nome;
+  final String? name;
   final String? photo;
   final String id;
   final void Function() onTap;
 
   const SelectFriend(
-      {Key? key, this.nome, this.photo, required this.id, required this.onTap})
+      {Key? key, this.name, this.photo, required this.id, required this.onTap})
       : super(key: key);
 
   @override
@@ -61,7 +54,7 @@ class SelectFriend extends StatelessWidget {
                 width: 20,
               ),
               Text(
-                '@${nome ?? ''}',
+                '@${name ?? ''}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18, color: Colors.white),
               ),

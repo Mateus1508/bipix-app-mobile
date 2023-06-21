@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bipixapp/widgets/gameWidget/game_selection.dart';
+import 'package:bipixapp/widgets/gameWidget/my_friends_game_selection.dart';
 import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
 import 'package:bipixapp/widgets/gameWidget/select_new_friend.dart';
 import 'package:flutter/foundation.dart';
@@ -55,7 +57,7 @@ class _MyfriendsState extends State<Myfriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        return (user["nome"] as String).contains(searchQuery);
+        return (user["name"] as String).contains(searchQuery);
       }).toList();
     } else {
       filteredUsers = users;
@@ -120,11 +122,11 @@ class _MyfriendsState extends State<Myfriends> {
               final user = filteredUsers[index];
 
               return SelectFriend(
-                nome: user["nome"],
+                name: user["name"],
                 id: user["id"],
                 onTap: () => inviteFriendDialog(
                   friendId: user["id"],
-                  nome: user["nome"],
+                  name: user["name"],
                 ),
               );
             },
@@ -140,15 +142,20 @@ class _MyfriendsState extends State<Myfriends> {
 
   inviteFriendDialog({
     required String friendId,
-    required String nome,
+    required String name,
   }) {
     showDialog(
       context: context,
       useRootNavigator: true,
       builder: (context) => AlertDialog(
         title: Text(
-          'Quer convidar $nome para jogar?',
-          style: TextStyle(fontSize: 14),
+          'Escolha um jogo para jogar com $name',
+          style: TextStyle(fontSize: 16),
+        ),
+        content: Container(
+          width: 200,
+          height: 200,
+          child: MyFriendsGameSelection(),
         ),
         actions: [
           TextButton(

@@ -1,16 +1,12 @@
-import 'dart:convert';
-
+import 'package:bipixapp/services/webservice.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../services/api.dart';
 
 class SelectNewFriend extends StatelessWidget {
-  final String? nome;
+  final String? name;
   final String id;
 
-  const SelectNewFriend({Key? key, this.nome, required this.id})
+  const SelectNewFriend({Key? key, this.name, required this.id})
       : super(key: key);
 
   @override
@@ -30,23 +26,19 @@ class SelectNewFriend extends StatelessWidget {
             useRootNavigator: true,
             builder: (context) => AlertDialog(
               title: const Text(
-                'Quer adicionar (nome do amigo) na sua lista de amigos ?',
+                'Quer adicionar (name do amigo) na sua lista de amigos ?',
                 style: TextStyle(fontSize: 14),
               ),
               actions: [
                 TextButton(
                     onPressed: () async {
-                      final instance = await SharedPreferences.getInstance();
-                      String userId = instance.getString("USER_ID")!;
-                      final response = await http.post(
-                        Uri.parse('$baseUrl/addFriend'),
-                        headers: {'Content-Type': 'application/json'},
-                        body: jsonEncode({
-                          'userId': userId,
-                          'friendId': id,
-                          'nome': nome,
-                        }),
-                      );
+                      String userId = await Webservice.getUserId();
+                      final response =
+                          await Webservice.post(function: "addFriend", body: {
+                        'userId': userId,
+                        'friendId': id,
+                        'name': name,
+                      });
                       if (kDebugMode) {
                         print(response.body);
                       }
@@ -90,7 +82,7 @@ class SelectNewFriend extends StatelessWidget {
                 width: 20,
               ),
               Text(
-                '@${nome ?? ''}',
+                '@${name ?? ''}',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
