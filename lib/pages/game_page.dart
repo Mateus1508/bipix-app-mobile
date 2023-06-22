@@ -117,7 +117,7 @@ class _GamePageState extends State<GamePage> {
           },
           child: const Icon(
             Icons.video_call_outlined,
-            color: Colors.green,
+            color: Colors.blue,
           ),
         ));
   }
