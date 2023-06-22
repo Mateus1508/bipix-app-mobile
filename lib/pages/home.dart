@@ -1,3 +1,5 @@
+import 'package:bipixapp/pages/call_page.dart';
+import 'package:bipixapp/pages/login_call.dart';
 import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
@@ -157,31 +159,49 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      floatingActionButton: _rewardedAd != null
-          ? FloatingActionButton(
-              onPressed: () {
-                _rewardedAd!.show(
-                  onUserEarnedReward: (ad, reward) async {
-                    Webservice.post(
-                      function: "earnReward",
-                      body: {
-                        "userId": await Webservice.getUserId(),
-                        "value": 1,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginCall()),
+              );
+            },
+            child: Icon(
+              Icons.video_call,
+              color: getColors(context).primary,
+            ),
+          ),
+          _rewardedAd != null
+              ? FloatingActionButton(
+                  onPressed: () {
+                    _rewardedAd!.show(
+                      onUserEarnedReward: (ad, reward) async {
+                        Webservice.post(
+                          function: "earnReward",
+                          body: {
+                            "userId": await Webservice.getUserId(),
+                            "value": 1,
+                          },
+                        );
+                        setState(() {
+                          _rewardedAd = null;
+                        });
+                        _loadRewardedAd();
                       },
                     );
-                    setState(() {
-                      _rewardedAd = null;
-                    });
-                    _loadRewardedAd();
                   },
-                );
-              },
-              child: Icon(
-                Icons.play_arrow,
-                color: getColors(context).primary,
-              ),
-            )
-          : null,
+                  child: Icon(
+                    Icons.play_arrow,
+                    color: getColors(context).primary,
+                  ),
+                )
+              : SizedBox(),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 

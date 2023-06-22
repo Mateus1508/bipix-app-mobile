@@ -7,7 +7,16 @@
 <key>SKAdNetworkItems</key>
   <array>
     <dict>
-      <key>SKAdNetworkIdentifier</key>
+	
+	
+	    <key>NSCameraUsageDescription</key>
+    <string>We require camera access to connect</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We require microphone access to connect</string>
+	
+	
+	
+	 <key>SKAdNetworkIdentifier</key>
       <string>cstr6suwn9.skadnetwork</string>
     </dict>
   </array>
