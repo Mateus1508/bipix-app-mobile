@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late BannerAd _bottomBannerAd;
+  late RewardedAd _rewardedAd;
 
   bool _isBottomBannerAdLoaded = false;
 
@@ -57,6 +58,13 @@ class _HomeState extends State<Home> {
           setState(() {
             _rewardedAd = ad;
           });
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          print("");
+        },
+      ),
+    );
+  }
 
   void _createBottomBannerAd() async {
     _bottomBannerAd = await AdHelper.loadBanner(onAdLoaded: (ad) {
