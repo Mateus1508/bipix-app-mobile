@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:bipixapp/widgets/gameWidget/game_selection.dart';
 import 'package:bipixapp/widgets/gameWidget/my_friends_game_selection.dart';
 import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
-import 'package:bipixapp/widgets/gameWidget/select_new_friend.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -57,7 +55,7 @@ class _MyfriendsState extends State<Myfriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        return (user["name"] as String).contains(searchQuery);
+        return (user["username"] as String).contains(searchQuery);
       }).toList();
     } else {
       filteredUsers = users;
@@ -122,11 +120,11 @@ class _MyfriendsState extends State<Myfriends> {
               final user = filteredUsers[index];
 
               return SelectFriend(
-                name: user["name"],
+                name: user["username"],
                 id: user["id"],
                 onTap: () => inviteFriendDialog(
                   friendId: user["id"],
-                  name: user["name"],
+                  username: user["username"],
                 ),
               );
             },
@@ -142,14 +140,14 @@ class _MyfriendsState extends State<Myfriends> {
 
   inviteFriendDialog({
     required String friendId,
-    required String name,
+    required String username,
   }) {
     showDialog(
       context: context,
       useRootNavigator: true,
       builder: (context) => AlertDialog(
         title: Text(
-          'Escolha um jogo para jogar com $name',
+          'Escolha um jogo para jogar com $username',
           style: TextStyle(fontSize: 16),
         ),
         content: Container(
@@ -167,6 +165,7 @@ class _MyfriendsState extends State<Myfriends> {
                   body: jsonEncode({
                     'userId': userId,
                     'friendId': friendId,
+                    "game": "VELHA",
                   }),
                 );
                 if (kDebugMode) {
