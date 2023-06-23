@@ -10,7 +10,7 @@ class NotificationsPage extends StatelessWidget {
   Stream<QuerySnapshot<Map<String, dynamic>>> getNotificationsStream() async* {
     String userId = await Webservice.getUserId();
     await for (final query in FirebaseFirestore.instance
-        .collection("usuários")
+        .collection("users")
         .doc(userId)
         .collection("notifications")
         .orderBy("created_at", descending: true)
@@ -23,16 +23,16 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Notificações"),
+        title: const Text("Notificações"),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: getNotificationsStream(),
         builder: (context, notifSnap) {
           if (!notifSnap.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (notifSnap.data!.docs.isEmpty) {
-            return Center(child: Text("Sem notificações ainda"));
+            return const Center(child: Text("Sem notificações ainda"));
           }
           return Column(
             children: notifSnap.data!.docs
@@ -67,7 +67,7 @@ class NotificationWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Avatar(),
+            const Avatar(),
             hSpace(5),
             Expanded(
               child: Column(
@@ -81,7 +81,7 @@ class NotificationWidget extends StatelessWidget {
                   ),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(left: 4, top: 3, right: 5),
+                    padding: const EdgeInsets.only(left: 4, top: 3, right: 5),
                     child: Text(
                       data.content,
                       style: getStyles(context).displaySmall?.copyWith(
@@ -190,7 +190,7 @@ class NotificationButton extends StatelessWidget {
                   : invert
                       ? "NÃO"
                       : "SIM",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,

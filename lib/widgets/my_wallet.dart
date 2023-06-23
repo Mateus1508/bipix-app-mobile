@@ -63,10 +63,10 @@ class _MyWalletState extends State<MyWallet> {
               ),
               Container(
                 constraints: const BoxConstraints(minWidth: 100, maxWidth: 200),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       "Bipix",
                       style: TextStyle(

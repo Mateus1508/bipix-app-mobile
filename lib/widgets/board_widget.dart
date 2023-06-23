@@ -1,3 +1,4 @@
+import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/load_overlay.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +31,10 @@ class BoardWidget extends StatefulWidget {
   });
 
   @override
-  _BoardWidgetState createState() => _BoardWidgetState();
+  BoardWidgetState createState() => BoardWidgetState();
 }
 
-class _BoardWidgetState extends State<BoardWidget> {
+class BoardWidgetState extends State<BoardWidget> {
   bool gameOver = false;
 
   void updateCellValue(int row, int col) async {
@@ -66,7 +67,7 @@ class _BoardWidgetState extends State<BoardWidget> {
   }
 
   setBoard(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
-    docs.forEach((doc) {
+    for (DocumentSnapshot doc in docs) {
       widget.board.cells[doc.get("row")][doc.get("col")].value =
           doc.get("player");
       widget.board.cells[doc.get("row")][doc.get("col")].isFilled = true;
@@ -78,6 +79,9 @@ class _BoardWidgetState extends State<BoardWidget> {
         String winnerId = widget.section["admin_player"] == winner
             ? widget.section["admin_id"]
             : widget.section["invited_id"];
+        Webservice.post(function: "endSection", body: {
+          "sectionId": widget.section["id"],
+        });
         // Verifica se há um vencedor e navega para a tela playerlose
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           Navigator.push(
@@ -94,7 +98,7 @@ class _BoardWidgetState extends State<BoardWidget> {
         });
         gameOver = false;
       }
-    });
+    }
   }
 
   @override

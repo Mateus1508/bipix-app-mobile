@@ -1,6 +1,5 @@
 import 'package:bipixapp/firebase_options.dart';
 import 'package:bipixapp/pages/call_page.dart';
-import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/login_call.dart';
 import 'package:bipixapp/pages/payment.dart';
@@ -11,10 +10,9 @@ import 'package:bipixapp/pages/pre_game.dart';
 import 'package:bipixapp/pages/profile.dart';
 import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
+import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/themes/theme_constants.dart';
-import 'package:bipixapp/widgets/damas.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
-import 'package:bipixapp/widgets/loading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -67,28 +65,46 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   };
 
   @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  late AppLifecycleReactor _appLifecycleReactor;
+
+  @override
+  initState() {
+    AdHelper appOpenAdManager = AdHelper()..loadAppOpenAd();
+    _appLifecycleReactor =
+        AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
+    _appLifecycleReactor.listenToAppStateChanges();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Bipix",
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme(),
-        darkTheme: darkTheme(),
-        home: const SafeArea(child: LoadingApp()),
-        routes: routes,
-        navigatorKey: widget.navigatorKey,
-        builder: (BuildContext context, Widget? child) {
-          return Stack(
-            children: [
-              child!,
+      title: "Bipix",
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme(),
+      darkTheme: darkTheme(),
+      home: const SafeArea(child: LoadingApp()),
+      routes: routes,
+      navigatorKey: widget.navigatorKey,
+      builder: (BuildContext context, Widget? child) {
+        return Stack(
+          children: [
+            child!,
 
-              /// support minimizing
-              ZegoUIKitPrebuiltCallMiniOverlayPage(
-                contextQuery: () {
-                  return widget.navigatorKey.currentState!.context;
-                },
-              ),
-            ],
-          );
-        });
+            /// support minimizing
+            ZegoUIKitPrebuiltCallMiniOverlayPage(
+              contextQuery: () {
+                return widget.navigatorKey.currentState!.context;
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

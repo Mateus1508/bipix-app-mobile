@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bipixapp/widgets/profileWidget/settings_modal_bottom.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../pages/initial_screen.dart';
 
@@ -29,16 +31,6 @@ class ProfileBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void _logout(context) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.remove("USER_ID");
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const InitialScreen(),
-        ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -50,7 +42,12 @@ class ProfileBar extends StatelessWidget implements PreferredSizeWidget {
             foregroundColor: Colors.white,
           ),
           onPressed: () async {
-            _logout(context);
+            await FirebaseAuth.instance.signOut();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const InitialScreen(),
+                ));
           },
           icon: const Icon(Icons.logout),
         ),

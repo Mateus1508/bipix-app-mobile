@@ -1,4 +1,5 @@
-import 'package:bipixapp/widgets/gameWidget/select_new_friend.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -10,7 +11,7 @@ import '../../services/webservice.dart';
 import 'select_friend.dart';
 
 class AddNewFriends extends StatefulWidget {
-  const AddNewFriends({Key? key});
+  const AddNewFriends({super.key});
 
   @override
   State<AddNewFriends> createState() => _AddNewFriendsState();
@@ -49,8 +50,8 @@ class _AddNewFriendsState extends State<AddNewFriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        final nome = user['nome'] as String?;
-        return nome?.toLowerCase().contains(searchQuery) ?? false;
+        final name = user['name'] as String?;
+        return name?.toLowerCase().contains(searchQuery) ?? false;
       }).toList();
     }
 
@@ -112,14 +113,14 @@ class _AddNewFriendsState extends State<AddNewFriends> {
               itemCount: filteredUsers.length,
               itemBuilder: (context, index) {
                 final user = filteredUsers[index];
-                final nome = user['nome'] as String?;
+                final name = user['name'] as String?;
                 return SelectFriend(
                   photo: user["photo"],
-                  nome: nome,
+                  name: name,
                   id: user["id"] ?? "",
                   onTap: () => inviteFriendDialog(
                     photo: user["photo"],
-                    nome: nome!,
+                    name: name!,
                     id: user["id"],
                   ),
                 );
@@ -136,7 +137,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
 
   inviteFriendDialog({
     required String photo,
-    required String nome,
+    required String name,
     required String id,
   }) {
     showDialog(
@@ -144,8 +145,8 @@ class _AddNewFriendsState extends State<AddNewFriends> {
       useRootNavigator: true,
       builder: (context) => AlertDialog(
         title: Text(
-          'Quer adicionar $nome na sua lista de amigos ?',
-          style: TextStyle(fontSize: 14),
+          'Quer adicionar $name na sua lista de amigos ?',
+          style: const TextStyle(fontSize: 14),
         ),
         actions: [
           TextButton(
@@ -157,7 +158,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
                   body: jsonEncode({
                     'userId': userId,
                     'friendId': id,
-                    'nome': nome,
+                    'name': name,
                     // '': id,
                   }),
                 );
