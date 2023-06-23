@@ -9,6 +9,7 @@ class NotificationM {
   final String to;
   final String type;
   final String status;
+  final String? game;
   final bool visualized;
 
   NotificationM({
@@ -21,6 +22,7 @@ class NotificationM {
     required this.type,
     required this.status,
     required this.visualized,
+    this.game,
   });
 
   factory NotificationM.fromJson(Map<String, dynamic> map) => NotificationM(
@@ -36,6 +38,7 @@ class NotificationM {
         type: map["type"],
         status: map["status"],
         visualized: map["visualized"],
+        game: map["game"],
       );
 
   static Map fromList(List<dynamic> maps) {
@@ -64,5 +67,6 @@ class NotificationM {
         "type": type,
         "status": status,
         "visualized": visualized,
+        "game": game,
       };
 }
