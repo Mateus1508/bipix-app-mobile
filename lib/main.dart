@@ -1,5 +1,7 @@
 import 'package:bipixapp/firebase_options.dart';
+import 'package:bipixapp/pages/call_page.dart';
 import 'package:bipixapp/pages/loading_app.dart';
+import 'package:bipixapp/pages/login_call.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/initial_screen.dart';
 import 'package:bipixapp/pages/edit_profile.dart';
@@ -13,36 +15,34 @@ import 'package:bipixapp/themes/theme_constants.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await MobileAds.instance.initialize();
-  runApp(const MainApp());
+  final navigatorKey = GlobalKey<NavigatorState>();
+  ZegoUIKit().initLog().then((value) {
+    runApp(MyApp(
+      navigatorKey: navigatorKey,
+    ));
+  });
 }
 
-class ZoomVideoSdkProvider extends StatelessWidget {
-  const ZoomVideoSdkProvider({super.key});
+class MyApp extends StatefulWidget {
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  const MyApp({
+    required this.navigatorKey,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var zoom = ZoomVideoSdk();
-    InitConfig initConfig = InitConfig(
-      domain: "zoom.us",
-      enableLog: true,
-    );
-    zoom.initSdk(initConfig);
-    return const SafeArea(
-      child: ZoomVideoSdkProvider(),
-    );
-  }
+  State<StatefulWidget> createState() => MyAppState();
 }
 
-class MainApp extends StatefulWidget with WidgetsBindingObserver {
-  const MainApp({super.key});
-
+class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   static Map<String, WidgetBuilder> routes = {
     '/initial': (context) => const InitialScreen(),
     '/signup': (context) => const SignUp(),
@@ -55,9 +55,13 @@ class MainApp extends StatefulWidget with WidgetsBindingObserver {
     '/pregame': (context) => const PreGame(),
     '/profile': (context) => const Profile(),
     '/payment': (context) => const Payment(),
-
+    '/damas': (context) => MyApp(
+          navigatorKey: navigatorKey,
+        ),
     // '/playerwon': (context) => const PlayerWon(),
-    'loadingapp': (context) => const LoadingApp(),
+    '/loadingapp': (context) => const LoadingApp(),
+    '/call': (context) => const CallOverlay(),
+    '/logincall': (context) => const LoginCall(),
   };
 
   @override
@@ -84,10 +88,23 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
       darkTheme: darkTheme(),
-      home: const SafeArea(
-        child: LoadingApp(),
-      ),
-      routes: MainApp.routes,
+      home: const SafeArea(child: LoadingApp()),
+      routes: routes,
+      navigatorKey: widget.navigatorKey,
+      builder: (BuildContext context, Widget? child) {
+        return Stack(
+          children: [
+            child!,
+
+            /// support minimizing
+            ZegoUIKitPrebuiltCallMiniOverlayPage(
+              contextQuery: () {
+                return widget.navigatorKey.currentState!.context;
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -2,8 +2,10 @@ import 'package:bipixapp/services/webservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bipixapp/models/board.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../widgets/board_widget.dart';
+import 'login_call.dart';
 
 // void main() {
 //   runApp(const GamePage());
@@ -76,7 +78,7 @@ class GamePageState extends State<GamePage> {
                     child: Text(
                       section["player_turn"] == userId
                           ? 'Sua vez'
-                          : 'Vez do ${section["invited_username"]}',
+                          : 'Vez do ${section["invited_name"]}',
                       style: const TextStyle(
                         fontSize: 24,
                         color: Colors.white,
@@ -102,6 +104,20 @@ class GamePageState extends State<GamePage> {
               return const CircularProgressIndicator();
             }
           },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/call');
+          if (ZegoUIKitPrebuiltCallMiniOverlayMachine().isMinimizing) {
+            /// When the application is minimized (in a minimized state),
+            /// Disable button clicks to prevent multiple ZegoUIKitPrebuiltCall components from being created.
+            return;
+          }
+        },
+        child: const Icon(
+          Icons.video_call_outlined,
+          color: Colors.blue,
         ),
       ),
     );

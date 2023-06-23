@@ -1,3 +1,5 @@
+import 'package:bipixapp/pages/call_page.dart';
+import 'package:bipixapp/pages/login_call.dart';
 import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
 import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
@@ -139,6 +141,39 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _rewardedAd != null
+              ? FloatingActionButton(
+                  onPressed: () {
+                    _rewardedAd!.show(
+                      onUserEarnedReward: (ad, reward) async {
+                        Webservice.post(
+                          function: "earnReward",
+                          body: {
+                            "userId": await Webservice.getUserId(),
+                            "value": 1,
+                          },
+                        );
+                        setState(() {
+                          _rewardedAd = null;
+                        });
+                        _loadRewardedAd();
+                      },
+                    );
+                  },
+                  child: Icon(
+                    Icons.play_arrow,
+                    color: getColors(context).primary,
+                  ),
+                )
+              : SizedBox(),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
     );
   }
 
