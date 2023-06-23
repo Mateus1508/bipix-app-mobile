@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/profileWidget/profile_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api.dart';
 
 class Profile extends StatefulWidget {
@@ -67,55 +65,6 @@ class _ProfileState extends State<Profile> {
       }
     }
   }
- Future<void> fetchUsername(String userId) async {
-  print('Fetching username for user: $userId');
-
-  final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
-
-  if (response.statusCode == 200) {
-    var jsonData = jsonDecode(response.body);
-    setState(() {
-      username = jsonData['nome'];
-    });
-    print('Username fetched successfully: $username');
-  } else {
-    // Se a chamada à API falhar, definimos o username como '@bipix.user'
-    print('API call failed. Status code: ${response.statusCode}');
-    setState(() {
-      username = '@bipix.user';
-    });
-    throw Exception('Falha ao carregar o nome do usuário');
-  }
-}
-
-
-Future<void> saveUserId(String userId) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('userId', userId);
-  print('UserId saved successfully: $userId');
-}
-
-
-Future<String> getUserId() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('USER_ID') ?? '';
-}
-
-
-String username = 'Carregando...';
- @override
-void initState() {
-  super.initState();
-  getUserId().then((userId) {
-    fetchUsername(userId);
-  }).catchError((error) {
-    print('Error in initState: $error');
-  });
-
-}
-
-
-
 
   Future<void> fetchUsername(String userId) async {
     print('Fetching username for user: $userId');
@@ -219,9 +168,7 @@ void initState() {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-
-                      children:  [
-
+                      children: [
                         Text(
                           "Bipix",
                           style: TextStyle(
@@ -232,9 +179,7 @@ void initState() {
                         ),
                         SizedBox(height: 5),
                         Text(
-
                           "@" + username,
-
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
