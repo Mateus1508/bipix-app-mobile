@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,7 +66,9 @@ class _SignUpState extends State<SignUp> {
         return;
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     if (response.statusCode != 201) {
@@ -338,7 +343,7 @@ class _SignUpState extends State<SignUp> {
                                       return;
                                     }
 
-                                    final response = await handleSignUp(
+                                    await handleSignUp(
                                       username,
                                       email,
                                       senha,

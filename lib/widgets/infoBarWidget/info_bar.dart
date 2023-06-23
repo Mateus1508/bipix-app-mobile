@@ -1,6 +1,5 @@
 import 'package:bipixapp/pages/notifications_page.dart';
 import 'package:bipixapp/services/webservice.dart';
-import 'package:bipixapp/widgets/infoBarWidget/notifications_modal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -57,24 +56,24 @@ class _InfoBarState extends State<InfoBar> {
     }
   }
 
-  void _handleShowModalBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-      builder: (context) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.4,
-        minChildSize: 0.32,
-        maxChildSize: 0.9,
-        builder: (context, scrollController) => SingleChildScrollView(
-          controller: scrollController,
-          child: NotificationsModalBottomSheeet(notifications: notifications),
-        ),
-      ),
-    );
-  }
+  // void _handleShowModalBottomSheet(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+  //     builder: (context) => DraggableScrollableSheet(
+  //       expand: false,
+  //       initialChildSize: 0.4,
+  //       minChildSize: 0.32,
+  //       maxChildSize: 0.9,
+  //       builder: (context, scrollController) => SingleChildScrollView(
+  //         controller: scrollController,
+  //         child: NotificationsModalBottomSheeet(notifications: notifications),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Stream<Map<String, dynamic>> getUserStream() async* {
     String userId = await Webservice.getUserId();
@@ -158,7 +157,8 @@ class _InfoBarState extends State<InfoBar> {
                             await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => NotificationsPage()));
+                                    builder: (context) =>
+                                        const NotificationsPage()));
                             Webservice.post(
                               function: "clearNewNotifications",
                               body: {"userId": await Webservice.getUserId()},
@@ -178,7 +178,7 @@ class _InfoBarState extends State<InfoBar> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            NotificationsPage()));
+                                            const NotificationsPage()));
                                 Webservice.post(
                                   function: "clearNewNotifications",
                                   body: {

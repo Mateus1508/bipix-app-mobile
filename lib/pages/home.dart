@@ -1,6 +1,7 @@
 import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
 import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -15,7 +16,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late BannerAd _bottomBannerAd;
-  late RewardedAd _rewardedAd;
+
+  late RewardedAd rewardedAd;
 
   bool _isBottomBannerAdLoaded = false;
 
@@ -31,7 +33,7 @@ class _HomeState extends State<Home> {
     mobileAds.updateRequestConfiguration(configuration);
     RewardedAd.load(
       adUnitId: AdHelper.rewardedAdUnitId,
-      request: AdRequest(),
+      request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
           ad.fullScreenContentCallback = FullScreenContentCallback(
@@ -56,11 +58,13 @@ class _HomeState extends State<Home> {
           debugPrint('$ad loaded.');
           // Keep a reference to the ad so you can show it later.
           setState(() {
-            _rewardedAd = ad;
+            rewardedAd = ad;
           });
         },
         onAdFailedToLoad: (LoadAdError error) {
-          print("");
+          if (kDebugMode) {
+            print("");
+          }
         },
       ),
     );
@@ -87,7 +91,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     _createBottomBannerAd();
-
+    _loadRewardedAd();
     super.initState();
   }
 
@@ -102,7 +106,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: const InfoBar(),
       bottomNavigationBar: _isBottomBannerAdLoaded
-          ? Container(
+          ? SizedBox(
               height: _bottomBannerAd.size.height.toDouble(),
               width: _bottomBannerAd.size.width.toDouble(),
               child: AdWidget(

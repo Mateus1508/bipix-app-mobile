@@ -26,9 +26,9 @@ class SettingsModalBottomSheeet extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               vertical: 17,
             ),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 ModalItem(
                   icon: Icons.dark_mode,
                   text: 'Aparência:',

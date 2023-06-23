@@ -31,10 +31,10 @@ class BoardWidget extends StatefulWidget {
   });
 
   @override
-  _BoardWidgetState createState() => _BoardWidgetState();
+  BoardWidgetState createState() => BoardWidgetState();
 }
 
-class _BoardWidgetState extends State<BoardWidget> {
+class BoardWidgetState extends State<BoardWidget> {
   bool gameOver = false;
 
   void updateCellValue(int row, int col) async {
@@ -67,7 +67,7 @@ class _BoardWidgetState extends State<BoardWidget> {
   }
 
   setBoard(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
-    docs.forEach((doc) {
+    for (DocumentSnapshot doc in docs) {
       widget.board.cells[doc.get("row")][doc.get("col")].value =
           doc.get("player");
       widget.board.cells[doc.get("row")][doc.get("col")].isFilled = true;
@@ -98,7 +98,7 @@ class _BoardWidgetState extends State<BoardWidget> {
         });
         gameOver = false;
       }
-    });
+    }
   }
 
   @override

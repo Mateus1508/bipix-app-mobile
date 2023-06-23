@@ -67,7 +67,9 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> fetchUsername(String userId) async {
-    print('Fetching username for user: $userId');
+    if (kDebugMode) {
+      print('Fetching username for user: $userId');
+    }
 
     final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
 
@@ -76,10 +78,14 @@ class _ProfileState extends State<Profile> {
       setState(() {
         username = jsonData['username'];
       });
-      print('Username fetched successfully: $username');
+      if (kDebugMode) {
+        print('Username fetched successfully: $username');
+      }
     } else {
       // Se a chamada à API falhar, definimos o username como '@bipix.user'
-      print('API call failed. Status code: ${response.statusCode}');
+      if (kDebugMode) {
+        print('API call failed. Status code: ${response.statusCode}');
+      }
       setState(() {
         username = '@bipix.user';
       });
@@ -98,7 +104,9 @@ class _ProfileState extends State<Profile> {
     getUserId().then((userId) {
       fetchUsername(userId);
     }).catchError((error) {
-      print('Error in initState: $error');
+      if (kDebugMode) {
+        print('Error in initState: $error');
+      }
     });
   }
 
@@ -169,7 +177,7 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Bipix",
                           style: TextStyle(
                             fontSize: 36,
@@ -177,18 +185,18 @@ class _ProfileState extends State<Profile> {
                             color: Color(0xFF373737),
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
-                          "@" + username,
-                          style: TextStyle(
+                          "@$username",
+                          style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF373737)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
-                        Text(
+                        const Text(
                           '“A vida é feita de desafios, eu estou preparada."',
                           style: TextStyle(
                             fontSize: 14,

@@ -1,4 +1,5 @@
-import 'package:bipixapp/widgets/gameWidget/select_new_friend.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -10,7 +11,7 @@ import '../../services/webservice.dart';
 import 'select_friend.dart';
 
 class AddNewFriends extends StatefulWidget {
-  const AddNewFriends({Key? key});
+  const AddNewFriends({super.key});
 
   @override
   State<AddNewFriends> createState() => _AddNewFriendsState();
@@ -145,7 +146,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
       builder: (context) => AlertDialog(
         title: Text(
           'Quer adicionar $name na sua lista de amigos ?',
-          style: TextStyle(fontSize: 14),
+          style: const TextStyle(fontSize: 14),
         ),
         actions: [
           TextButton(

@@ -13,10 +13,10 @@ class GamePage extends StatefulWidget {
   const GamePage({super.key, required this.sectionId});
   final String sectionId;
   @override
-  _GamePageState createState() => _GamePageState();
+  GamePageState createState() => GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class GamePageState extends State<GamePage> {
   Board board = Board(size: 3);
 
   String userId = "";
@@ -99,7 +99,7 @@ class _GamePageState extends State<GamePage> {
                 ],
               );
             } else {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           },
         ),

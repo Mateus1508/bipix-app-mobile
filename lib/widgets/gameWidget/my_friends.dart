@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:bipixapp/widgets/gameWidget/my_friends_game_selection.dart';
@@ -148,9 +150,9 @@ class _MyfriendsState extends State<Myfriends> {
       builder: (context) => AlertDialog(
         title: Text(
           'Escolha um jogo para jogar com $username',
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
-        content: Container(
+        content: const SizedBox(
           width: 200,
           height: 200,
           child: MyFriendsGameSelection(),

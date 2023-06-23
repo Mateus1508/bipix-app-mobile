@@ -10,13 +10,8 @@ import 'package:bipixapp/pages/select_bet_value.dart';
 import 'package:bipixapp/pages/sign_up.dart';
 import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/themes/theme_constants.dart';
-import 'package:bipixapp/widgets/damas.dart';
 import 'package:bipixapp/pages/nav_bar.dart';
-import 'package:bipixapp/widgets/loading.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bipixapp/widgets/zoomWidget/call_screen.dart';
-import 'package:bipixapp/widgets/zoomWidget/intro_screen.dart';
-import 'package:bipixapp/widgets/zoomWidget/join_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_videosdk/native/zoom_videosdk.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -60,10 +55,6 @@ class MainApp extends StatefulWidget with WidgetsBindingObserver {
     '/pregame': (context) => const PreGame(),
     '/profile': (context) => const Profile(),
     '/payment': (context) => const Payment(),
-    '/join': (context) => const JoinScreen(),
-    '/call': (context) => const CallScreen(),
-    '/intro': (context) => const IntroScreen(),
-    '/damas': (context) => MyApp(),
 
     // '/playerwon': (context) => const PlayerWon(),
     'loadingapp': (context) => const LoadingApp(),
@@ -88,7 +79,6 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    const Zoom = ZoomVideoSdkProvider();
     return MaterialApp(
       title: "Bipix",
       debugShowCheckedModeBanner: false,

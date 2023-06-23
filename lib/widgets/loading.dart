@@ -1,7 +1,6 @@
 import 'package:bipixapp/services/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -13,11 +12,11 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   @override
   void initState() {
-    loadPage();
+    loadPage(context);
     super.initState();
   }
 
-  loadPage() async {
+  loadPage(context) async {
     await Future.delayed(2.seconds);
     try {
       await Webservice.getUserId();

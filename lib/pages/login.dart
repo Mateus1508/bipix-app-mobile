@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/load_overlay.dart';
@@ -6,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:validatorless/validatorless.dart';
 import '../services/api.dart';
 
@@ -119,7 +120,9 @@ class _LoginState extends State<Login> {
         return "Senha incorreta.";
       }
     } catch (e) {
-      print("Erro: $e");
+      if (kDebugMode) {
+        print("Erro: $e");
+      }
       entry.remove();
       return e.toString();
     }
@@ -128,18 +131,18 @@ class _LoginState extends State<Login> {
     return "Erro";
   }
 
-  Future<void> _handleFacebookSignIn() async {
-    try {
-      final LoginResult result = FacebookAuth.instance.login() as LoginResult;
-      if (result.status == LoginStatus.success) {
-        Navigator.pushNamed(context, '/home');
-      } else {
-        // An error occurred during authentication
-      }
-    } catch (error) {
-      // An error occurred during authentication
-    }
-  }
+  // Future<void> _handleFacebookSignIn() async {
+  //   try {
+  //     final LoginResult result = FacebookAuth.instance.login() as LoginResult;
+  //     if (result.status == LoginStatus.success) {
+  //       Navigator.pushNamed(context, '/home');
+  //     } else {
+  //       // An error occurred during authentication
+  //     }
+  //   } catch (error) {
+  //     // An error occurred during authentication
+  //   }
+  // }
 
   void handleGoogleSignIn() {
     _handleGoogleSignIn();

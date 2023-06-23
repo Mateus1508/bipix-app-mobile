@@ -3,7 +3,6 @@ import 'package:bipixapp/services/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Webservice {
   static Future<String> getUserId() async =>
