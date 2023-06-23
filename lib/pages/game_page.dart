@@ -76,7 +76,7 @@ class _GamePageState extends State<GamePage> {
                     child: Text(
                       section["player_turn"] == userId
                           ? 'Sua vez'
-                          : 'Vez do ${section["invited_name"]}',
+                          : 'Vez do ${section["invited_username"]}',
                       style: const TextStyle(
                         fontSize: 24,
                         color: Colors.white,
