@@ -1,3 +1,4 @@
+import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/load_overlay.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,9 @@ class _BoardWidgetState extends State<BoardWidget> {
         String winnerId = widget.section["admin_player"] == winner
             ? widget.section["admin_id"]
             : widget.section["invited_id"];
+        Webservice.post(function: "endSection", body: {
+          "sectionId": widget.section["id"],
+        });
         // Verifica se há um vencedor e navega para a tela playerlose
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           Navigator.push(
