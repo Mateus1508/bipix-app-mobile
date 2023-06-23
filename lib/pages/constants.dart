@@ -1,4 +1,5 @@
-class VideoConst{
-  static const int appId=163841085;
-  static const String appSign= 'fbf420d5f55ce8e9e64750b3a6fbd1cf70e020ba52dbd88da2ba4b68789752c7';
+class VideoConst {
+  static const int appId = 575734862;
+  static const String appSign =
+      'fae51d795e39d9c444359142d0d9c3be5dcb12ae5713bdffb34f1b7076ea214c';
 }
