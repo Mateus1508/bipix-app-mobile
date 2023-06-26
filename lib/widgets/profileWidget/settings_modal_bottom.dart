@@ -26,7 +26,7 @@ class SettingsModalBottomSheeet extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               vertical: 17,
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ModalItem(
