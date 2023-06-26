@@ -39,10 +39,12 @@ class MyApp extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => MyAppState();
+  State<StatefulWidget> createState() => _MyAppState();
 }
 
-class MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  late AppLifecycleReactor _appLifecycleReactor;
+
   static Map<String, WidgetBuilder> routes = {
     '/initial': (context) => const InitialScreen(),
     '/signup': (context) => const SignUp(),
@@ -65,12 +67,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   };
 
   @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  late AppLifecycleReactor _appLifecycleReactor;
-
+  State<MyApp> createState() => _MyAppState();
   @override
   initState() {
     AdHelper appOpenAdManager = AdHelper()..loadAppOpenAd();

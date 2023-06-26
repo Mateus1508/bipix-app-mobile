@@ -63,7 +63,7 @@ class _MyWalletState extends State<MyWallet> {
               ),
               Container(
                 constraints: const BoxConstraints(minWidth: 100, maxWidth: 200),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

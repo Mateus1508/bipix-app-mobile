@@ -1,9 +1,8 @@
-import 'package:bipixapp/pages/call_page.dart';
-import 'package:bipixapp/pages/login_call.dart';
 import 'package:bipixapp/services/ad_helper.dart';
+import 'package:bipixapp/services/utilities.dart';
+import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
 import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -19,14 +18,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late BannerAd _bottomBannerAd;
 
-  late RewardedAd rewardedAd;
-
   bool _isBottomBannerAdLoaded = false;
+
+  RewardedAd? _rewardedAd;
 
   int selectedItem = 0;
 
   List<String> navigationItems = ["Jogos Bipix", "Ponto de recarga"];
-
   void _loadRewardedAd() {
     RequestConfiguration configuration = RequestConfiguration(
       testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
@@ -35,7 +33,7 @@ class _HomeState extends State<Home> {
     mobileAds.updateRequestConfiguration(configuration);
     RewardedAd.load(
       adUnitId: AdHelper.rewardedAdUnitId,
-      request: const AdRequest(),
+      request: AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
           ad.fullScreenContentCallback = FullScreenContentCallback(
@@ -60,25 +58,42 @@ class _HomeState extends State<Home> {
           debugPrint('$ad loaded.');
           // Keep a reference to the ad so you can show it later.
           setState(() {
-            rewardedAd = ad;
+            _rewardedAd = ad;
           });
+
+          ad.onUserEarnedRewardCallback = (ad, reward) {};
         },
-        onAdFailedToLoad: (LoadAdError error) {
-          if (kDebugMode) {
-            print("");
-          }
+        onAdFailedToLoad: (err) {
+          print('Failed to load a rewarded ad: ${err.message}');
         },
       ),
     );
   }
 
-  void _createBottomBannerAd() async {
-    _bottomBannerAd = await AdHelper.loadBanner(onAdLoaded: (ad) {
-      setState(() {
-        _isBottomBannerAdLoaded = true;
-      });
-    });
-    await _bottomBannerAd.load();
+  void _createBottomBannerAd() {
+    RequestConfiguration configuration = RequestConfiguration(
+      testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
+    );
+    MobileAds mobileAds = MobileAds.instance;
+    mobileAds.updateRequestConfiguration(configuration);
+    _bottomBannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _isBottomBannerAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print(ad);
+          print(error);
+          ad.dispose();
+        },
+      ),
+    );
+    _bottomBannerAd.load();
   }
 
   navigationItemSelected() {
@@ -92,7 +107,8 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    _createBottomBannerAd();
+    // _createBottomBannerAd();
+
     _loadRewardedAd();
     super.initState();
   }
@@ -108,7 +124,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: const InfoBar(),
       bottomNavigationBar: _isBottomBannerAdLoaded
-          ? SizedBox(
+          ? Container(
               height: _bottomBannerAd.size.height.toDouble(),
               width: _bottomBannerAd.size.width.toDouble(),
               child: AdWidget(
@@ -141,39 +157,31 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _rewardedAd != null
-              ? FloatingActionButton(
-                  onPressed: () {
-                    _rewardedAd!.show(
-                      onUserEarnedReward: (ad, reward) async {
-                        Webservice.post(
-                          function: "earnReward",
-                          body: {
-                            "userId": await Webservice.getUserId(),
-                            "value": 1,
-                          },
-                        );
-                        setState(() {
-                          _rewardedAd = null;
-                        });
-                        _loadRewardedAd();
+      floatingActionButton: _rewardedAd != null
+          ? FloatingActionButton(
+              onPressed: () {
+                _rewardedAd!.show(
+                  onUserEarnedReward: (ad, reward) async {
+                    Webservice.post(
+                      function: "earnReward",
+                      body: {
+                        "userId": await Webservice.getUserId(),
+                        "value": 1,
                       },
                     );
+                    setState(() {
+                      _rewardedAd = null;
+                    });
+                    _loadRewardedAd();
                   },
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: getColors(context).primary,
-                  ),
-                )
-              : SizedBox(),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-
+                );
+              },
+              child: Icon(
+                Icons.play_arrow,
+                color: getColors(context).primary,
+              ),
+            )
+          : null,
     );
   }
 
