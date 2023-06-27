@@ -1,7 +1,5 @@
-import 'package:bipixapp/pages/login_call.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 // Package imports:
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
@@ -22,7 +20,7 @@ class _CallOverlayState extends State<CallOverlay> {
   Stream<Map<String, dynamic>> getUserStream() async* {
     String userId = await Webservice.getUserId();
     await for (final doc in FirebaseFirestore.instance
-        .collection("usuários")
+        .collection("users")
         .doc(userId)
         .snapshots()) {
       yield doc.data() ?? {};
@@ -39,8 +37,8 @@ class _CallOverlayState extends State<CallOverlay> {
           return ZegoUIKitPrebuiltCall(
             appID: VideoConst.appId,
             appSign: VideoConst.appSign,
-            userID: userSnap.data!["nome"],
-            userName: userSnap.data!["nome"],
+            userID: userSnap.data!["username"],
+            userName: userSnap.data!["username"],
             callID: userSnap.data!["current_section_id"],
             config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
               ..topMenuBarConfig.isVisible = true

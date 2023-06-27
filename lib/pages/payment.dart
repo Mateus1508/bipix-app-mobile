@@ -43,7 +43,7 @@ class _PaymentState extends State<Payment> {
   Stream<Map<String, dynamic>> getUserStream() async* {
     String userId = await Webservice.getUserId();
     await for (final doc in FirebaseFirestore.instance
-        .collection("usuários")
+        .collection("users")
         .doc(userId)
         .snapshots()) {
       yield doc.data() ?? {};

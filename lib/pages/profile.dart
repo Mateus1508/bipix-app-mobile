@@ -23,7 +23,7 @@ class _ProfileState extends State<Profile> {
     final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body)['name'];
+      return jsonDecode(response.body)['username'];
     } else {
       throw Exception('Erro ao recuperar o usuário');
     }

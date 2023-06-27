@@ -50,7 +50,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
 
     if (searchQuery.isNotEmpty) {
       filteredUsers = users.where((user) {
-        final name = user['name'] as String?;
+        final name = user['username'] as String?;
         return name?.toLowerCase().contains(searchQuery) ?? false;
       }).toList();
     }
@@ -113,7 +113,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
               itemCount: filteredUsers.length,
               itemBuilder: (context, index) {
                 final user = filteredUsers[index];
-                final name = user['name'] as String?;
+                final name = user['username'] as String?;
                 return SelectFriend(
                   photo: user["photo"],
                   name: name,
