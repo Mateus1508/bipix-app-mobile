@@ -1,7 +1,6 @@
 import 'package:bipixapp/models/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:bipixapp/services/api.dart';
 import 'package:flutter/material.dart';

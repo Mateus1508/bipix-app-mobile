@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PaymentBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,11 +19,13 @@ class PaymentBar extends StatelessWidget implements PreferredSizeWidget {
           style: IconButton.styleFrom(
             foregroundColor: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.pushNamed(context, "/initial");
+          },
           icon: const Icon(Icons.logout),
         ),
       ],
     );
-    ;
   }
 }

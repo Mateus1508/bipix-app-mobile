@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,11 +17,11 @@ double wXD(
   bool mediaWeb = false,
 }) {
   if (Responsive.isDesktop(context)) {
-    double _size = ws ?? size;
+    double newSize = ws ?? size;
     if (mediaWeb) {
-      return MediaQuery.of(context).size.width / 1920 * _size;
+      return MediaQuery.of(context).size.width / 1920 * newSize;
     } else {
-      return _size;
+      return newSize;
     }
   }
   return MediaQuery.of(context).size.width / 428 * size;

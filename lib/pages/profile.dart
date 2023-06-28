@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/profileWidget/profile_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../services/api.dart';
 
 class Profile extends StatefulWidget {
@@ -25,7 +23,7 @@ class _ProfileState extends State<Profile> {
     final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body)['nome'];
+      return jsonDecode(response.body)['username'];
     } else {
       throw Exception('Erro ao recuperar o usuário');
     }
@@ -67,55 +65,50 @@ class _ProfileState extends State<Profile> {
       }
     }
   }
- Future<void> fetchUsername(String userId) async {
-  print('Fetching username for user: $userId');
 
-  final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
+  Future<void> fetchUsername(String userId) async {
+    if (kDebugMode) {
+      print('Fetching username for user: $userId');
+    }
 
-  if (response.statusCode == 200) {
-    var jsonData = jsonDecode(response.body);
-    setState(() {
-      username = jsonData['nome'];
-    });
-    print('Username fetched successfully: $username');
-  } else {
-    // Se a chamada à API falhar, definimos o username como '@bipix.user'
-    print('API call failed. Status code: ${response.statusCode}');
-    setState(() {
-      username = '@bipix.user';
-    });
-    throw Exception('Falha ao carregar o nome do usuário');
+    final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
+
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      setState(() {
+        username = jsonData['username'];
+      });
+      if (kDebugMode) {
+        print('Username fetched successfully: $username');
+      }
+    } else {
+      // Se a chamada à API falhar, definimos o username como '@bipix.user'
+      if (kDebugMode) {
+        print('API call failed. Status code: ${response.statusCode}');
+      }
+      setState(() {
+        username = '@bipix.user';
+      });
+      throw Exception('Falha ao carregar o nome do usuário');
+    }
   }
-}
 
+  Future<String> getUserId() async {
+    return Webservice.getUserId();
+  }
 
-Future<void> saveUserId(String userId) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('userId', userId);
-  print('UserId saved successfully: $userId');
-}
-
-
-Future<String> getUserId() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('USER_ID') ?? '';
-}
-
-
-String username = 'Carregando...';
- @override
-void initState() {
-  super.initState();
-  getUserId().then((userId) {
-    fetchUsername(userId);
-  }).catchError((error) {
-    print('Error in initState: $error');
-  });
-
-}
-
-
-
+  String username = 'Carregando...';
+  @override
+  void initState() {
+    super.initState();
+    getUserId().then((userId) {
+      fetchUsername(userId);
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error in initState: $error');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +176,8 @@ void initState() {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children:  [
-                        Text(
+                      children: [
+                        const Text(
                           "Bipix",
                           style: TextStyle(
                             fontSize: 36,
@@ -192,18 +185,18 @@ void initState() {
                             color: Color(0xFF373737),
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
-                       "@" + username,
-                          style: TextStyle(
+                          "@$username",
+                          style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF373737)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
-                        Text(
+                        const Text(
                           '“A vida é feita de desafios, eu estou preparada."',
                           style: TextStyle(
                             fontSize: 14,

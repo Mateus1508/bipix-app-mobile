@@ -2,8 +2,10 @@ import 'package:bipixapp/services/webservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bipixapp/models/board.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../widgets/board_widget.dart';
+import 'login_call.dart';
 
 // void main() {
 //   runApp(const GamePage());
@@ -13,10 +15,10 @@ class GamePage extends StatefulWidget {
   const GamePage({super.key, required this.sectionId});
   final String sectionId;
   @override
-  _GamePageState createState() => _GamePageState();
+  GamePageState createState() => GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class GamePageState extends State<GamePage> {
   Board board = Board(size: 3);
 
   String userId = "";
@@ -76,7 +78,7 @@ class _GamePageState extends State<GamePage> {
                     child: Text(
                       section["player_turn"] == userId
                           ? 'Sua vez'
-                          : 'Vez do ${section["invited_name"]}',
+                          : 'Vez do ${isAdmin ? section["invited_username"] : section["admin_username"]}',
                       style: const TextStyle(
                         fontSize: 24,
                         color: Colors.white,
@@ -99,9 +101,23 @@ class _GamePageState extends State<GamePage> {
                 ],
               );
             } else {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/call');
+          if (ZegoUIKitPrebuiltCallMiniOverlayMachine().isMinimizing) {
+            /// When the application is minimized (in a minimized state),
+            /// Disable button clicks to prevent multiple ZegoUIKitPrebuiltCall components from being created.
+            return;
+          }
+        },
+        child: const Icon(
+          Icons.video_call_outlined,
+          color: Colors.blue,
         ),
       ),
     );

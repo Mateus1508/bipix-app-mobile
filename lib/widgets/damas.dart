@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:bipixapp/models/damas_logic.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Jogo de Damas',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: GameRenderer(),
-    );
-  }
-}
-
 class GameRenderer extends StatefulWidget {
+  const GameRenderer({super.key});
+
   @override
-  _GameRendererState createState() => _GameRendererState();
+  GameRendererState createState() => GameRendererState();
 }
 
-class _GameRendererState extends State<GameRenderer> {
+class GameRendererState extends State<GameRenderer> {
   GameLogic gameLogic = GameLogic();
   bool playerTurn = true; // Adicionado
 
@@ -37,7 +22,7 @@ class _GameRendererState extends State<GameRenderer> {
   @override
   Widget build(BuildContext context) {
     final boardSize = MediaQuery.of(context).size.width * 0.9;
-    final squareSize = boardSize / 8;
+    // final squareSize = boardSize / 8;
 
     return Scaffold(
       appBar: AppBar(
@@ -75,9 +60,10 @@ class _GameRendererState extends State<GameRenderer> {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   return GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: 64,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 8,
                       childAspectRatio: 1,
                     ),
@@ -132,7 +118,7 @@ class _GameRendererState extends State<GameRenderer> {
                       if (gameLogic.board[row][col] == 2) {
                         return GestureDetector(
                           onTap: () {
-                            print('Peça azul pressionada');
+                            // print('Peça azul pressionada');
                             if (row < 7) {
                               if (gameLogic.canCapture(col, row, 2)) {
                                 setState(() {

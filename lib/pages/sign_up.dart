@@ -1,11 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:bipixapp/services/utilities.dart';
+import 'package:bipixapp/services/webservice.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:validatorless/validatorless.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart';
 
-import '../services/api.dart';
+import '../widgets/load_overlay.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -14,43 +17,70 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
-final _formfield = GlobalKey<FormState>();
-TextEditingController nameController = TextEditingController();
-TextEditingController usernameController = TextEditingController();
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
-TextEditingController repeatPasswordController = TextEditingController();
-bool passToggle = false;
-
-Future<http.Response> handleSignUp(
-  String username,
-  String email,
-  String password,
-) async {
-  final hashedPassword = sha256.convert(utf8.encode(password)).toString();
-
-  final response = await http.post(
-    Uri.parse('$baseUrl/users'),
-    headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({
-      'username': username,
-      'email': email,
-      'password': hashedPassword,
-      "phrase": "",
-    }),
-  );
-
-  if (response.statusCode == 201) {
-  } else {
-    if (kDebugMode) {
-      print(
-          'Erro ao criar usuário: ${response.body}, status: ${response.statusCode}');
-    }
-  }
-  return response;
-}
-
 class _SignUpState extends State<SignUp> {
+  final _formfield = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatPasswordController = TextEditingController();
+  bool passToggle = false;
+
+  Future<void> handleSignUp(
+    String username,
+    String emailAddress,
+    String password,
+    BuildContext context,
+  ) async {
+    final entry = LoadOverlay.load();
+    Overlay.of(context).insert(entry);
+
+    late final UserCredential credential;
+
+    late final Response response;
+    try {
+      credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
+      credential.user?.sendEmailVerification();
+      response = await Webservice.post(function: "sign-up", body: {
+        "userId": credential.user?.uid,
+        'username': username,
+        'email': emailAddress,
+        "phrase": "",
+      });
+      usernameController.clear();
+      emailController.clear();
+      passwordController.clear();
+      nameController.clear();
+      repeatPasswordController.clear();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        showCustomSnackBar(context, "A senha fornecida é muito fraca.");
+        entry.remove();
+        return;
+      } else if (e.code == 'email-already-in-use') {
+        showCustomSnackBar(context, "Já existe uma conta para este email.");
+        entry.remove();
+        return;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+
+    if (response.statusCode != 201) {
+      showCustomSnackBar(context,
+          'Erro ao criar usuário: ${response.body}, status: ${response.statusCode}');
+      entry.remove();
+      return;
+    }
+    entry.remove();
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -312,20 +342,13 @@ class _SignUpState extends State<SignUp> {
                                       );
                                       return;
                                     }
-                                    final response = await handleSignUp(
-                                        username, email, senha);
-                                    // Limpar os campos se a resposta for bem-sucedida
-                                    if (response.statusCode == 201) {
-                                      if (kDebugMode) {
-                                        print('usuário adicionado');
-                                        Navigator.pushNamed(context, '/login');
-                                      }
-                                      usernameController.clear();
-                                      emailController.clear();
-                                      passwordController.clear();
-                                      nameController.clear();
-                                      repeatPasswordController.clear();
-                                    }
+
+                                    await handleSignUp(
+                                      username,
+                                      email,
+                                      senha,
+                                      context,
+                                    );
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

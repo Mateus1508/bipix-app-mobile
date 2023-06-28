@@ -66,7 +66,7 @@ class _MyWalletState extends State<MyWallet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       "Bipix",
                       style: TextStyle(
