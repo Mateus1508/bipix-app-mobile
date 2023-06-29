@@ -77,6 +77,7 @@ class _ProfileState extends State<Profile> {
       var jsonData = jsonDecode(response.body);
       setState(() {
         username = jsonData['username'];
+        favorite_phrase=jsonData['favorite_phrase'];
       });
       if (kDebugMode) {
         print('Username fetched successfully: $username');
@@ -98,6 +99,7 @@ class _ProfileState extends State<Profile> {
   }
 
   String username = 'Carregando...';
+  String favorite_phrase ='Carregando...';
   @override
   void initState() {
     super.initState();
@@ -196,8 +198,8 @@ class _ProfileState extends State<Profile> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text(
-                          '“A vida é feita de desafios, eu estou preparada."',
+                         Text(
+                          '"$favorite_phrase"',
                           style: TextStyle(
                             fontSize: 14,
                             color: Color(0xFF373737),
