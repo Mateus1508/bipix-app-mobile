@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
     mobileAds.updateRequestConfiguration(configuration);
     RewardedAd.load(
       adUnitId: AdHelper.rewardedAdUnitId,
-      request: AdRequest(),
+      request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
           ad.fullScreenContentCallback = FullScreenContentCallback(
@@ -79,7 +79,7 @@ class _HomeState extends State<Home> {
     _bottomBannerAd = BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
       size: AdSize.banner,
-      request: AdRequest(),
+      request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
           setState(() {
@@ -124,7 +124,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: const InfoBar(),
       bottomNavigationBar: _isBottomBannerAdLoaded
-          ? Container(
+          ? SizedBox(
               height: _bottomBannerAd.size.height.toDouble(),
               width: _bottomBannerAd.size.width.toDouble(),
               child: AdWidget(
