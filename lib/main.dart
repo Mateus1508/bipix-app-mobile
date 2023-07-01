@@ -74,7 +74,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     _appLifecycleReactor =
         AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
     _appLifecycleReactor.listenToAppStateChanges();
-
     super.initState();
   }
 
@@ -85,6 +84,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
       darkTheme: darkTheme(),
+      themeMode: ThemeMode.light,
       home: const SafeArea(child: LoadingApp()),
       routes: routes,
       navigatorKey: widget.navigatorKey,
