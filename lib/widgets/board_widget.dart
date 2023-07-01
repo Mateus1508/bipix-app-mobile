@@ -3,9 +3,6 @@ import 'package:bipixapp/widgets/load_overlay.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bipixapp/models/board.dart';
-import 'package:bipixapp/pages/player_lose.dart';
-
-import '../pages/player_won.dart';
 
 class BoardWidget extends StatefulWidget {
   final Board board;
@@ -75,27 +72,41 @@ class BoardWidgetState extends State<BoardWidget> {
       gameOver = winner.isNotEmpty;
 
       if (gameOver) {
-        String winner = widget.board.checkWinner();
-        String winnerId = widget.section["admin_player"] == winner
-            ? widget.section["admin_id"]
-            : widget.section["invited_id"];
-        Webservice.post(function: "endSection", body: {
+        String winnerId = "";
+
+        String looserId = "";
+
+        if (winner != "draw") {
+          winnerId = widget.section["admin_player"] == winner
+              ? widget.section["admin_id"]
+              : widget.section["invited_id"];
+          looserId = widget.section["admin_player"] == winner
+              ? widget.section["invited_id"]
+              : widget.section["admin_id"];
+        } else {
+          winnerId = "";
+          looserId = "";
+        }
+
+        Webservice.post(function: "endGame", body: {
           "sectionId": widget.section["id"],
+          "winnerId": winnerId,
+          "looserId": looserId,
         });
         // Verifica se há um vencedor e navega para a tela playerlose
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => winnerId == widget.userId
-                    ? PlayerWon(
-                        sectionId: widget.section["id"],
-                      )
-                    : PlayerLose(
-                        section: widget.section,
-                      )),
-          );
-        });
+        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => winnerId == widget.userId
+        //             ? PlayerWon(
+        //                 sectionId: widget.section["id"],
+        //               )
+        //             : PlayerLose(
+        //                 section: widget.section,
+        //               )),
+        //   );
+        // });
         gameOver = false;
       }
     }
@@ -113,7 +124,9 @@ class BoardWidgetState extends State<BoardWidget> {
           if (movesSnap.hasData) {
             List<QueryDocumentSnapshot<Map<String, dynamic>>> moves =
                 movesSnap.data!.docs;
-            setBoard(moves);
+            if (widget.section["status"] != "GAME-FINISHED") {
+              setBoard(moves);
+            }
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: widget.board.size,

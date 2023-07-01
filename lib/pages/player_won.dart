@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'game_page.dart';
 
 class PlayerWon extends StatefulWidget {
   const PlayerWon({super.key, required this.sectionId});
@@ -12,6 +16,33 @@ class PlayerWon extends StatefulWidget {
 
 class _PlayerWonState extends State<PlayerWon> {
   bool allowed = false;
+
+  late StreamSubscription subs;
+
+  @override
+  void initState() {
+    super.initState();
+    subs = FirebaseFirestore.instance
+        .collection("sections")
+        .doc(widget.sectionId)
+        .snapshots()
+        .listen((event) {
+      if (event.get("status") == "IN_PROGRESS") {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GamePage(sectionId: widget.sectionId)));
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    subs.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +72,17 @@ class _PlayerWonState extends State<PlayerWon> {
                 onPressed: allowed
                     ? null
                     : () async {
-                        await FirebaseFirestore.instance
-                            .collection("sections")
-                            .doc(widget.sectionId)
-                            .update({"allow_rematch": true});
-                        allowed = true;
-                        setState(() {});
+                        try {
+                          allowed = false;
+                          setState(() {});
+                          await FirebaseFirestore.instance
+                              .collection("sections")
+                              .doc(widget.sectionId)
+                              .update({"allow_rematch": true});
+                        } catch (e) {
+                          allowed = false;
+                          setState(() {});
+                        }
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.amber.shade700,
