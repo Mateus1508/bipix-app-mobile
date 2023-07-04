@@ -1,6 +1,4 @@
 import 'package:bipixapp/services/ad_helper.dart';
-import 'package:bipixapp/services/utilities.dart';
-import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
 import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
 import 'package:flutter/material.dart';
@@ -18,57 +16,59 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late BannerAd _bottomBannerAd;
 
+  // late RewardedAd _rewardedAd;
+
   bool _isBottomBannerAdLoaded = false;
 
-  RewardedAd? _rewardedAd;
+  // RewardedAd? _rewardedAd;
 
   int selectedItem = 0;
 
   List<String> navigationItems = ["Jogos Bipix", "Ponto de recarga"];
-  void _loadRewardedAd() {
-    RequestConfiguration configuration = RequestConfiguration(
-      testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
-    );
-    MobileAds mobileAds = MobileAds.instance;
-    mobileAds.updateRequestConfiguration(configuration);
-    RewardedAd.load(
-      adUnitId: AdHelper.rewardedAdUnitId,
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            // Called when the ad showed the full screen content.
-            onAdShowedFullScreenContent: (ad) {},
-            // Called when an impression occurs on the ad.
-            onAdImpression: (ad) {},
-            // Called when the ad failed to show full screen content.
-            onAdFailedToShowFullScreenContent: (ad, err) {
-              // Dispose the ad here to free resources.
-              ad.dispose();
-            },
-            // Called when the ad dismissed full screen content.
-            onAdDismissedFullScreenContent: (ad) {
-              // Dispose the ad here to free resources.
-              ad.dispose();
-            },
-            // Called when a click is recorded for an ad.
-            onAdClicked: (ad) {},
-          );
+  // void _loadRewardedAd() {
+  //   RequestConfiguration configuration = RequestConfiguration(
+  //     testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
+  //   );
+  //   MobileAds mobileAds = MobileAds.instance;
+  //   mobileAds.updateRequestConfiguration(configuration);
+  //   RewardedAd.load(
+  //     adUnitId: AdHelper.rewardedAdUnitId,
+  //     request: const AdRequest(),
+  //     rewardedAdLoadCallback: RewardedAdLoadCallback(
+  //       onAdLoaded: (ad) {
+  //         ad.fullScreenContentCallback = FullScreenContentCallback(
+  //           // Called when the ad showed the full screen content.
+  //           onAdShowedFullScreenContent: (ad) {},
+  //           // Called when an impression occurs on the ad.
+  //           onAdImpression: (ad) {},
+  //           // Called when the ad failed to show full screen content.
+  //           onAdFailedToShowFullScreenContent: (ad, err) {
+  //             // Dispose the ad here to free resources.
+  //             ad.dispose();
+  //           },
+  //           // Called when the ad dismissed full screen content.
+  //           onAdDismissedFullScreenContent: (ad) {
+  //             // Dispose the ad here to free resources.
+  //             ad.dispose();
+  //           },
+  //           // Called when a click is recorded for an ad.
+  //           onAdClicked: (ad) {},
+  //         );
 
-          debugPrint('$ad loaded.');
-          // Keep a reference to the ad so you can show it later.
-          setState(() {
-            _rewardedAd = ad;
-          });
+  //         debugPrint('$ad loaded.');
+  //         // Keep a reference to the ad so you can show it later.
+  //         setState(() {
+  //           _rewardedAd = ad;
+  //         });
 
-          ad.onUserEarnedRewardCallback = (ad, reward) {};
-        },
-        onAdFailedToLoad: (err) {
-          print('Failed to load a rewarded ad: ${err.message}');
-        },
-      ),
-    );
-  }
+  //         ad.onUserEarnedRewardCallback = (ad, reward) {};
+  //       },
+  //       onAdFailedToLoad: (err) {
+  //         print('Failed to load a rewarded ad: ${err.message}');
+  //       },
+  //     ),
+  //   );
+  // }
 
   void _createBottomBannerAd() {
     RequestConfiguration configuration = RequestConfiguration(
@@ -107,9 +107,9 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // _createBottomBannerAd();
+    _createBottomBannerAd();
 
-    _loadRewardedAd();
+    // _loadRewardedAd();
     super.initState();
   }
 
