@@ -55,6 +55,13 @@ class PlayerLose extends StatelessWidget {
                       });
                       return Container();
                     }
+                    if (sectionSnap.hasData &&
+                        sectionSnap.data!.get("status") == "FINISHED") {
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      });
+                      return Container();
+                    }
                     return ElevatedButton(
                       onPressed: sectionSnap.hasData
                           ? (sectionSnap.data!.data())!["allow_rematch"] ||
@@ -105,11 +112,11 @@ class PlayerLose extends StatelessWidget {
                   }),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   OverlayEntry entry = LoadOverlay.load();
                   Overlay.of(context).insert(entry);
                   try {
-                    Webservice.post(function: "endSection", body: {
+                    await Webservice.post(function: "endSection", body: {
                       "sectionId": section["id"],
                     });
                   } catch (e) {
@@ -117,7 +124,6 @@ class PlayerLose extends StatelessWidget {
                       print("E: $e");
                     }
                   }
-                  Navigator.pushNamed(context, '/home');
                   entry.remove();
                 },
                 style: ElevatedButton.styleFrom(

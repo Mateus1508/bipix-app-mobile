@@ -1,6 +1,10 @@
 import 'package:bipixapp/app/modules/velha/velha_module.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import '../services/webservice.dart';
+import '../widgets/load_overlay.dart';
 
 class PlayerWon extends StatefulWidget {
   const PlayerWon({super.key, required this.sectionId});
@@ -44,6 +48,11 @@ class _PlayerWonState extends State<PlayerWon> {
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => VelhaModule()));
+                  });
+                }
+                if (snapshot.data!.get("status") == "FINISHED") {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    Navigator.pushReplacementNamed(context, '/home');
                   });
                 }
                 return Column(
@@ -99,8 +108,19 @@ class _PlayerWonState extends State<PlayerWon> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                      onPressed: () async {
+                        OverlayEntry entry = LoadOverlay.load();
+                        Overlay.of(context).insert(entry);
+                        try {
+                          await Webservice.post(function: "endSection", body: {
+                            "sectionId": widget.sectionId,
+                          });
+                        } catch (e) {
+                          if (kDebugMode) {
+                            print("E: $e");
+                          }
+                        }
+                        entry.remove();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0XFF0472E8),

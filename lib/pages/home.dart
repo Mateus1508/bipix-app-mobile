@@ -121,67 +121,71 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const InfoBar(),
-      bottomNavigationBar: _isBottomBannerAdLoaded
-          ? SizedBox(
-              height: _bottomBannerAd.size.height.toDouble(),
-              width: _bottomBannerAd.size.width.toDouble(),
-              child: AdWidget(
-                ad: _bottomBannerAd,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: const InfoBar(),
+        bottomNavigationBar: _isBottomBannerAdLoaded
+            ? SizedBox(
+                height: _bottomBannerAd.size.height.toDouble(),
+                width: _bottomBannerAd.size.width.toDouble(),
+                child: AdWidget(
+                  ad: _bottomBannerAd,
+                ),
+              )
+            : null,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 40,
+                width: 500,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade800,
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: navigationItems.length,
+                  itemBuilder: (context, index) =>
+                      buildNavigation(index, context),
+                ),
               ),
-            )
-          : null,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 40,
-              width: 500,
-              margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade800,
-                  borderRadius: const BorderRadius.all(Radius.circular(20))),
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: navigationItems.length,
-                itemBuilder: (context, index) =>
-                    buildNavigation(index, context),
-              ),
-            ),
-            navigationItemSelected(),
-          ],
+              navigationItemSelected(),
+            ],
+          ),
         ),
+        // floatingActionButton: _rewardedAd != null
+        //     ? FloatingActionButton(
+        //         onPressed: () {
+        //           _rewardedAd!.show(
+        //             onUserEarnedReward: (ad, reward) async {
+        //               Webservice.post(
+        //                 function: "earnReward",
+        //                 body: {
+        //                   "userId": await Webservice.getUserId(),
+        //                   "value": 1,
+        //                 },
+        //               );
+        //               setState(() {
+        //                 _rewardedAd = null;
+        //               });
+        //               _loadRewardedAd();
+        //             },
+        //           );
+        //         },
+        //         child: Icon(
+        //           Icons.play_arrow,
+        //           color: getColors(context).primary,
+        //         ),
+        //       )
+        //     : null,
       ),
-      // floatingActionButton: _rewardedAd != null
-      //     ? FloatingActionButton(
-      //         onPressed: () {
-      //           _rewardedAd!.show(
-      //             onUserEarnedReward: (ad, reward) async {
-      //               Webservice.post(
-      //                 function: "earnReward",
-      //                 body: {
-      //                   "userId": await Webservice.getUserId(),
-      //                   "value": 1,
-      //                 },
-      //               );
-      //               setState(() {
-      //                 _rewardedAd = null;
-      //               });
-      //               _loadRewardedAd();
-      //             },
-      //           );
-      //         },
-      //         child: Icon(
-      //           Icons.play_arrow,
-      //           color: getColors(context).primary,
-      //         ),
-      //       )
-      //     : null,
     );
   }
 

@@ -121,11 +121,11 @@ abstract class _DamaStoreBase with Store {
   Future<void> endSection(BuildContext context) async {
     OverlayEntry entry = LoadOverlay.load();
     Overlay.of(context).insert(entry);
-    disposeGame();
     try {
       await Webservice.post(function: "endSection", body: {
         "sectionId": sectionId,
       });
+      disposeGame();
     } catch (e) {
       if (kDebugMode) {
         print("E: $e");
