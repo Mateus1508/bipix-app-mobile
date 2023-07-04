@@ -1,3 +1,5 @@
+import 'package:bipixapp/app/modules/dama/dama_module.dart';
+import 'package:bipixapp/app/modules/velha/velha_module.dart';
 import 'package:bipixapp/pages/notifications_page.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +10,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../models/notification.dart';
-import '../../pages/game_page.dart';
 
 class InfoBar extends StatefulWidget implements PreferredSizeWidget {
   const InfoBar({super.key});
@@ -56,25 +57,6 @@ class _InfoBarState extends State<InfoBar> {
     }
   }
 
-  // void _handleShowModalBottomSheet(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-  //     builder: (context) => DraggableScrollableSheet(
-  //       expand: false,
-  //       initialChildSize: 0.4,
-  //       minChildSize: 0.32,
-  //       maxChildSize: 0.9,
-  //       builder: (context, scrollController) => SingleChildScrollView(
-  //         controller: scrollController,
-  //         child: NotificationsModalBottomSheeet(notifications: notifications),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Stream<Map<String, dynamic>> getUserStream() async* {
     String userId = await Webservice.getUserId();
     await for (final doc in FirebaseFirestore.instance
@@ -83,6 +65,26 @@ class _InfoBarState extends State<InfoBar> {
         .snapshots()) {
       yield doc.data() ?? {};
     }
+  }
+
+  startGame(String currentSectionId, String currentGame) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      switch (currentGame) {
+        case "VELHA":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => VelhaModule()),
+          );
+          break;
+        case "DAMA":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DamaModule()),
+          );
+          break;
+        default:
+      }
+    });
   }
 
   @override
@@ -99,14 +101,10 @@ class _InfoBarState extends State<InfoBar> {
             stream: getUserStream(),
             builder: (context, userSnap) {
               if (userSnap.data!["current_section_id"] != null) {
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GamePage(
-                            sectionId: userSnap.data!["current_section_id"]),
-                      ));
-                });
+                startGame(
+                  userSnap.data!["current_section_id"],
+                  userSnap.data!["current_game"],
+                );
               }
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
