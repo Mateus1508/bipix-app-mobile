@@ -25,24 +25,26 @@ class NotificationsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Notificações"),
       ),
-      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: getNotificationsStream(),
-        builder: (context, notifSnap) {
-          if (!notifSnap.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (notifSnap.data!.docs.isEmpty) {
-            return const Center(child: Text("Sem notificações ainda"));
-          }
-          return Column(
-            children: notifSnap.data!.docs
-                .map(
-                  (docNotf) => NotificationWidget(
-                      data: NotificationM.fromJson(docNotf.data())),
-                )
-                .toList(),
-          );
-        },
+      body: SingleChildScrollView(
+        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: getNotificationsStream(),
+          builder: (context, notifSnap) {
+            if (!notifSnap.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (notifSnap.data!.docs.isEmpty) {
+              return const Center(child: Text("Sem notificações ainda"));
+            }
+            return Column(
+              children: notifSnap.data!.docs
+                  .map(
+                    (docNotf) => NotificationWidget(
+                        data: NotificationM.fromJson(docNotf.data())),
+                  )
+                  .toList(),
+            );
+          },
+        ),
       ),
     );
   }

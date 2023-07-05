@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../app/modules/velha/velha_module.dart';
 import '../services/webservice.dart';
 import '../widgets/load_overlay.dart';
-import 'game_page.dart';
 
 class PlayerLose extends StatelessWidget {
   const PlayerLose({super.key, required this.section, required this.looserId});
@@ -51,10 +51,16 @@ class PlayerLose extends StatelessWidget {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => GamePage(
-                                      sectionId: section["id"],
-                                    )));
+                                builder: (context) => VelhaModule()));
                       });
+                      return Container();
+                    }
+                    if (sectionSnap.hasData &&
+                        sectionSnap.data!.get("status") == "FINISHED") {
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      });
+                      return Container();
                     }
                     return ElevatedButton(
                       onPressed: sectionSnap.hasData
@@ -63,33 +69,24 @@ class PlayerLose extends StatelessWidget {
                               ? () async {
                                   OverlayEntry entry = LoadOverlay.load();
                                   Overlay.of(context).insert(entry);
-                                  DocumentReference sectionRef =
-                                      FirebaseFirestore.instance
-                                          .collection("sections")
-                                          .doc(section["id"]);
-                                  await sectionRef.update({
+                                  final instance = FirebaseFirestore.instance;
+                                  final batch = instance.batch();
+                                  DocumentReference sectionRef = instance
+                                      .collection("sections")
+                                      .doc(section["id"]);
+                                  QuerySnapshot movesQue = await sectionRef
+                                      .collection("moves")
+                                      .get();
+                                  for (DocumentSnapshot doc in movesQue.docs) {
+                                    batch.delete(doc.reference);
+                                  }
+                                  batch.update(sectionRef, {
                                     "status": "IN_PROGRESS",
                                     "winner_id": null,
                                     "looser_id": null,
                                     "allow_rematch": false,
                                   });
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((timeStamp) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => GamePage(
-                                                  sectionId: section["id"],
-                                                )));
-                                  });
-                                  QuerySnapshot movesQue = await sectionRef
-                                      .collection("moves")
-                                      .get();
-
-                                  for (DocumentSnapshot doc in movesQue.docs) {
-                                    await doc.reference.delete();
-                                  }
-
+                                  await batch.commit();
                                   entry.remove();
                                 }
                               : null
@@ -115,11 +112,11 @@ class PlayerLose extends StatelessWidget {
                   }),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   OverlayEntry entry = LoadOverlay.load();
                   Overlay.of(context).insert(entry);
                   try {
-                    Webservice.post(function: "endSection", body: {
+                    await Webservice.post(function: "endSection", body: {
                       "sectionId": section["id"],
                     });
                   } catch (e) {
@@ -127,7 +124,6 @@ class PlayerLose extends StatelessWidget {
                       print("E: $e");
                     }
                   }
-                  Navigator.pushNamed(context, '/home');
                   entry.remove();
                 },
                 style: ElevatedButton.styleFrom(

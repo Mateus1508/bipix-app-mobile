@@ -4,8 +4,10 @@ import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/profileWidget/profile_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import '../services/ad_helper.dart';
 import '../services/api.dart';
 
 class Profile extends StatefulWidget {
@@ -98,8 +100,10 @@ class _ProfileState extends State<Profile> {
   }
 
   String username = 'Carregando...';
+
   @override
   void initState() {
+    _createBottomBannerAd();
     super.initState();
     getUserId().then((userId) {
       fetchUsername(userId);
@@ -110,10 +114,49 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  bool _isBottomBannerAdLoaded = false;
+
+  late BannerAd _bottomBannerAd;
+
+  void _createBottomBannerAd() {
+    RequestConfiguration configuration = RequestConfiguration(
+      testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
+    );
+    MobileAds mobileAds = MobileAds.instance;
+    mobileAds.updateRequestConfiguration(configuration);
+    _bottomBannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _isBottomBannerAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print(ad);
+          print(error);
+          ad.dispose();
+        },
+      ),
+    );
+    _bottomBannerAd.load();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ProfileBar(),
+      bottomNavigationBar: _isBottomBannerAdLoaded
+          ? SizedBox(
+              height: _bottomBannerAd.size.height.toDouble(),
+              width: _bottomBannerAd.size.width.toDouble(),
+              child: AdWidget(
+                ad: _bottomBannerAd,
+              ),
+            )
+          : null,
       body: Center(
         child: SingleChildScrollView(
           child: Column(

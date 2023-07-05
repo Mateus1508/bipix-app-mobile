@@ -3,7 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../models/games_list.dart';
 
 class MyFriendsGameSelection extends StatefulWidget {
-  const MyFriendsGameSelection({super.key});
+  const MyFriendsGameSelection({super.key, required this.onGameChanged});
+
+  final void Function(int value) onGameChanged;
 
   @override
   State<MyFriendsGameSelection> createState() => _MyFriendsGameSelectionState();
@@ -11,10 +13,11 @@ class MyFriendsGameSelection extends StatefulWidget {
 
 class _MyFriendsGameSelectionState extends State<MyFriendsGameSelection> {
   late PageController _pageController;
-  int currentGame = 1;
+  int currentGame = 0;
 
   @override
   void initState() {
+    widget.onGameChanged(currentGame);
     super.initState();
     _pageController = PageController(
       viewportFraction: 0.5,
@@ -37,6 +40,7 @@ class _MyFriendsGameSelectionState extends State<MyFriendsGameSelection> {
             onPageChanged: (value) {
               setState(() {
                 currentGame = value;
+                widget.onGameChanged(value);
               });
             },
             controller: _pageController,

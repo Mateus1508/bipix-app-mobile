@@ -1,28 +1,65 @@
+import 'package:bipixapp/widgets/load_overlay.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 
 class GameLogic {
-  List<List<int>> board = [
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [2, 0, 2, 0, 2, 0, 2, 0],
-    [0, 2, 0, 2, 0, 2, 0, 2],
-    [2, 0, 2, 0, 2, 0, 2, 0],
-  ];
+  GameLogic({required this.section, required this.userId});
+
+  final Map<String, dynamic> section;
+
+  final String userId;
+
+  List<List> board = [[], [], [], [], [], [], [], []];
+
+  // List<List<int>> board = [
+  //   [0, 1, 0, 1, 0, 1, 0, 1],
+  //   [1, 0, 1, 0, 1, 0, 1, 0],
+  //   [0, 1, 0, 1, 0, 1, 0, 1],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [2, 0, 2, 0, 2, 0, 2, 0],
+  //   [0, 2, 0, 2, 0, 2, 0, 2],
+  //   [2, 0, 2, 0, 2, 0, 2, 0],
+  // ];
+
+  void mountBoard(List<List> thisBoard) {
+    for (int i = 0; i < thisBoard.length; i++) {
+      board[i] = thisBoard[i];
+    }
+  }
+
+  void updateBoard(int x, int y, int val, WriteBatch batch) {
+    List line = board[y];
+    line[x] = val;
+    // await FirebaseFirestore.instance
+    //     .collection("sections")
+    //     .doc(section["id"])
+    //     .collection("board")
+    //     .doc(y.toString())
+    // .update({"value": line});
+    batch.update(
+      FirebaseFirestore.instance
+          .collection("sections")
+          .doc(section["id"])
+          .collection("board")
+          .doc(y.toString()),
+      {"value": line},
+    );
+  }
 
   bool isWithinBoard(int x, int y) {
     return x >= 0 && x < 8 && y >= 0 && y < 8;
   }
 
-  bool playerTurn = true; // true = player 1, false = player 2
+  // final String playerTurn; // true = player 1, false = player 2
 
   bool isValidMove(int startX, int startY, int endX, int endY, int player) {
     // print('isValidMove foi chamada');
 
     // Se não é a vez do jogador, retornar false
-    if (player == 1 && !playerTurn || player == 2 && playerTurn) {
+    if (player == 1 && section["player_turn"] != userId ||
+        player == 2 && section["player_turn"] == userId) {
       return false;
     }
 
@@ -84,7 +121,12 @@ class GameLogic {
   }
 
 // Realizando a sequência de capturas
-  void captureSequence(int startX, int startY, int player) {
+  void captureSequence(
+    int startX,
+    int startY,
+    int player,
+    BuildContext context,
+  ) {
     if (kDebugMode) {
       print('captureSequence foi chamada');
     }
@@ -109,7 +151,7 @@ class GameLogic {
           endY >= 0 &&
           endY < 8 &&
           isValidMove(startX, startY, endX, endY, player)) {
-        makeMove(startX, startY, endX, endY, player);
+        makeMove(startX, startY, endX, endY, player, context);
         hasCaptured = true;
         break;
       }
@@ -117,22 +159,54 @@ class GameLogic {
 
     // Se a peça fez uma captura, então verifique novamente para outra possível captura
     if (hasCaptured) {
-      captureSequence(endX, endY, player);
+      captureSequence(endX, endY, player, context);
     }
   }
 
-  void makeMove(int startX, int startY, int endX, int endY, int player) {
+  Future makeMove(
+    int startX,
+    int startY,
+    int endX,
+    int endY,
+    int player,
+    BuildContext context,
+  ) async {
+    final entry = LoadOverlay.load();
+    Overlay.of(context).insert(entry);
     if (kDebugMode) {
       print('makeMove foi chamada');
     }
+    final instance = FirebaseFirestore.instance;
+    final batch = instance.batch();
+    final secRef = instance.collection("sections").doc(section["id"]);
+    batch.update(secRef, {
+      "player_turn": section["player_turn"] == section["admin_id"]
+          ? section["invited_id"]
+          : section["admin_id"]
+    });
 
-    playerTurn = !playerTurn;
-    board[endY][endX] = player;
-    board[startY][startX] = 0;
+    // board[endY][endX] = player;
+    updateBoard(endX, endY, player, batch);
+    // board[startY][startX] = 0;
+    updateBoard(startX, startY, 0, batch);
     if (player == 1 && endY - startY == 2) {
-      board[startY + (endY - startY) ~/ 2][startX + (endX - startX) ~/ 2] = 0;
+      // board[startY + (endY - startY) ~/ 2][startX + (endX - startX) ~/ 2] = 0;
+      updateBoard(
+        startX + (endX - startX) ~/ 2,
+        startY + (endY - startY) ~/ 2,
+        0,
+        batch,
+      );
     } else if (player == 2 && startY - endY == 2) {
-      board[startY - (startY - endY) ~/ 2][startX + (endX - startX) ~/ 2] = 0;
+      // board[startY - (startY - endY) ~/ 2][startX + (endX - startX) ~/ 2] = 0;
+      updateBoard(
+        startX + (endX - startX) ~/ 2,
+        startY - (startY - endY) ~/ 2,
+        0,
+        batch,
+      );
     }
+    await batch.commit();
+    entry.remove();
   }
 }
