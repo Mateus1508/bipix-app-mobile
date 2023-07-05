@@ -1,4 +1,5 @@
 import 'package:bipixapp/firebase_options.dart';
+import 'package:bipixapp/pages/buy_coins.dart';
 import 'package:bipixapp/pages/call_page.dart';
 import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/login_call.dart';
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     '/pregame': (context) => const PreGame(),
     '/profile': (context) => const Profile(),
     '/payment': (context) => const Payment(),
+    '/buycoins': (context) => const BuyCoins(),
     '/damas': (context) => MyApp(
           navigatorKey: navigatorKey,
         ),
@@ -64,17 +66,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     '/loadingapp': (context) => const LoadingApp(),
     '/call': (context) => const CallOverlay(),
     '/logincall': (context) => const LoginCall(),
+    // '/join': (context) => const JoinScreen(),
+    // '/call': (context) => const CallScreen(),
+    // '/intro': (context) => const IntroScreen(),
+    // '/damas': (context) => MyApp(),
+
+    // '/playerwon': (context) => const PlayerWon(),
+    'loadingapp': (context) => const LoadingApp(),
   };
 
-  @override
-  State<MyApp> createState() => _MyAppState();
   @override
   initState() {
     AdHelper appOpenAdManager = AdHelper()..loadAppOpenAd();
     _appLifecycleReactor =
         AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
     _appLifecycleReactor.listenToAppStateChanges();
-
     super.initState();
   }
 
@@ -85,6 +91,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       debugShowCheckedModeBanner: false,
       theme: lightTheme(),
       darkTheme: darkTheme(),
+      themeMode: ThemeMode.light,
       home: const SafeArea(child: LoadingApp()),
       routes: routes,
       navigatorKey: widget.navigatorKey,

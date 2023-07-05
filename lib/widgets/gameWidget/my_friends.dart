@@ -7,10 +7,8 @@ import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import '../../services/api.dart';
 import '../../services/webservice.dart';
 
 class Myfriends extends StatefulWidget {
@@ -23,6 +21,8 @@ class Myfriends extends StatefulWidget {
 class _MyfriendsState extends State<Myfriends> {
   TextEditingController searchController = TextEditingController();
   List<dynamic> users = [];
+
+  int currentGame = 0;
 
   @override
   void initState() {
@@ -140,6 +140,31 @@ class _MyfriendsState extends State<Myfriends> {
     );
   }
 
+  String getGame() {
+    switch (currentGame) {
+      case 0:
+        return "TRUCO";
+      case 1:
+        return "DAMA";
+      case 2:
+        return "VELHA";
+      case 3:
+        return "LUDO";
+      case 4:
+        return "CHESS";
+      case 5:
+        return "STOP";
+      case 6:
+        return "MONOPOLY";
+      case 7:
+        return "WHO_KILLED_MARIO";
+      case 8:
+        return "BIPIX_WORLD";
+      default:
+        return "Jogo não reconhecido";
+    }
+  }
+
   inviteFriendDialog({
     required String friendId,
     required String username,
@@ -152,23 +177,26 @@ class _MyfriendsState extends State<Myfriends> {
           'Escolha um jogo para jogar com $username',
           style: const TextStyle(fontSize: 16),
         ),
-        content: const SizedBox(
+        content: SizedBox(
           width: 200,
           height: 200,
-          child: MyFriendsGameSelection(),
+          child: MyFriendsGameSelection(
+            onGameChanged: (value) {
+              currentGame = value;
+            },
+          ),
         ),
         actions: [
           TextButton(
               onPressed: () async {
                 String userId = await Webservice.getUserId();
-                final response = await http.post(
-                  Uri.parse('$baseUrl/inviteFriend'),
-                  headers: {'Content-Type': 'application/json'},
-                  body: jsonEncode({
+                final response = await Webservice.post(
+                  function: 'inviteFriend',
+                  body: {
                     'userId': userId,
                     'friendId': friendId,
-                    "game": "VELHA",
-                  }),
+                    "game": getGame(),
+                  },
                 );
                 if (kDebugMode) {
                   print(response.body);

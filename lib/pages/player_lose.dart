@@ -1,15 +1,19 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../app/modules/velha/velha_module.dart';
+import '../services/webservice.dart';
 import '../widgets/load_overlay.dart';
-import 'game_page.dart';
 
 class PlayerLose extends StatelessWidget {
-  const PlayerLose({super.key, required this.section});
+  const PlayerLose({super.key, required this.section, required this.looserId});
 
   final Map<String, dynamic> section;
+
+  final String looserId;
 
   @override
   Widget build(BuildContext context) {
@@ -41,30 +45,48 @@ class PlayerLose extends StatelessWidget {
                       .doc(section["id"])
                       .snapshots(),
                   builder: (context, sectionSnap) {
+                    if (sectionSnap.hasData &&
+                        sectionSnap.data!.get("status") == "IN_PROGRESS") {
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VelhaModule()));
+                      });
+                      return Container();
+                    }
+                    if (sectionSnap.hasData &&
+                        sectionSnap.data!.get("status") == "FINISHED") {
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      });
+                      return Container();
+                    }
                     return ElevatedButton(
                       onPressed: sectionSnap.hasData
-                          ? (sectionSnap.data!.data())!["allow_rematch"]
+                          ? (sectionSnap.data!.data())!["allow_rematch"] ||
+                                  looserId == ""
                               ? () async {
                                   OverlayEntry entry = LoadOverlay.load();
                                   Overlay.of(context).insert(entry);
-
-                                  QuerySnapshot movesQue =
-                                      await FirebaseFirestore.instance
-                                          .collection("sections")
-                                          .doc(section["id"])
-                                          .collection("moves")
-                                          .get();
-
+                                  final instance = FirebaseFirestore.instance;
+                                  final batch = instance.batch();
+                                  DocumentReference sectionRef = instance
+                                      .collection("sections")
+                                      .doc(section["id"]);
+                                  QuerySnapshot movesQue = await sectionRef
+                                      .collection("moves")
+                                      .get();
                                   for (DocumentSnapshot doc in movesQue.docs) {
-                                    await doc.reference.delete();
+                                    batch.delete(doc.reference);
                                   }
-
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => GamePage(
-                                                sectionId: section["id"],
-                                              )));
+                                  batch.update(sectionRef, {
+                                    "status": "IN_PROGRESS",
+                                    "winner_id": null,
+                                    "looser_id": null,
+                                    "allow_rematch": false,
+                                  });
+                                  await batch.commit();
                                   entry.remove();
                                 }
                               : null
@@ -90,8 +112,19 @@ class PlayerLose extends StatelessWidget {
                   }),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home');
+                onPressed: () async {
+                  OverlayEntry entry = LoadOverlay.load();
+                  Overlay.of(context).insert(entry);
+                  try {
+                    await Webservice.post(function: "endSection", body: {
+                      "sectionId": section["id"],
+                    });
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print("E: $e");
+                    }
+                  }
+                  entry.remove();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF0472E8),
