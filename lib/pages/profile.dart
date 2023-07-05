@@ -20,7 +20,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   double amount = 400.25;
   File? selectedPhoto;
-
+  late String favorite_phrase = 'Adicione uma frase que lhe define';
   Future<String> getUserName(String userId) async {
     final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
 
@@ -79,6 +79,10 @@ class _ProfileState extends State<Profile> {
       var jsonData = jsonDecode(response.body);
       setState(() {
         username = jsonData['username'];
+        favorite_phrase = jsonData['favorite_phrase'];
+        if (favorite_phrase == "") {
+          favorite_phrase = "Adicione uma frase que lhe define";
+        }
       });
       if (kDebugMode) {
         print('Username fetched successfully: $username');
@@ -93,6 +97,7 @@ class _ProfileState extends State<Profile> {
       });
       throw Exception('Falha ao carregar o nome do usuário');
     }
+    if (favorite_phrase == "") 'Adicione uma frase que lhe define';
   }
 
   Future<String> getUserId() async {
@@ -239,9 +244,9 @@ class _ProfileState extends State<Profile> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text(
-                          '“A vida é feita de desafios, eu estou preparada."',
-                          style: TextStyle(
+                        Text(
+                          '"$favorite_phrase"',
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xFF373737),
                           ),

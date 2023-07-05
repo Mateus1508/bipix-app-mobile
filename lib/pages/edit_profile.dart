@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
+import 'package:http/http.dart' as http;
+import '../services/api.dart';
+import '../services/webservice.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -10,12 +16,70 @@ class EditProfile extends StatefulWidget {
 
 final _formfield = GlobalKey<FormState>();
 TextEditingController nameController = TextEditingController();
+TextEditingController phraseController = TextEditingController();
 TextEditingController usernameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController repeatPasswordController = TextEditingController();
+late String userId;
 
 class _EditProfileState extends State<EditProfile> {
+  @override
+  void initState() {
+    super.initState();
+    getUserId().then((value) {
+      userId = value;
+      getById(value);
+    }).catchError((error) {
+      if (kDebugMode) {
+        print('Error in initState: $error');
+      }
+    });
+  }
+
+  Future<String> getUserId() async {
+    return Webservice.getUserId();
+  }
+
+  Future<void> getById(userId) async {
+    var response = await http.get(Uri.parse('$baseUrl/users/$userId'));
+
+    if (response.statusCode == 200) {
+      var responseData = json.decode(response.body);
+
+      phraseController.text = responseData['favorite_phrase'];
+      usernameController.text = responseData['username'];
+      emailController.text = responseData['email'];
+    } else {
+      print(
+          'Erro ao obter o usuário. Código de status: ${response.statusCode}');
+    }
+  }
+
+  void sendData() async {
+    Map<String, String> requestBody = {
+      'favorite_phrase': phraseController.text,
+      'username': usernameController.text,
+      'email': emailController.text,
+      'password': repeatPasswordController.text,
+    };
+    try {
+      var response = await http.put(
+        Uri.parse('$baseUrl/users/$userId'),
+        body: json.encode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        print('Dados enviados com sucesso!');
+      } else {
+        print(
+            'Erro ao enviar os dados. Código de status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Exceção ao enviar a requisição: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,12 +109,13 @@ class _EditProfileState extends State<EditProfile> {
                     constraints: const BoxConstraints(
                       maxHeight: 200,
                     ),
-                    child: const TextField(
+                    child: TextField(
                       maxLines: null,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                       keyboardType: TextInputType.multiline,
+                      controller: phraseController,
                       maxLength: 200,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.blue,
