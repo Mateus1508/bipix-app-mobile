@@ -14,7 +14,9 @@ class Vip extends StatelessWidget {
               color: Colors.amber,
               borderRadius: BorderRadius.all(Radius.circular(10))),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/buycoins');
+            },
             child: const Text(
               "Acessar loja",
               style: TextStyle(
