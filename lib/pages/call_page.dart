@@ -37,7 +37,7 @@ class _CallOverlayState extends State<CallOverlay> {
           return ZegoUIKitPrebuiltCall(
             appID: VideoConst.appId,
             appSign: VideoConst.appSign,
-            userID: userSnap.data!["username"],
+            userID: userSnap.data!["id"],
             userName: userSnap.data!["username"],
             callID: userSnap.data!["current_section_id"],
             config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
