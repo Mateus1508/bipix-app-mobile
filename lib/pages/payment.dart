@@ -1,4 +1,4 @@
-import 'package:bipixapp/widgets/PaymentWidget/buy_coins.dart';
+import 'package:bipixapp/pages/buy_coins.dart';
 import 'package:bipixapp/widgets/PaymentWidget/payment_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

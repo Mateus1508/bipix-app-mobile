@@ -1,6 +1,4 @@
-import 'package:bipixapp/services/utilities.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 
 class LoginCall extends StatelessWidget {
   const LoginCall({Key? key}) : super(key: key);
@@ -12,10 +10,10 @@ class LoginCall extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: const Text("Login"),
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 30, right: 30),
+        margin: const EdgeInsets.only(left: 30, right: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -23,52 +21,52 @@ class LoginCall extends StatelessWidget {
               onChanged: (val) {
                 name = val;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Name",
                 border: OutlineInputBorder(),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(
               onChanged: (val) {
                 userId = val;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "UserId",
                 border: OutlineInputBorder(),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(
               onChanged: (val) {
                 callId = val;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "CallId",
                 border: OutlineInputBorder(),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/call');
                 },
-                child: Text("Submit"))
+                child: const Text("Submit"))
           ],
         ),
       ),

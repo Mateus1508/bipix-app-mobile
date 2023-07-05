@@ -1,4 +1,5 @@
 import 'package:bipixapp/firebase_options.dart';
+import 'package:bipixapp/pages/buy_coins.dart';
 import 'package:bipixapp/pages/call_page.dart';
 import 'package:bipixapp/pages/loading_app.dart';
 import 'package:bipixapp/pages/login_call.dart';
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     '/pregame': (context) => const PreGame(),
     '/profile': (context) => const Profile(),
     '/payment': (context) => const Payment(),
+    '/buycoins': (context) => const BuyCoins(),
     '/damas': (context) => MyApp(
           navigatorKey: navigatorKey,
         ),
