@@ -3,11 +3,13 @@
 import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/load_overlay.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart';
 import 'package:validatorless/validatorless.dart';
 import '../services/api.dart';
 
@@ -51,14 +53,35 @@ class _LoginState extends State<Login> {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
+
     if (kDebugMode) {
       print(credential);
     }
 
+    final user = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    final currentUser = FirebaseAuth.instance.currentUser;
+
     if (currentUser != null) {
+      final userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUser.uid)
+          .get();
+      if (!userDoc.exists) {
+        Response response = await Webservice.post(function: "sign-up", body: {
+          "userId": currentUser.uid,
+          'username': currentUser.displayName,
+          'email': currentUser.email,
+          "phrase": "",
+        });
+        if (response.statusCode != 201) {
+          showCustomSnackBar(context, response.body);
+          return user;
+        }
+      }
       Navigator.pushNamed(context, '/home');
     }
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return user;
   }
 
   /* Future<void> _handleGoogleSignIn() async {
