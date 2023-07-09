@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../../pages/home.dart';
 import '../../../services/utilities.dart';
 import '../../../services/webservice.dart';
 import '../../../widgets/load_overlay.dart';
@@ -196,17 +195,13 @@ abstract class _VelhaStoreBase with Store {
       await Webservice.post(function: "endSection", body: {
         "sectionId": sectionId,
       });
-      disposeGame();
+      // disposeGame();
     } catch (e) {
       if (kDebugMode) {
         print("E: $e");
       }
     }
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const Home(),
-        ));
+    Navigator.pushReplacementNamed(context, "/home");
     entry.remove();
   }
 

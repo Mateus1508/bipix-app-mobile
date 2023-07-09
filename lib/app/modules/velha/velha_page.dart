@@ -1,4 +1,5 @@
 import 'package:bipixapp/app/modules/velha/velha_store.dart';
+import 'package:bipixapp/services/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -49,6 +50,16 @@ class VelhaPageState extends State<VelhaPage> {
             builder: (context) {
               print("############# SectionObserver");
               if (store.section.isNotEmpty) {
+                if (store.section["status"] == "SEARCHING") {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Aguardando jogador"),
+                      vSpace(40),
+                      CircularProgressIndicator(),
+                    ],
+                  );
+                }
                 if (store.section["status"] == "GAME-FINISHED") {
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                     Navigator.pushReplacement(
@@ -65,6 +76,12 @@ class VelhaPageState extends State<VelhaPage> {
                                   ),
                       ),
                     ).then((value) => store.disposeGame());
+                  });
+                }
+                if (store.section["status"] == "FINISHED") {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    Navigator.pushReplacementNamed(context, "/home");
+                    store.disposeGame();
                   });
                 }
                 return Column(
