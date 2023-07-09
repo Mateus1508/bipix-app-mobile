@@ -41,32 +41,32 @@ mixin _$DamaStore on _DamaStoreBase, Store {
     });
   }
 
-  late final _$gameLoadedAtom =
-      Atom(name: '_DamaStoreBase.gameLoaded', context: context);
+  late final _$gameStatusAtom =
+      Atom(name: '_DamaStoreBase.gameStatus', context: context);
 
   @override
-  bool get gameLoaded {
-    _$gameLoadedAtom.reportRead();
-    return super.gameLoaded;
+  String get gameStatus {
+    _$gameStatusAtom.reportRead();
+    return super.gameStatus;
   }
 
   @override
-  set gameLoaded(bool value) {
-    _$gameLoadedAtom.reportWrite(value, super.gameLoaded, () {
-      super.gameLoaded = value;
+  set gameStatus(String value) {
+    _$gameStatusAtom.reportWrite(value, super.gameStatus, () {
+      super.gameStatus = value;
     });
   }
 
   late final _$boardAtom = Atom(name: '_DamaStoreBase.board', context: context);
 
   @override
-  ObservableList<List<dynamic>> get board {
+  ObservableList<List<int>> get board {
     _$boardAtom.reportRead();
     return super.board;
   }
 
   @override
-  set board(ObservableList<List<dynamic>> value) {
+  set board(ObservableList<List<int>> value) {
     _$boardAtom.reportWrite(value, super.board, () {
       super.board = value;
     });
@@ -88,19 +88,19 @@ mixin _$DamaStore on _DamaStoreBase, Store {
     });
   }
 
-  late final _$gameLogicAtom =
-      Atom(name: '_DamaStoreBase.gameLogic', context: context);
+  late final _$damasLogicAtom =
+      Atom(name: '_DamaStoreBase.damasLogic', context: context);
 
   @override
-  GameLogic? get gameLogic {
-    _$gameLogicAtom.reportRead();
-    return super.gameLogic;
+  DamasLogic? get damasLogic {
+    _$damasLogicAtom.reportRead();
+    return super.damasLogic;
   }
 
   @override
-  set gameLogic(GameLogic? value) {
-    _$gameLogicAtom.reportWrite(value, super.gameLogic, () {
-      super.gameLogic = value;
+  set damasLogic(DamasLogic? value) {
+    _$damasLogicAtom.reportWrite(value, super.damasLogic, () {
+      super.damasLogic = value;
     });
   }
 
@@ -213,10 +213,10 @@ mixin _$DamaStore on _DamaStoreBase, Store {
     return '''
 sectionId: ${sectionId},
 section: ${section},
-gameLoaded: ${gameLoaded},
+gameStatus: ${gameStatus},
 board: ${board},
 userId: ${userId},
-gameLogic: ${gameLogic}
+damasLogic: ${damasLogic}
     ''';
   }
 }

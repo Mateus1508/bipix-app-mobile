@@ -100,7 +100,8 @@ class _InfoBarState extends State<InfoBar> {
             initialData: const {},
             stream: getUserStream(),
             builder: (context, userSnap) {
-              if (userSnap.data!["current_section_id"] != null) {
+              if (userSnap.data != null &&
+                  userSnap.data!["current_section_id"] != null) {
                 startGame(
                   userSnap.data!["current_section_id"],
                   userSnap.data!["current_game"],
