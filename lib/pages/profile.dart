@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:bipixapp/widgets/profileWidget/profile_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -20,6 +21,16 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   double amount = 400.25;
   File? selectedPhoto;
+
+  Stream<Map<String, dynamic>> getStream() async* {
+    await for (DocumentSnapshot<Map<String, dynamic>> doc in FirebaseFirestore
+        .instance
+        .collection("users")
+        .doc((await Webservice.getUserId()))
+        .snapshots()) {
+      yield doc.data()!;
+    }
+  }
 
   Future<String> getUserName(String userId) async {
     final response = await http.get(Uri.parse('$baseUrl/idusers/$userId'));
@@ -185,12 +196,28 @@ class _ProfileState extends State<Profile> {
                             child: SizedBox(
                               width: 250,
                               height: 250,
-                              child: selectedPhoto != null
-                                  ? Image.file(
-                                      selectedPhoto!,
-                                      fit: BoxFit.fill,
-                                    )
-                                  : Image.asset('assets/images/bipixLogo.png'),
+                              child: StreamBuilder<Map<String, dynamic>>(
+                                stream: getStream(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Image.asset(
+                                      'assets/images/bipixLogo.png',
+                                    );
+                                  }
+                                  if (snapshot.data!["photo"] == null) {
+                                    return Image.asset(
+                                      'assets/images/bipixLogo.png',
+                                    );
+                                  }
+                                  Uint8List photo =
+                                      base64Decode(snapshot.data!["photo"]);
+
+                                  return Image.memory(
+                                    photo,
+                                    fit: BoxFit.fill,
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),

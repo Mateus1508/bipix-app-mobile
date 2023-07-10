@@ -32,12 +32,6 @@ class GameLogic {
   void updateBoard(int x, int y, int val, WriteBatch batch) {
     List line = board[y];
     line[x] = val;
-    // await FirebaseFirestore.instance
-    //     .collection("sections")
-    //     .doc(section["id"])
-    //     .collection("board")
-    //     .doc(y.toString())
-    // .update({"value": line});
     batch.update(
       FirebaseFirestore.instance
           .collection("sections")

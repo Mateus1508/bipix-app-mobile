@@ -1,7 +1,10 @@
-import 'package:bipixapp/pages/select_bet_value.dart';
+import 'package:bipixapp/services/webservice.dart';
+import 'package:bipixapp/widgets/load_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../models/games_list.dart';
+import '../../services/utilities.dart';
+import 'package:http/http.dart';
 
 class GameSelection extends StatefulWidget {
   const GameSelection({super.key});
@@ -49,6 +52,31 @@ class _GameSelectionState extends State<GameSelection> {
     );
   }
 
+  String getGame() {
+    switch (currentGame) {
+      case 0:
+        return "TRUCO";
+      case 1:
+        return "DAMA";
+      case 2:
+        return "VELHA";
+      case 3:
+        return "LUDO";
+      case 4:
+        return "CHESS";
+      case 5:
+        return "STOP";
+      case 6:
+        return "MONOPOLY";
+      case 7:
+        return "WHO_KILLED_MARIO";
+      case 8:
+        return "BIPIX_WORLD";
+      default:
+        return "Jogo não reconhecido";
+    }
+  }
+
   Widget buildGameItemsSlider(int index) => AnimatedBuilder(
       animation: _pageController,
       builder: (context, child) {
@@ -81,14 +109,30 @@ class _GameSelectionState extends State<GameSelection> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelectBetValue(
-                                          index: currentGame,
-                                        )),
-                              );
+                            onPressed: () async {
+                              final entry = LoadOverlay.load();
+                              Overlay.of(context).insert(entry);
+                              if ([1, 2].contains(currentGame)) {
+                                try {
+                                  String userId = await Webservice.getUserId();
+                                  String game = getGame();
+                                  Response response = await Webservice.post(
+                                      function: "newRandomGame",
+                                      body: {
+                                        "userId": userId,
+                                        "game": game,
+                                      });
+                                  print("Response: $response");
+                                } catch (e) {
+                                  print("E: $e");
+                                }
+                              } else {
+                                showCustomSnackBar(
+                                  context,
+                                  "Jogo em construção.",
+                                );
+                              }
+                              entry.remove();
                             },
                             child: const Text(
                               "Jogar",

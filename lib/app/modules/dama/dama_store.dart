@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:bipixapp/models/damas_logic.dart';
 import 'package:bipixapp/services/webservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../../pages/home.dart';
 import '../../../services/utilities.dart';
 import '../../../widgets/load_overlay.dart';
+import 'services/damas_logic.dart';
 
 part 'dama_store.g.dart';
 
@@ -21,13 +20,14 @@ abstract class _DamaStoreBase with Store {
   @observable
   ObservableMap<String, dynamic> section = <String, dynamic>{}.asObservable();
   @observable
-  bool gameLoaded = false;
+  String gameStatus = "LOADING";
   @observable
-  ObservableList<List> board = [[], [], [], [], [], [], [], []].asObservable();
+  ObservableList<List<int>> board =
+      <List<int>>[[], [], [], [], [], [], [], []].asObservable();
   @observable
   String userId = "";
   @observable
-  GameLogic? gameLogic;
+  DamasLogic? damasLogic;
   @observable
   StreamSubscription? _sectionSubscription;
   @observable
@@ -36,6 +36,9 @@ abstract class _DamaStoreBase with Store {
   bool get myTurn => section["player_turn"] == userId;
 
   bool get isAdmin => section["admin_id"] == userId;
+
+  String get oponentUsername =>
+      section[isAdmin ? "invited_username" : "admin_username"];
 
   @action
   Future<void> getSectionId() async {
@@ -52,16 +55,21 @@ abstract class _DamaStoreBase with Store {
         .snapshots()
         .listen((sectionListen) {
       print("@@@@@@@@@ sectionSubscripation");
-      gameLogic ??= GameLogic(
-        section: sectionListen.data()!,
-        userId: userId,
-      );
 
       Map<String, dynamic> sectionData = sectionListen.data()!;
 
       section = sectionData.asObservable();
 
-      if (!gameLoaded) gameLoaded = true;
+      if (sectionListen.get("status") == "SEARCHING") {
+        gameStatus = "SEARCHING";
+      } else {
+        gameStatus = "LOADED";
+      }
+
+      if (_boardSubscription == null && gameStatus == "LOADING" ||
+          gameStatus == "LOADED") {
+        setBoardSubscription();
+      }
     });
   }
 
@@ -75,7 +83,16 @@ abstract class _DamaStoreBase with Store {
         .listen((boardListen) {
       print("@@@@@@@@@ boardSubscripation");
       for (int i = 0; i < boardListen.docs.length; i++) {
-        board[i] = boardListen.docs[i].get("value");
+        board[i] = boardListen.docs[i].get("value").cast<int>();
+      }
+      if (section["status"] == "IN_PROGRESS") {
+        damasLogic = DamasLogic(
+          section,
+          board.toList(),
+          userId,
+          int.parse(section[isAdmin ? "admin_player" : "invited_player"]),
+          section[isAdmin ? "invited_id" : "admin_id"],
+        );
       }
       // List<List> newBoard = [[], [], [], [], [], [], [], []];
       // for (int i = 0; i < boardListen.docs.length; i++) {
@@ -100,7 +117,8 @@ abstract class _DamaStoreBase with Store {
           actions: [
             TextButton(
               onPressed: () async {
-                endSection(context);
+                await endSection(context);
+                Navigator.pop(context);
               },
               child: Text("Sim"),
             ),
@@ -125,17 +143,11 @@ abstract class _DamaStoreBase with Store {
       await Webservice.post(function: "endSection", body: {
         "sectionId": sectionId,
       });
-      disposeGame();
     } catch (e) {
       if (kDebugMode) {
         print("E: $e");
       }
     }
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const Home(),
-        ));
     entry.remove();
   }
 
@@ -144,7 +156,7 @@ abstract class _DamaStoreBase with Store {
     userId = await Webservice.getUserId();
     await getSectionId();
     setSectionSubscription();
-    setBoardSubscription();
+    // setBoardSubscription();
   }
 
   @action

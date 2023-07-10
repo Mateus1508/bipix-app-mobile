@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:bipixapp/services/utilities.dart';
 import 'package:bipixapp/widgets/gameWidget/my_friends_game_selection.dart';
 import 'package:bipixapp/widgets/gameWidget/select_friend.dart';
 import 'package:flutter/foundation.dart';
@@ -189,17 +190,22 @@ class _MyfriendsState extends State<Myfriends> {
         actions: [
           TextButton(
               onPressed: () async {
-                String userId = await Webservice.getUserId();
-                final response = await Webservice.post(
-                  function: 'inviteFriend',
-                  body: {
-                    'userId': userId,
-                    'friendId': friendId,
-                    "game": getGame(),
-                  },
-                );
-                if (kDebugMode) {
-                  print(response.body);
+                String game = getGame();
+                if (["DAMA", "VELHA"].contains(game)) {
+                  String userId = await Webservice.getUserId();
+                  final response = await Webservice.post(
+                    function: 'inviteFriend',
+                    body: {
+                      'userId': userId,
+                      'friendId': friendId,
+                      "game": getGame(),
+                    },
+                  );
+                  if (kDebugMode) {
+                    print(response.body);
+                  }
+                } else {
+                  showCustomSnackBar(context, "Jogo em construção");
                 }
                 Navigator.pop(context);
               },
