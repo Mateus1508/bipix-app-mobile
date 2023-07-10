@@ -316,22 +316,22 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    const Text(
-                      "Ou entrar com",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        onPressed: _handleGoogleSignIn,
-                        icon: Image.asset(
-                            "assets/images/social_media_icons/google.png"),
-                      ),
-                    ),
+                    // const Text(
+                    //   "Ou entrar com",
+                    //   style: TextStyle(
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 30),
+                    // CircleAvatar(
+                    //   radius: 30,
+                    //   backgroundColor: Colors.white,
+                    //   child: IconButton(
+                    //     onPressed: _handleGoogleSignIn,
+                    //     icon: Image.asset(
+                    //         "assets/images/social_media_icons/google.png"),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
