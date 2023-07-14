@@ -38,6 +38,8 @@ dependencies:
   flutter_mobx: ^2.0.6+5
   firebase_auth: ^4.6.3
   firebase_storage: ^11.2.3
+  share: ^2.0.4
+  url_launcher: ^6.1.11
 
 flutter_icons:
   image_path: "assets/app_icon/icon.png"
@@ -51,7 +53,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.2
-  build_runner: ^2.4.6
+  build_runner: ^2.0.0
   mobx_codegen: ^2.3.0
 
 flutter:

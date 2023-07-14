@@ -10,6 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import '../services/ad_helper.dart';
 import '../services/api.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -54,6 +57,18 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+
+
+
+void _shareProfile() async {
+  final String username = await getUserId();
+  final String profileUrl = '$baseUrl/profile?username=$username&phrase=$phrase';
+
+  Share.share(profileUrl);
+}
+
+
+
   Future<void> uploadPhoto(File photo) async {
     var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/upload'));
     request.files.add(await http.MultipartFile.fromPath('photo', photo.path));
@@ -90,6 +105,7 @@ class _ProfileState extends State<Profile> {
       var jsonData = jsonDecode(response.body);
       setState(() {
         username = jsonData['username'];
+        phrase = jsonData['favorite_phrase'];
       });
       if (kDebugMode) {
         print('Username fetched successfully: $username');
@@ -101,6 +117,7 @@ class _ProfileState extends State<Profile> {
       }
       setState(() {
         username = '@bipix.user';
+        phrase = "a vida e feita de desafios e eu estou preparada para vencer";
       });
       throw Exception('Falha ao carregar o nome do usuário');
     }
@@ -111,6 +128,7 @@ class _ProfileState extends State<Profile> {
   }
 
   String username = 'Carregando...';
+  String phrase = 'Carregando...';
 
   @override
   void initState() {
@@ -266,8 +284,8 @@ class _ProfileState extends State<Profile> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text(
-                          '“A vida é feita de desafios, eu estou preparada."',
+                        Text(
+                         '"$phrase"',
                           style: TextStyle(
                             fontSize: 14,
                             color: Color(0xFF373737),
@@ -299,7 +317,7 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed:  _shareProfile,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 10),
