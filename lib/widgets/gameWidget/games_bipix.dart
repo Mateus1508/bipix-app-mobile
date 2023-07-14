@@ -13,7 +13,11 @@ class GamesBipix extends StatefulWidget {
 class _GamesBipixState extends State<GamesBipix> {
   int selectedMode = 0;
 
-  List<String> gameModeOptions = ["Conhecer", "Adicionar", "Amigos"];
+  List<String> gameModeOptions = [
+    "modo aleatório",
+    "contra amigos",
+    "add amigo",
+  ];
 
   navigationGameModeOption() {
     if (selectedMode == 0) {
