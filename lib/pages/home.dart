@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
 
   int selectedItem = 0;
 
-  List<String> navigationItems = ["Jogos Bipix", "Ponto de recarga"];
+  List<String> navigationItems = ["JOGOGS BIPIX", "PONTO DE RECARGA"];
   // void _loadRewardedAd() {
   //   RequestConfiguration configuration = RequestConfiguration(
   //     testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
