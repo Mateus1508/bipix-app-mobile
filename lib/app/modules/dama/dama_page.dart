@@ -80,7 +80,7 @@ class _DamaPageState extends State<DamaPage> {
                             builder: (context, constraints) {
                               return Observer(builder: (context) {
                                 if (store.board.last.isEmpty) {
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 }
                                 print("############# Observer: 2");
                                 // GameLogic gameLogic = store.gameLogic!;
@@ -171,7 +171,7 @@ class _DamaPageState extends State<DamaPage> {
                                           width: constraints.maxWidth / 8,
                                           height: constraints.maxWidth / 8,
                                           child: Image.asset(
-                                              'assets/images/checkers/icon_brown.png'),
+                                              'assets/images/checkers/icon_white.png'),
                                         ),
                                       );
                                     }
@@ -245,7 +245,7 @@ class _DamaPageState extends State<DamaPage> {
                                           width: constraints.maxWidth / 8,
                                           height: constraints.maxWidth / 8,
                                           child: Image.asset(
-                                              'assets/images/checkers/icon_blue.png'),
+                                              'assets/images/checkers/icon_black.png'),
                                         ),
                                       );
                                     }

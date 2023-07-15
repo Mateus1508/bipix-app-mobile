@@ -92,7 +92,7 @@ abstract class _DamaStoreBase with Store {
       useRootNavigator: true,
       builder: (context) {
         return AlertDialog(
-          title: Text("Sair do jogo?"),
+          title: const Text("Sair do jogo?"),
           content: Text(
             "Você deseja sair do jogo?",
             style: getStyles(context).displayMedium,
@@ -102,13 +102,13 @@ abstract class _DamaStoreBase with Store {
               onPressed: () async {
                 endSection(context);
               },
-              child: Text("Sim"),
+              child: const Text("Sim"),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Não"),
+              child: const Text("Não"),
             ),
           ],
         );
