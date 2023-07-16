@@ -90,7 +90,7 @@ class _InfoBarState extends State<InfoBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0XFF0472E8),
+      backgroundColor: const Color(0XFF171A1D),
       elevation: 2,
       leading: Image.asset('assets/images/bipixLogo.png'),
       actions: [
@@ -163,7 +163,10 @@ class _InfoBarState extends State<InfoBar> {
                               body: {"userId": await Webservice.getUserId()},
                             );
                           },
-                          icon: const Icon(Icons.notifications),
+                          icon: const Icon(
+                            Icons.notifications,
+                            color: Color(0xFFF9BF0B),
+                          ),
                         ),
                         if (userSnap.data != null &&
                             userSnap.data!.isNotEmpty &&

@@ -59,23 +59,23 @@ class _AddNewFriendsState extends State<AddNewFriends> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           "Adicione um amigo",
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(
+              fontSize: 14, color: Theme.of(context).colorScheme.tertiary),
         ),
         const SizedBox(height: 15),
         Container(
-          height: 40,
           width: 300,
           margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: const Color(0XFF0472E8), width: 1),
-            boxShadow: [
+            border: Border.all(color: Colors.black, width: 1),
+            boxShadow: const [
               BoxShadow(
-                color: Colors.blue.withOpacity(0.9),
+                color: Colors.black,
                 spreadRadius: 1,
                 blurRadius: 3,
               ),
@@ -102,11 +102,7 @@ class _AddNewFriendsState extends State<AddNewFriends> {
             width: 300,
             padding: const EdgeInsets.symmetric(vertical: 5),
             decoration: BoxDecoration(
-              color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              boxShadow: const [
-                BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 5),
-              ],
             ),
             child: ListView.builder(
               shrinkWrap: true,

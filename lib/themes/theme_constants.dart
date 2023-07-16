@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const primaryLight = Color(0xff0071E8);
+const primaryLight = Color(0xff3C4FFA);
 const primaryVariantLight = Color(0xff1363DF);
-const secondaryLight = Color(0xff47b5ff);
+const secondaryLight = Color(0xff171A1D);
 const secondaryVariantLight = Color(0xffDFF6FF);
-const tertiaryLight = Color(0xff06283D);
+const tertiaryLight = Color(0xffffffff);
 
 const surfaceLight = Color(0xfffcfcfc);
-const backgroundLight = Color(0xfffcfcfc);
+const backgroundLight = Color(0xff393641);
 const onBackgroundLight = Color(0xff4B4B4B);
 const onSurfaceLight = Color(0xff848484);
 

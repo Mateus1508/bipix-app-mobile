@@ -86,11 +86,6 @@ class _GameSelectionState extends State<GameSelection> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                currentGame == index ? gameImages[index].title : "",
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24, letterSpacing: 4),
-              ),
               SizedBox(
                 height: 200,
                 width: 200,
@@ -150,7 +145,10 @@ class _GameSelectionState extends State<GameSelection> {
                     : null,
               ),
               const SizedBox(height: 10),
-              Text(currentGame == index ? "Toque para jogar" : "")
+              Text(
+                currentGame == index ? "Toque para jogar" : "",
+                style: const TextStyle(color: Colors.white),
+              )
                   .animate(onPlay: (controller) => controller.repeat())
                   .fadeIn(begin: 1.1, duration: 1000.ms, curve: Curves.easeIn)
                   .then()

@@ -11,8 +11,6 @@ import 'package:http/http.dart' as http;
 import '../services/ad_helper.dart';
 import '../services/api.dart';
 import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -57,17 +55,13 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  void _shareProfile() async {
+    final String username = await getUserId();
+    final String profileUrl =
+        '$baseUrl/profile?username=$username&phrase=$phrase';
 
-
-
-void _shareProfile() async {
-  final String username = await getUserId();
-  final String profileUrl = '$baseUrl/profile?username=$username&phrase=$phrase';
-
-  Share.share(profileUrl);
-}
-
-
+    Share.share(profileUrl);
+  }
 
   Future<void> uploadPhoto(File photo) async {
     var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/upload'));
@@ -199,15 +193,16 @@ void _shareProfile() async {
                     child: Stack(
                       children: <Widget>[
                         Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                  color: Color(0XFF0472E8),
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                   blurRadius: 2,
                                   spreadRadius: 5),
                             ],
-                            color: Color(0xFF454545),
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(200),
@@ -240,15 +235,15 @@ void _shareProfile() async {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF454545),
-                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(55),
                           ),
-                          child: const Text(
+                          child: Text(
                             "Editar foto",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.tertiary,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -265,30 +260,30 @@ void _shareProfile() async {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "Bipix",
                           style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF373737),
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                         ),
                         const SizedBox(height: 5),
                         Text(
                           "@$username",
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF373737)),
+                              color: Theme.of(context).colorScheme.tertiary),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         Text(
-                         '"$phrase"',
+                          '"$phrase"',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF373737),
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                         ),
                       ],
@@ -308,25 +303,29 @@ void _shareProfile() async {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
-                          color: const Color(0XFF0472E8),
+                          color: Theme.of(context).colorScheme.primary,
                           borderRadius: BorderRadius.circular(5)),
-                      child: const Text(
+                      child: Text(
                         'Editar perfil',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.tertiary),
                       ),
                     ),
                   ),
                   TextButton(
-                    onPressed:  _shareProfile,
+                    onPressed: _shareProfile,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 10),
                       decoration: BoxDecoration(
-                          color: const Color(0XFF0472E8),
+                          color: Theme.of(context).colorScheme.primary,
                           borderRadius: BorderRadius.circular(5)),
-                      child: const Text(
+                      child: Text(
                         'Compartilhar perfil',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.tertiary),
                       ),
                     ),
                   ),
