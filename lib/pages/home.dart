@@ -1,6 +1,6 @@
 import 'package:bipixapp/services/ad_helper.dart';
 import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
-import 'package:bipixapp/widgets/rechargeWidget/recharge.dart';
+import 'package:bipixapp/widgets/rechargeWidget/recharge_point.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
 
   int selectedItem = 0;
 
-  List<String> navigationItems = ["JOGOGS BIPIX", "PONTO DE RECARGA"];
+  List<String> navigationItems = ["JOGOS BIPIX", "PONTO DE RECARGA"];
   // void _loadRewardedAd() {
   //   RequestConfiguration configuration = RequestConfiguration(
   //     testDeviceIds: ["B344A2E6F1812DD05F37ADBEB20D4D89"],
@@ -101,7 +101,7 @@ class _HomeState extends State<Home> {
       return const GamesBipix();
     }
     if (selectedItem == 1) {
-      return const Recharge();
+      return const RechargePoint();
     }
   }
 
@@ -145,9 +145,9 @@ class _HomeState extends State<Home> {
                 margin:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
                 padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                decoration: const BoxDecoration(
+                    color: Color(0XFF171A1D),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
@@ -196,7 +196,7 @@ class _HomeState extends State<Home> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: index == selectedItem
-            ? const Color(0XFF0472E8)
+            ? const Color(0XFF3C4FFA)
             : Colors.transparent,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
@@ -213,7 +213,7 @@ class _HomeState extends State<Home> {
           navigationItems[index],
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 16,
           ),
         ),
       ),

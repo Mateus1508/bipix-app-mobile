@@ -39,27 +39,27 @@ class LoadingAppState extends State<LoadingApp>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF0472E8),
+      backgroundColor: const Color(0XFF02cb0a),
       body: Center(
         child: SizedBox(
-          width: 200,
-          height: 200,
-          child: Image.asset('assets/images/bipixLogo.png')
+          width: 100,
+          height: 100,
+          child: Image.asset('assets/images/logo.png')
               .animate(
                 onPlay: (controller) => controller.repeat(),
               )
               .flipH(
                 begin: 1,
                 end: 2,
-                duration: 1000.ms,
+                duration: 900.ms,
                 curve: Curves.easeInOut,
               )
               .scaleXY(begin: 0, end: 1.5)
-              .then(delay: 500.ms)
+              .then(delay: 1000.ms)
               .flipV(
                 begin: 2,
                 end: 1,
-                duration: 1000.ms,
+                duration: 900.ms,
                 curve: Curves.easeInOut,
               )
               .scaleXY(begin: 1.5, end: 0),

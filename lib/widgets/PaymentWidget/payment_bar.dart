@@ -12,7 +12,7 @@ class PaymentBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0XFF0472E8),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       leading: Image.asset('assets/images/bipixLogo.png'),
       actions: [
         IconButton(

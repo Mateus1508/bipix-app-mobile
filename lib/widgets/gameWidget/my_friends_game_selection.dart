@@ -34,7 +34,8 @@ class _MyFriendsGameSelectionState extends State<MyFriendsGameSelection> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: SizedBox(
+      child: Container(
+        color: Theme.of(context).colorScheme.secondary,
         height: 500,
         child: PageView.builder(
             onPageChanged: (value) {
@@ -61,11 +62,6 @@ class _MyFriendsGameSelectionState extends State<MyFriendsGameSelection> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                currentGame == index ? gameImages[index].title : "",
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 24, letterSpacing: 4),
-              ),
               SizedBox(
                 height: 150,
                 width: 150,
@@ -74,7 +70,10 @@ class _MyFriendsGameSelectionState extends State<MyFriendsGameSelection> {
               const SizedBox(
                 height: 10,
               ),
-              Text(currentGame == index ? "Toque para jogar" : "")
+              Text(
+                currentGame == index ? "Toque para jogar" : "",
+                style: const TextStyle(fontSize: 14),
+              )
                   .animate(onPlay: (controller) => controller.repeat())
                   .fadeIn(begin: 1.1, duration: 1000.ms, curve: Curves.easeIn)
                   .then()

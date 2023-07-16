@@ -26,11 +26,11 @@ class _BottomBarState extends State<BottomBar> {
       body: tabs[_currentIndex],
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
+              color: Theme.of(context).colorScheme.secondary,
               spreadRadius: 1,
               blurRadius: 4,
             ),
@@ -38,10 +38,10 @@ class _BottomBarState extends State<BottomBar> {
         ),
         child: GNav(
           backgroundColor: Colors.transparent,
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(10),
           activeColor: Colors.white,
-          tabBackgroundColor: const Color(0XFF0472E8),
-          color: const Color(0XFF0472E8),
+          tabBackgroundColor: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.primary,
           duration: const Duration(seconds: 1),
           tabBorderRadius: 10,
           gap: 10,
@@ -51,17 +51,20 @@ class _BottomBarState extends State<BottomBar> {
               _currentIndex = index;
             });
           },
-          tabs: const [
+          tabs: [
             GButton(
               icon: Icons.home,
+              iconColor: Theme.of(context).colorScheme.primary,
               text: 'Home',
             ),
             GButton(
               icon: Icons.person,
+              iconColor: Theme.of(context).colorScheme.primary,
               text: 'Perfil',
             ),
             GButton(
               icon: Icons.wallet,
+              iconColor: Theme.of(context).colorScheme.primary,
               text: 'Carteira',
             ),
           ],

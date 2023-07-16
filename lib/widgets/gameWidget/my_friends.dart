@@ -68,23 +68,25 @@ class _MyfriendsState extends State<Myfriends> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           "Procurar amigo",
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(
+              fontSize: 14, color: Theme.of(context).colorScheme.tertiary),
         ),
         const SizedBox(height: 15),
         Container(
           height: 40,
           width: 300,
           margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: const Color(0XFF0472E8), width: 1),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.secondary, width: 1),
             boxShadow: [
               BoxShadow(
-                color: Colors.blue.withOpacity(0.9),
+                color: Theme.of(context).colorScheme.secondary,
                 spreadRadius: 1,
                 blurRadius: 3,
               ),
@@ -110,11 +112,7 @@ class _MyfriendsState extends State<Myfriends> {
           width: 300,
           padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 5),
-            ],
           ),
           child: ListView.builder(
             shrinkWrap: true,
@@ -174,9 +172,11 @@ class _MyfriendsState extends State<Myfriends> {
       context: context,
       useRootNavigator: true,
       builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         title: Text(
           'Escolha um jogo para jogar com $username',
-          style: const TextStyle(fontSize: 16),
+          style: TextStyle(
+              fontSize: 16, color: Theme.of(context).colorScheme.tertiary),
         ),
         content: SizedBox(
           width: 200,
@@ -188,6 +188,16 @@ class _MyfriendsState extends State<Myfriends> {
           ),
         ),
         actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Voltar',
+              style: TextStyle(
+                  fontSize: 16, color: Theme.of(context).colorScheme.tertiary),
+            ),
+          ),
           TextButton(
               onPressed: () async {
                 String game = getGame();
@@ -209,19 +219,28 @@ class _MyfriendsState extends State<Myfriends> {
                 }
                 Navigator.pop(context);
               },
-              child: const Text(
-                'Convidar',
-                style: TextStyle(color: Color(0XFF0472E8)),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Desafiar',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.tertiary),
+                    ),
+                    SizedBox(
+                        width: 30,
+                        child: Image.asset('assets/images/icon-challenge.png'))
+                  ],
+                ),
               )),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'Cancelar',
-              style: TextStyle(color: Colors.red),
-            ),
-          )
         ],
       ),
     );

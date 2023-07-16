@@ -19,7 +19,7 @@ class SelectNewFriend extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          backgroundColor: const Color(0XFF0472E8),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           padding: const EdgeInsets.all(2),
         ),
         onPressed: () {
@@ -46,9 +46,10 @@ class SelectNewFriend extends StatelessWidget {
                       }
                       Navigator.pop(context);
                     },
-                    child: const Text(
+                    child: Text(
                       'Adicionar',
-                      style: TextStyle(color: Color(0XFF0472E8)),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
                     )),
                 TextButton(
                   onPressed: () {},

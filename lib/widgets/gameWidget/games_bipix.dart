@@ -14,9 +14,9 @@ class _GamesBipixState extends State<GamesBipix> {
   int selectedMode = 0;
 
   List<String> gameModeOptions = [
-    "modo aleatório",
-    "contra amigos",
-    "add amigo",
+    "Rival aleatório",
+    "Adicionar",
+    "Contra amigos",
   ];
 
   navigationGameModeOption() {
@@ -36,16 +36,16 @@ class _GamesBipixState extends State<GamesBipix> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            "Conheça novas pessoas",
-            style: TextStyle(color: Colors.black, fontSize: 16),
+            "Modo de jogo",
+            style: TextStyle(color: Colors.white, fontSize: 24),
           ),
           Container(
             height: 40,
             margin: const EdgeInsets.symmetric(vertical: 30),
             padding: const EdgeInsetsDirectional.all(5),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade800,
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
+            decoration: const BoxDecoration(
+              color: Color(0xFF171A1D),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             child: ListView.builder(
               shrinkWrap: true,
@@ -66,7 +66,7 @@ class _GamesBipixState extends State<GamesBipix> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: index == selectedMode
-            ? const Color(0XFF0472E8)
+            ? const Color(0XFF3C4FFA)
             : Colors.transparent,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),

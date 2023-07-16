@@ -14,12 +14,12 @@ class SelectFriend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          backgroundColor: const Color(0XFF0472E8),
+          backgroundColor: Theme.of(context).colorScheme.tertiary,
           padding: const EdgeInsets.all(2),
         ),
         onPressed: onTap,
@@ -37,6 +37,7 @@ class SelectFriend extends StatelessWidget {
                   width: 40,
                   child: Container(
                     decoration: BoxDecoration(
+                        color: Colors.black,
                         borderRadius: BorderRadius.circular(50.0),
                         border: Border.all(color: Colors.grey, width: 1)),
                     child: photo == null || photo!.isEmpty
@@ -56,7 +57,7 @@ class SelectFriend extends StatelessWidget {
               Text(
                 '@${name ?? ''}',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(fontSize: 18, color: Colors.black),
               ),
             ],
           ),
