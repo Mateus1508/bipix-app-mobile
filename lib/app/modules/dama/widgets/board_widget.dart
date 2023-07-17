@@ -75,7 +75,7 @@ class BoardWidget extends StatelessWidget {
                                     col: col,
                                     row: row,
                                     player: 1),
-                            icon: ConstantsImages.brownAsset,
+                            icon: ConstantsImages.blackAsset,
                             constraints: constraints);
                       case 2:
                         return PieceWidget(
@@ -92,7 +92,7 @@ class BoardWidget extends StatelessWidget {
                                     col: col,
                                     row: row,
                                     player: 2),
-                            icon: ConstantsImages.blueAsset,
+                            icon: ConstantsImages.whiteAsset,
                             constraints: constraints);
                       case 3:
                         return PieceWidget(
@@ -109,7 +109,7 @@ class BoardWidget extends StatelessWidget {
                                     col: col,
                                     row: row,
                                     player: 3),
-                            icon: ConstantsImages.brownDamaAsset,
+                            icon: ConstantsImages.blackDamaAsset,
                             constraints: constraints);
                       case 4:
                         return PieceWidget(
@@ -126,7 +126,7 @@ class BoardWidget extends StatelessWidget {
                                     col: col,
                                     row: row,
                                     player: 4),
-                            icon: ConstantsImages.blueDamaAsset,
+                            icon: ConstantsImages.whiteDamaAsset,
                             constraints: constraints);
                       case 5:
                         return GestureDetector(
