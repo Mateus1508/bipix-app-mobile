@@ -189,6 +189,26 @@ class _MyfriendsState extends State<Myfriends> {
         ),
         actions: [
           TextButton(
+              onPressed: () async {
+                String userId = await Webservice.getUserId();
+                final response = await Webservice.post(
+                  function: 'inviteFriend',
+                  body: {
+                    'userId': userId,
+                    'friendId': friendId,
+                    "game": getGame(),
+                  },
+                );
+                if (kDebugMode) {
+                  print(response.body);
+                }
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Convidar',
+                style: TextStyle(color: Color(0XFF0472E8)),
+              )),
+          TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
