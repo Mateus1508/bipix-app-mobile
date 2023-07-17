@@ -36,15 +36,27 @@ class VelhaPageState extends State<VelhaPage> {
       onWillPop: () async => store.exitGame(context),
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0XFF0472E8),
+          backgroundColor: const Color(0XFF171A1D),
           title: const Text('Jogo da Velha'),
           centerTitle: true,
-          leading: Image.asset('assets/images/bipixLogo.png'),
+          leading: IconButton(
+              onPressed: () async {
+                store.exitGame(context);
+              },
+              icon: const Icon(
+                Icons.exit_to_app,
+                color: Colors.white,
+              )),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                )),
           ],
         ),
-        backgroundColor: const Color(0XFF00bbf9),
+        backgroundColor: const Color(0XFF3C4FFA),
         body: Center(
           child: Observer(
             builder: (context) {

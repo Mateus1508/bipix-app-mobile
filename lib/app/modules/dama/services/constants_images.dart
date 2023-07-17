@@ -1,8 +1,8 @@
 class ConstantsImages {
-  static const String brownDamaAsset =
-      'assets/images/checkers/icon_checkers_brown.png';
-  static const String blueDamaAsset =
-      'assets/images/checkers/icon_checkers_blue.png';
-  static const String brownAsset = 'assets/images/checkers/icon_brown.png';
-  static const String blueAsset = 'assets/images/checkers/icon_blue.png';
+  static const String whiteAsset = 'assets/images/checkers/icon-white.png';
+  static const String whiteDamaAsset =
+      'assets/images/checkers/icon-checkers-white.png';
+  static const String blackDamaAsset =
+      'assets/images/checkers/icon-checkers-black.png';
+  static const String blackAsset = 'assets/images/checkers/icon-black.png';
 }
