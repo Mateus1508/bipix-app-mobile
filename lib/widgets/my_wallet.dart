@@ -1,3 +1,5 @@
+import 'package:bipixapp/services/webservice.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -9,7 +11,16 @@ class MyWallet extends StatefulWidget {
 }
 
 class _MyWalletState extends State<MyWallet> {
-  double amount = 400.25;
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserStream() async* {
+    String userId = await Webservice.getUserId();
+    await for (DocumentSnapshot<Map<String, dynamic>> doc in FirebaseFirestore
+        .instance
+        .collection("users")
+        .doc(userId)
+        .snapshots()) {
+      yield doc;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,82 +111,95 @@ class _MyWalletState extends State<MyWallet> {
           const SizedBox(
             height: 50,
           ),
-          Container(
-            constraints: const BoxConstraints(minWidth: 100, maxWidth: 240),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Meu saldo",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xFF373737),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  "\$ $amount",
-                  style: const TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF373737),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Recarrega grátis",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.amber.shade300,
-                          blurRadius: 9,
-                          spreadRadius: 10),
+          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: getUserStream(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const CircularProgressIndicator();
+                }
+                final data = snapshot.data;
+                return Container(
+                  constraints:
+                      const BoxConstraints(minWidth: 100, maxWidth: 240),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Meu saldo",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFF373737),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        "\$ ${data!.get("credit")}",
+                        style: const TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF373737),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Recarrega grátis",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      const SizedBox(height: 15),
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.amber.shade300,
+                                blurRadius: 9,
+                                spreadRadius: 10),
+                          ],
+                          color: Colors.amber.shade500,
+                        ),
+                        child: SizedBox(
+                          width: 120,
+                          height: 120,
+                          child: Image.asset('assets/images/recarregar.png'),
+                        ),
+                      )
+                          .animate(onPlay: (controller) => controller.repeat())
+                          .scaleXY(
+                              begin: 0.9,
+                              end: 1,
+                              duration: 1000.ms,
+                              curve: Curves.easeInOut)
+                          .then()
+                          .scaleXY(
+                              begin: 1,
+                              end: 0.9,
+                              duration: 1500.ms,
+                              curve: Curves.easeInOut),
+                      const SizedBox(height: 10),
+                      const Text("Toque para assistir")
+                          .animate(onPlay: (controller) => controller.repeat())
+                          .fadeIn(
+                              begin: 0.5,
+                              duration: 1000.ms,
+                              curve: Curves.easeIn)
+                          .then()
+                          .fadeOut(duration: 700.ms, curve: Curves.easeOut),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Ganhe + \$ 1.00",
+                        style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                          "Quando você assiste um anúncio,você ajuda a Bipix continuar Grátis."),
                     ],
-                    color: Colors.amber.shade500,
                   ),
-                  child: SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: Image.asset('assets/images/recarregar.png'),
-                  ),
-                )
-                    .animate(onPlay: (controller) => controller.repeat())
-                    .scaleXY(
-                        begin: 0.9,
-                        end: 1,
-                        duration: 1000.ms,
-                        curve: Curves.easeInOut)
-                    .then()
-                    .scaleXY(
-                        begin: 1,
-                        end: 0.9,
-                        duration: 1500.ms,
-                        curve: Curves.easeInOut),
-                const SizedBox(height: 10),
-                const Text("Toque para assistir")
-                    .animate(onPlay: (controller) => controller.repeat())
-                    .fadeIn(begin: 0.5, duration: 1000.ms, curve: Curves.easeIn)
-                    .then()
-                    .fadeOut(duration: 700.ms, curve: Curves.easeOut),
-                const SizedBox(height: 10),
-                const Text(
-                  "Ganhe + \$ 1.00",
-                  style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                    "Quando você assiste um anúncio,você ajuda a Bipix continuar Grátis."),
-              ],
-            ),
-          ),
+                );
+              }),
         ],
       ),
     );
