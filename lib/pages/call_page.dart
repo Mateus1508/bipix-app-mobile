@@ -10,7 +10,16 @@ import 'constants.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class CallOverlay extends StatefulWidget {
-  const CallOverlay({Key? key}) : super(key: key);
+  const CallOverlay({
+    Key? key,
+    required this.userId,
+    required this.username,
+    required this.sectionId,
+  }) : super(key: key);
+
+  final String userId;
+  final String username;
+  final String sectionId;
 
   @override
   _CallOverlayState createState() => _CallOverlayState();
@@ -30,42 +39,28 @@ class _CallOverlayState extends State<CallOverlay> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: StreamBuilder<Map<String, dynamic>>(
-        initialData: const {},
-        stream: getUserStream(),
-        builder: (context, userSnap) {
-          return ZegoUIKitPrebuiltCall(
-            appID: VideoConst.appId,
-            appSign: VideoConst.appSign,
-            userID: userSnap.data!["id"],
-            userName: userSnap.data!["username"],
-            callID: userSnap.data!["current_section_id"],
-            config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
-              ..topMenuBarConfig.isVisible = true
-              ..topMenuBarConfig.buttons = [
-                ZegoMenuBarButtonName.minimizingButton,
-                ZegoMenuBarButtonName.showMemberListButton,
-              ]
-              ..onOnlySelfInRoom = (context) {
-                if (PrebuiltCallMiniOverlayPageState.idle !=
-                    ZegoUIKitPrebuiltCallMiniOverlayMachine().state()) {
-                  ZegoUIKitPrebuiltCallMiniOverlayMachine()
-                      .changeState(PrebuiltCallMiniOverlayPageState.idle);
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
-          );
-        },
+      child: ZegoUIKitPrebuiltCall(
+        appID: VideoConst.appId,
+        appSign: VideoConst.appSign,
+        userID: widget.userId,
+        userName: widget.username,
+        callID: widget.sectionId,
+        config: ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+          ..topMenuBarConfig.isVisible = true
+          ..topMenuBarConfig.buttons = [
+            ZegoMenuBarButtonName.minimizingButton,
+            ZegoMenuBarButtonName.showMemberListButton,
+          ]
+          ..onOnlySelfInRoom = (context) {
+            if (PrebuiltCallMiniOverlayPageState.idle !=
+                ZegoUIKitPrebuiltCallMiniOverlayMachine().state()) {
+              ZegoUIKitPrebuiltCallMiniOverlayMachine()
+                  .changeState(PrebuiltCallMiniOverlayPageState.idle);
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
       ),
     );
   }
-}
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  ZegoUIKit().initLog().then((value) {
-    runApp(const CallOverlay());
-  });
 }

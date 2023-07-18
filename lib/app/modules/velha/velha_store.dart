@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../pages/call_page.dart';
 import '../../../services/utilities.dart';
 import '../../../services/webservice.dart';
 import '../../../widgets/load_overlay.dart';
@@ -206,9 +207,10 @@ abstract class _VelhaStoreBase with Store {
   }
 
   @action
-  Future loadGame() async {
+  Future loadGame(buildContext) async {
     userId = await Webservice.getUserId();
     await getSectionId();
+    // getCallPage(buildContext);
     setSectionSubscription();
     setMovesSubscription();
   }
@@ -220,5 +222,26 @@ abstract class _VelhaStoreBase with Store {
     board = Board(size: 3);
     gameLoaded = false;
     moves.clear();
+  }
+
+  void getCallPage(context) async {
+    DocumentSnapshot sectionDoc = await FirebaseFirestore.instance
+        .collection("sections")
+        .doc(sectionId)
+        .get();
+
+    bool admin = userId == sectionDoc.get("admin_id");
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CallOverlay(
+          userId: sectionDoc.get(admin ? "admin_id" : "invited_id"),
+          username:
+              sectionDoc.get(admin ? "admin_username" : "invited_username"),
+          sectionId: sectionId,
+        ),
+      ),
+    );
   }
 }

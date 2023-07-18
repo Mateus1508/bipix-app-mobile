@@ -17,6 +17,18 @@ class BoardWidget extends StatefulWidget {
 
 class BoardWidgetState extends State<BoardWidget> {
   bool gameOver = false;
+// ltrb
+  final borders = [
+    [false, false, true, true],
+    [true, false, true, true],
+    [true, false, false, true],
+    [false, true, true, true],
+    [true, true, true, true],
+    [true, true, false, true],
+    [false, true, true, false],
+    [true, true, true, false],
+    [true, true, false, false],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +53,20 @@ class BoardWidgetState extends State<BoardWidget> {
                     : null,
                 child: Container(
                   decoration: BoxDecoration(
-                    border:
-                        Border.all(color: const Color(0XFF0472E8), width: 15),
-                    borderRadius: BorderRadius.circular(10),
+                    border: Border(
+                      left: borders[index][0]
+                          ? const BorderSide(color: Colors.white, width: 5)
+                          : BorderSide.none,
+                      top: borders[index][1]
+                          ? const BorderSide(color: Colors.white, width: 5)
+                          : BorderSide.none,
+                      right: borders[index][2]
+                          ? const BorderSide(color: Colors.white, width: 5)
+                          : BorderSide.none,
+                      bottom: borders[index][3]
+                          ? const BorderSide(color: Colors.white, width: 5)
+                          : BorderSide.none,
+                    ),
                   ),
                   child: Center(
                     child: SizedBox(
