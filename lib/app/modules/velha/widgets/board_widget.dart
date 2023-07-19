@@ -38,6 +38,7 @@ class BoardWidgetState extends State<BoardWidget> {
         if (widget.store.gameLoaded) {
           widget.store.setBoard(widget.store.moves);
           return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: widget.store.board.size,
             ),
