@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ),
     // '/playerwon': (context) => const PlayerWon(),
     '/loadingapp': (context) => const LoadingApp(),
-    '/call': (context) => const CallOverlay(),
+    // '/call': (context) => const CallOverlay(),
     '/logincall': (context) => const LoginCall(),
     // '/join': (context) => const JoinScreen(),
     // '/call': (context) => const CallScreen(),

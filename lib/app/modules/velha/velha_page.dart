@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
+import '../../../pages/constants.dart';
 import '../../../pages/player_lose.dart';
 import '../../../pages/player_won.dart';
 import 'widgets/board_widget.dart';
@@ -21,7 +22,7 @@ class VelhaPageState extends State<VelhaPage> {
 
   @override
   void initState() {
-    store.loadGame();
+    store.loadGame(context);
     super.initState();
   }
 
@@ -96,38 +97,96 @@ class VelhaPageState extends State<VelhaPage> {
                     store.disposeGame();
                   });
                 }
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 40),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      decoration: BoxDecoration(
-                        color:
-                            store.myTurn ? const Color(0XFF0472E8) : Colors.red,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        store.myTurn
-                            ? 'Sua vez'
-                            : 'Vez do ${store.isAdmin ? store.section["invited_username"] : store.section["admin_username"]}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                return SizedBox(
+                  width: maxWidth(context),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 15, left: 50),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 250,
+                              width: 150,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: ZegoUIKitPrebuiltCall(
+                                  appID: VideoConst.appId,
+                                  appSign: VideoConst.appSign,
+                                  userID: store.userId,
+                                  userName: store.section[store.isAdmin
+                                      ? "admin_username"
+                                      : "invited_username"],
+                                  callID: store.sectionId,
+                                  config: ZegoUIKitPrebuiltCallConfig
+                                      .oneOnOneVideoCall()
+                                    // ..topMenuBarConfig.isVisible = true
+                                    // ..topMenuBarConfig.buttons = [
+                                    //   ZegoMenuBarButtonName.minimizingButton,
+                                    //   ZegoMenuBarButtonName.showMemberListButton,
+                                    // ]
+                                    ..bottomMenuBarConfig.buttons = []
+                                    ..onOnlySelfInRoom = (context) {
+                                      if (PrebuiltCallMiniOverlayPageState
+                                              .idle !=
+                                          ZegoUIKitPrebuiltCallMiniOverlayMachine()
+                                              .state()) {
+                                        ZegoUIKitPrebuiltCallMiniOverlayMachine()
+                                            .changeState(
+                                                PrebuiltCallMiniOverlayPageState
+                                                    .idle);
+                                      } else {
+                                        Navigator.of(context).pop();
+                                      }
+                                    },
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 10,
+                                  width: 10,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: store.myTurn
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                                ),
+                                hSpace(5),
+                                Text(
+                                  store.myTurn
+                                      ? 'Sua jogada'
+                                      : 'Vez do ${store.isAdmin ? store.section["invited_username"] : store.section["admin_username"]}',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        child: BoardWidget(
-                          store: store,
+                      Expanded(
+                        child: Center(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 15),
+                            height: 300,
+                            width: 300,
+                            child: BoardWidget(
+                              store: store,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               } else {
                 return const CircularProgressIndicator();
@@ -135,18 +194,22 @@ class VelhaPageState extends State<VelhaPage> {
             },
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/call');
-            if (ZegoUIKitPrebuiltCallMiniOverlayMachine().isMinimizing) {
-              /// When the application is minimized (in a minimized state),
-              /// Disable button clicks to prevent multiple ZegoUIKitPrebuiltCall components from being created.
-              return;
-            }
-          },
-          child: const Icon(
-            Icons.video_call_outlined,
-            color: Colors.blue,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(top: 80),
+          child: FloatingActionButton(
+            onPressed: () {
+              // Navigator.pushNamed(context, '/call');
+              if (ZegoUIKitPrebuiltCallMiniOverlayMachine().isMinimizing) {
+                /// When the application is minimized (in a minimized state),
+                /// Disable button clicks to prevent multiple ZegoUIKitPrebuiltCall components from being created.
+                return;
+              }
+            },
+            child: const Icon(
+              Icons.video_call_outlined,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),

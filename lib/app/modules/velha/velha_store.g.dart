@@ -182,8 +182,8 @@ mixin _$VelhaStore on _VelhaStoreBase, Store {
       AsyncAction('_VelhaStoreBase.loadGame', context: context);
 
   @override
-  Future<dynamic> loadGame() {
-    return _$loadGameAsyncAction.run(() => super.loadGame());
+  Future<dynamic> loadGame(dynamic buildContext) {
+    return _$loadGameAsyncAction.run(() => super.loadGame(buildContext));
   }
 
   late final _$_VelhaStoreBaseActionController =
