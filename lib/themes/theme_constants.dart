@@ -72,7 +72,7 @@ ThemeData lightTheme() => ThemeData(
         color: Colors.white,
         size: 30.0,
       ),
-      fontFamily: GoogleFonts.roboto().fontFamily,
+      fontFamily: GoogleFonts.arimo().fontFamily,
       scaffoldBackgroundColor: backgroundLight,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
@@ -211,7 +211,7 @@ ThemeData darkTheme() => ThemeData(
         color: Colors.white,
         size: 30.0,
       ),
-      fontFamily: GoogleFonts.roboto().fontFamily,
+      fontFamily: GoogleFonts.arimo().fontFamily,
       textTheme: const TextTheme(
         bodyMedium: TextStyle(
           color: primaryDark,
