@@ -21,122 +21,148 @@ class Myfriends extends StatefulWidget {
 
 class _MyfriendsState extends State<Myfriends> {
   TextEditingController searchController = TextEditingController();
-  List<dynamic> users = [];
+  // List<dynamic> users = [];
 
   int currentGame = 0;
 
   @override
   void initState() {
     super.initState();
-    fetchUsers();
+    // fetchUsers();
   }
 
-  Future<void> fetchUsers() async {
+  // Future<void> fetchUsers() async {
+  //   final Response response =
+  //       await Webservice.get("listFriends/${await Webservice.getUserId()}");
+
+  //   if (response.statusCode == 200) {
+  //     final List<dynamic> jsonResponse = json.decode(response.body);
+  //     setState(() {
+  //       users = jsonResponse;
+  //       if (kDebugMode) {
+  //         print("lista de amigos $users");
+  //       }
+  //     });
+  //   } else {
+  //     if (kDebugMode) {
+  //       print(
+  //           'Erro ao obter usuários. Código de status: ${response.statusCode}');
+  //     }
+  //   }
+  // }
+
+  Future<List?> getFriends() async {
     final Response response =
         await Webservice.get("listFriends/${await Webservice.getUserId()}");
-
     if (response.statusCode == 200) {
-      final List<dynamic> jsonResponse = json.decode(response.body);
-      setState(() {
-        users = jsonResponse;
-        if (kDebugMode) {
-          print("lista de amigos $users");
-        }
-      });
+      return jsonDecode(response.body);
     } else {
-      if (kDebugMode) {
-        print(
-            'Erro ao obter usuários. Código de status: ${response.statusCode}');
-      }
+      return null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> filteredUsers = [];
-    final searchQuery = searchController.text.toLowerCase();
+    // List<dynamic> filteredUsers = [];
+    // final searchQuery = searchController.text.toLowerCase();
 
-    if (searchQuery.isNotEmpty) {
-      filteredUsers = users.where((user) {
-        return (user["username"] as String).contains(searchQuery);
-      }).toList();
-    } else {
-      filteredUsers = users;
-    }
+    // if (searchQuery.isNotEmpty) {
+    //   filteredUsers = users.where((user) {
+    //     return (user["username"] as String).contains(searchQuery);
+    //   }).toList();
+    // } else {
+    //   filteredUsers = users;
+    // }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "Procurar amigo",
-          style: TextStyle(
-              fontSize: 14, color: Theme.of(context).colorScheme.tertiary),
-        ),
-        const SizedBox(height: 15),
-        Container(
-          height: 40,
-          width: 300,
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(
-                color: Theme.of(context).colorScheme.secondary, width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.secondary,
-                spreadRadius: 1,
-                blurRadius: 3,
+    return FutureBuilder<List?>(
+        future: getFriends(),
+        builder: (context, snapshot) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Procurar amigo",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.tertiary),
               ),
-            ],
-          ),
-          child: TextField(
-            controller: searchController,
-            style: const TextStyle(color: Colors.black, fontSize: 18),
-            decoration: const InputDecoration(
-              hintText: 'Ex: @example.bipix',
-              border: InputBorder.none,
-            ),
-            onChanged: (value) {
-              setState(() {});
-            },
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(
-          height: 250,
-          width: 300,
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: filteredUsers.length,
-            itemBuilder: (context, index) {
-              final user = filteredUsers[index];
-
-              return SelectFriend(
-                name: user["username"],
-                id: user["id"],
-                onTap: () => inviteFriendDialog(
-                  friendId: user["id"],
-                  username: user["username"],
+              const SizedBox(height: 15),
+              Container(
+                height: 40,
+                width: 300,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.secondary, width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).colorScheme.secondary,
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                    ),
+                  ],
                 ),
-              );
-            },
-          ),
-        )
-            .animate()
-            .fade(delay: 100.ms)
-            .slideY(begin: 2, end: 0, curve: Curves.easeIn, duration: 500.ms)
-            .then(),
-      ],
-    );
+                child: TextField(
+                  controller: searchController,
+                  style: const TextStyle(color: Colors.black, fontSize: 18),
+                  decoration: const InputDecoration(
+                    hintText: 'Ex: @example.bipix',
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (!snapshot.hasData)
+                const Padding(
+                  padding: EdgeInsets.only(top: 40),
+                  child: CircularProgressIndicator(),
+                ),
+              if (snapshot.hasData)
+                Container(
+                  height: 250,
+                  width: 300,
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      final user = snapshot.data![index];
+
+                      return SelectFriend(
+                        name: user["username"],
+                        id: user["id"],
+                        onTap: () => inviteFriendDialog(
+                          friendId: user["id"],
+                          username: user["username"],
+                        ),
+                      );
+                    },
+                  ),
+                )
+                    .animate()
+                    .fade(delay: 100.ms)
+                    .slideY(
+                        begin: 2,
+                        end: 0,
+                        curve: Curves.decelerate,
+                        duration: 500.ms)
+                    .then(),
+            ],
+          );
+        });
   }
 
   String getGame() {
