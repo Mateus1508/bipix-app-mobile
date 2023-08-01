@@ -2,6 +2,7 @@ import 'package:bipixapp/pages/buy_coins.dart';
 import 'package:bipixapp/widgets/infoBarWidget/info_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../services/ad_helper.dart';
@@ -84,6 +85,7 @@ class _PaymentState extends State<Payment> {
                       style: TextStyle(
                         fontSize: 44,
                         fontWeight: FontWeight.bold,
+                        fontFamily: GoogleFonts.roboto().fontFamily,
                         color: Theme.of(context).colorScheme.tertiary,
                       ),
                     );

@@ -1,3 +1,5 @@
+import 'package:google_fonts/google_fonts.dart';
+
 import '../../models/games_list.dart';
 
 import 'package:flutter/material.dart';
@@ -91,7 +93,10 @@ class _SelectBetValueState extends State<SelectBetValue> {
                           child: Text(
                             items,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 32),
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontFamily: GoogleFonts.roboto().fontFamily,
+                            ),
                           ),
                         ),
                       );

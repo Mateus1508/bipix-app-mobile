@@ -17,7 +17,7 @@ class LoadingAppState extends State<LoadingApp>
   void initState() {
     super.initState();
     // Aguarda 2 segundos antes de abrir a tela de login
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(milliseconds: 500), () {
       getUser(context);
     });
   }
@@ -42,28 +42,18 @@ class LoadingAppState extends State<LoadingApp>
       backgroundColor: const Color(0XFF02cb0a),
       body: Center(
         child: SizedBox(
-          width: 100,
-          height: 100,
-          child: Image.asset('assets/images/logo.png')
-              .animate(
-                onPlay: (controller) => controller.repeat(),
-              )
-              .flipH(
-                begin: 1,
-                end: 2,
-                duration: 900.ms,
-                curve: Curves.easeInOut,
-              )
-              .scaleXY(begin: 0, end: 1.5)
-              .then(delay: 1000.ms)
-              .flipV(
-                begin: 2,
-                end: 1,
-                duration: 900.ms,
-                curve: Curves.easeInOut,
-              )
-              .scaleXY(begin: 1.5, end: 0),
-        ),
+            width: 100,
+            height: 100,
+            child: Image.asset('assets/images/logo.png')
+                .animate()
+                .flipH(
+                  begin: 1,
+                  end: 2,
+                  duration: 900.ms,
+                  curve: Curves.easeInOut,
+                )
+                .scaleXY(begin: 0, end: 3.5)
+                .then(delay: 1000.ms)),
       ),
     );
   }

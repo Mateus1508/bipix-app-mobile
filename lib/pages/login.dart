@@ -247,6 +247,7 @@ class _LoginState extends State<Login> {
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                             color: Colors.white,
+                            size: 18,
                           ),
                         ),
                         enabledBorder: const OutlineInputBorder(
@@ -315,6 +316,16 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
+                    TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Esqueci minha senha',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        )),
                     const SizedBox(height: 30),
                     // const Text(
                     //   "Ou entrar com",
