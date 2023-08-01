@@ -1,7 +1,7 @@
 name: bipixapp
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.1.1
+version: 0.1.2+3
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
