@@ -21,8 +21,10 @@ class BoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final boardSize = MediaQuery.of(context).size.width * 0.9;
     return Container(
-      width: boardSize,
-      height: boardSize,
+      // width: boardSize,
+      // height: boardSize,
+      width: maxHeight(context) - 410,
+      height: maxHeight(context) - 410,
       color: Colors.brown, // Cor de fundo do tabuleiro
       child: ValueListenableBuilder<DamasState>(
           valueListenable: damasLogic,
