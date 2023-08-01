@@ -24,17 +24,18 @@ class _LoginState extends State<Login> {
   final _formfield = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final emailKey = GlobalKey<FormFieldState>();
   bool passToggle = false;
   GoogleSignIn googleSignIn = GoogleSignIn();
 
-  var currentUser = FirebaseAuth.instance.currentUser;
+  // var currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((user) {
-      currentUser = user;
-    });
+    // FirebaseAuth.instance.authStateChanges().listen((user) {
+    //   currentUser = user;
+    // });
   }
 
   Future handleLoginUser() async {
@@ -199,6 +200,7 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      key: emailKey,
                       style: const TextStyle(color: Colors.white),
                       controller: emailController,
                       validator: Validatorless.multiple([
@@ -318,7 +320,17 @@ class _LoginState extends State<Login> {
                     ),
                     const SizedBox(height: 5),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (emailKey.currentState!.validate()) {
+                            await FirebaseAuth.instance.sendPasswordResetEmail(
+                                email: emailController.text);
+                            showCustomSnackBar(context,
+                                'Um e-mail de redefinição de senha foi enviado para o e-mail digitado!');
+                          } else {
+                            showCustomSnackBar(
+                                context, 'Preencha seu email corretamente!');
+                          }
+                        },
                         child: const Text(
                           'Esqueci minha senha',
                           style: TextStyle(
@@ -327,22 +339,22 @@ class _LoginState extends State<Login> {
                           ),
                         )),
                     const SizedBox(height: 30),
-                    // const Text(
-                    //   "Ou entrar com",
-                    //   style: TextStyle(
-                    //     color: Colors.white,
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 30),
-                    // CircleAvatar(
-                    //   radius: 30,
-                    //   backgroundColor: Colors.white,
-                    //   child: IconButton(
-                    //     onPressed: _handleGoogleSignIn,
-                    //     icon: Image.asset(
-                    //         "assets/images/social_media_icons/google.png"),
-                    //   ),
-                    // ),
+                    const Text(
+                      "Ou entrar com",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.white,
+                      child: IconButton(
+                        onPressed: _handleGoogleSignIn,
+                        icon: Image.asset(
+                            "assets/images/social_media_icons/google.png"),
+                      ),
+                    ),
                   ],
                 ),
               ),
