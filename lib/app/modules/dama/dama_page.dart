@@ -35,7 +35,7 @@ class _DamaPageState extends State<DamaPage> {
           backgroundColor: const Color(0XFF0472E8),
           title: const Text('Jogo de Damas'),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: getColors(context).background,
         body: Observer(
           builder: (context) {
             if (store.gameStatus == "LOADING" || store.damasLogic == null) {
@@ -61,32 +61,30 @@ class _DamaPageState extends State<DamaPage> {
               });
             }
             return Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TurnWidget(damasLogic: store.damasLogic!, store: store),
-                    const SizedBox(height: 30),
-                    BoardWidget(damasLogic: store.damasLogic!),
-                    const SizedBox(height: 30),
-                    RestartButton(damasLogic: store.damasLogic!),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  TurnWidget(damasLogic: store.damasLogic!, store: store),
+                  const SizedBox(height: 10),
+                  BoardWidget(damasLogic: store.damasLogic!),
+                  const SizedBox(height: 15),
+                  RestartButton(damasLogic: store.damasLogic!),
+                ],
               ),
             );
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/call');
-            if (ZegoUIKitPrebuiltCallMiniOverlayMachine().isMinimizing) {
-              return;
-            }
-          },
-          child: const Icon(
-            Icons.video_call_outlined,
-            color: Colors.blue,
-          ),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Navigator.pushNamed(context, '/call');
+        //     if (ZegoUIKitPrebuiltCallMiniOverlayMachine().isMinimizing) {
+        //       return;
+        //     }
+        //   },
+        //   child: const Icon(
+        //     Icons.video_call_outlined,
+        //     color: Colors.blue,
+        //   ),
+        // ),
       ),
     );
   }
