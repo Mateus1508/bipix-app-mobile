@@ -18,6 +18,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_zimkit/services/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,11 @@ void main() async {
       navigatorKey: navigatorKey,
     ));
   });
+  ZIMKit().init(
+    appID: 524754273, // your appid
+    appSign:
+        '6f1f75143b5c4a54053a2a32df62f8004f6b82fdbedf7eed61ab8c62aba0e8cf', // your appSign
+  );
 }
 
 class MyApp extends StatefulWidget {

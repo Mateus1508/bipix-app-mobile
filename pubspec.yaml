@@ -28,8 +28,8 @@ dependencies:
   google_mobile_ads: ^3.0.0
   firebase_core: ^2.13.1
   google_fonts: ^4.0.3
-  zego_uikit_prebuilt_call: ^3.6.2
-  zego_uikit_signaling_plugin: ^2.1.10
+  zego_uikit_prebuilt_call: ^ 3.11.1
+  zego_uikit_signaling_plugin: ^ 3.11.1
   zego_uikit: ^2.5.21
   device_info_plus: ^8.2.2
   flutter_launcher_icons: ^0.13.1
@@ -40,6 +40,7 @@ dependencies:
   firebase_storage: ^11.2.3
   share: ^2.0.4
   url_launcher: ^6.1.11
+  zego_zimkit: ^1.7.0
 
 flutter_icons:
   image_path: "assets/app_icon/icon.png"

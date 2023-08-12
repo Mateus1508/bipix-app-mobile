@@ -1,8 +1,11 @@
+import 'package:bipixapp/pages/chat_page.dart';
 import 'package:bipixapp/pages/home.dart';
+import 'package:bipixapp/pages/list_page.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -18,6 +21,7 @@ class _BottomBarState extends State<BottomBar> {
     const Home(),
     const Profile(),
     const Payment(),
+    const ListPage(),
   ];
 
   @override
@@ -66,6 +70,10 @@ class _BottomBarState extends State<BottomBar> {
               icon: Icons.wallet,
               iconColor: Theme.of(context).colorScheme.primary,
               text: 'Carteira',
+            ),
+            const GButton(
+              icon: Icons.chat,
+              text: 'Chat Bipix',
             ),
           ],
         ),
