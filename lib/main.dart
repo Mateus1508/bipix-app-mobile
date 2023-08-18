@@ -18,6 +18,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
+import 'package:zego_zimkit/services/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +31,33 @@ void main() async {
       navigatorKey: navigatorKey,
     ));
   });
+  ZIMKit().init(
+    appID: 524754273, // your appid
+    appSign:
+        '6f1f75143b5c4a54053a2a32df62f8004f6b82fdbedf7eed61ab8c62aba0e8cf', // your appSign
+  );
+  ZegoUIKitPrebuiltCallInvitationService().setNavigatorKey(navigatorKey);
+}
+
+void onUserLogin(String id, String name) {
+  /// 2.1. initialized ZegoUIKitPrebuiltCallInvitationService
+  /// when app's user is logged in or re-logged in
+  /// We recommend calling this method as soon as the user logs in to your app.
+  ZegoUIKitPrebuiltCallInvitationService().init(
+    appID: 524754273, // your appid
+    appSign:
+        '6f1f75143b5c4a54053a2a32df62f8004f6b82fdbedf7eed61ab8c62aba0e8cf', // your appSign
+    userID: id,
+    userName: name,
+    plugins: [ZegoUIKitSignalingPlugin()],
+  );
+}
+
+/// on App's user logout
+void onUserLogout() {
+  /// 2.2. de-initialization ZegoUIKitPrebuiltCallInvitationService
+  /// when app's user is logged out
+  ZegoUIKitPrebuiltCallInvitationService().uninit();
 }
 
 class MyApp extends StatefulWidget {

@@ -1,3 +1,4 @@
+import 'package:bipixapp/pages/chatPage/login_page.dart';
 import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/profile.dart';
@@ -18,6 +19,7 @@ class _BottomBarState extends State<BottomBar> {
     const Home(),
     const Profile(),
     const Payment(),
+    const ZIMKitDemoLoginPage()
   ];
 
   @override
@@ -66,6 +68,11 @@ class _BottomBarState extends State<BottomBar> {
               icon: Icons.wallet,
               iconColor: Theme.of(context).colorScheme.primary,
               text: 'Carteira',
+            ),
+            GButton(
+              icon: Icons.chat,
+              iconColor: Theme.of(context).colorScheme.primary,
+              text: 'Bipix Chat',
             ),
           ],
         ),
