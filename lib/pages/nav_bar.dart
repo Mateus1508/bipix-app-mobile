@@ -1,9 +1,10 @@
-import 'package:bipixapp/pages/chatPage/login_page.dart';
 import 'package:bipixapp/pages/home.dart';
 import 'package:bipixapp/pages/payment.dart';
 import 'package:bipixapp/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+
+import '../app/modules/chats/chats_module.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -19,7 +20,8 @@ class _BottomBarState extends State<BottomBar> {
     const Home(),
     const Profile(),
     const Payment(),
-    const ZIMKitDemoLoginPage()
+    // const ZIMKitDemoLoginPage()
+    ChatsModule(),
   ];
 
   @override

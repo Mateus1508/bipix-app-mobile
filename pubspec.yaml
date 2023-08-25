@@ -41,6 +41,7 @@ dependencies:
   share: ^2.0.4
   url_launcher: ^6.1.11
   zego_zimkit: ^1.7.0
+  flutter_svg: ^2.0.7
 
 flutter_icons:
   image_path: "assets/app_icon/icon.png"
@@ -60,6 +61,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/svg/
     - assets/images/
     - assets/images/tic_tac_toe/
     - assets/images/games_logos/

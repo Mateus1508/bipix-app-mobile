@@ -10,7 +10,7 @@ const secondaryVariantLight = Color(0xffDFF6FF);
 const tertiaryLight = Color(0xffffffff);
 
 const surfaceLight = Color(0xfffcfcfc);
-const backgroundLight = Color(0xff393641);
+const backgroundLight = Color.fromARGB(255, 220, 220, 220);
 const onBackgroundLight = Color(0xff4B4B4B);
 const onSurfaceLight = Color(0xff848484);
 
@@ -119,7 +119,7 @@ ThemeData lightTheme() => ThemeData(
           fontSize: 18,
         ),
         titleMedium: TextStyle(
-          color: Colors.white,
+          color: onBackgroundLight,
           fontWeight: FontWeight.w500,
           fontSize: 22,
         ),
@@ -152,9 +152,9 @@ const onBackgroundDark = Color.fromARGB(255, 219, 219, 219);
 const surfaceDark = Color.fromARGB(255, 48, 48, 48);
 const onSurfaceDark = Color.fromARGB(255, 187, 187, 187);
 
-const primaryContainerDark = Color.fromARGB(255, 73, 73, 73);
-const onPrimaryContainerDark = Color.fromARGB(255, 134, 134, 134);
-const onSurfaceVariantDark = Color.fromARGB(255, 56, 56, 56);
+const primaryContainerDark = Color(0xFF494949);
+const onPrimaryContainerDark = Color(0xFF868686);
+const onSurfaceVariantDark = Color(0xFF383838);
 const secondaryContainerDark = Color(0xFFA3A3A3);
 
 const shadowDark = Color(0x28FFFFFF);
@@ -264,7 +264,7 @@ ThemeData darkTheme() => ThemeData(
         titleLarge: TextStyle(
           color: primaryDark,
           fontWeight: FontWeight.w500,
-          fontSize: 23,
+          fontSize: 24,
         ),
       ),
       inputDecorationTheme: const InputDecorationTheme(
